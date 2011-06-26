@@ -5,20 +5,33 @@ use Foomo\Modules\ModuleBase;
 
 /**
  * Module Wordpress for foomo
- * Created 2011-06-26 17:06:30
  */
-class Module extends ModuleBase {
+class Module extends ModuleBase
+{
+	//---------------------------------------------------------------------------------------------
+	// ~ Constants
+	//---------------------------------------------------------------------------------------------
+
 	/**
 	 * the name of this module
-	 *
 	 */
 	const NAME = 'Wordpress';
+	/**
+	 * current wordpress version
+	 */
+	const WORDPRESS_VERSION = '3.1.3';
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static methods
+	//---------------------------------------------------------------------------------------------
+
 	/**
 	 * Your module needs to be set up, before being used - this is the place to do it
 	 */
 	public static function initializeModule()
 	{
 	}
+
 	/**
 	 * Get a plain text description of what this module does
 	 *
@@ -26,8 +39,9 @@ class Module extends ModuleBase {
 	 */
 	public static function getDescription()
 	{
-		return '';
+		return 'Wordpress integration';
 	}
+
 	/**
 	 * get all the module resources
 	 *
@@ -35,15 +49,22 @@ class Module extends ModuleBase {
 	 */
 	public static function getResources()
 	{
-		return array(
-			// get a run mode independent folder var/<runMode>/test
-			// \Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'test'),
-			// and a file in it
-			// \Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_File, 'test' . DIRECTORY_SEPARATOR . 'someFile'),
-			// request a cache resource
-			// \Foomo\Modules\Resource\Fs::getCacheResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'navigationLeaves'),
-			// a database configuration
-			// \Foomo\Modules\Resource\Config::getResource('yourModule', 'db')
-		);
+		return array();
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getHtdocsPath()
+	{
+		return \Foomo\ROOT_HTTP . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . self::NAME;
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getHtdocsDir()
+	{
+		return \Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'htdocs';
 	}
 }

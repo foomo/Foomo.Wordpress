@@ -2387,7 +2387,7 @@ class WP_Query {
 
 		if ( isset($q['post_status']) && '' != $q['post_status'] ) {
 			$statuswheres = array();
-			$q_status = explode(',', $q['post_status']);
+			$q_status = (is_array($q['post_status'])) ? $q['post_status'] : explode(',', $q['post_status']);
 			$r_status = array();
 			$p_status = array();
 			$e_status = array();
