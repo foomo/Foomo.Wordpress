@@ -1,7 +1,16 @@
 To update the Wordpress version follow these steps:
 
-++ Update Wordpress
+++ Git
 
+Make sure you're on master
+
+<geshi type="bash">
+git status
+# if needed
+git checkout master
+</geshi>
+
+++ Update Wordpress
 
 <geshi type="bash">
 cd /path/to/modules/Wordpress
