@@ -1,0 +1,200 @@
+To implement Wordpress into you module please follow these steps:
+
+++ Create your module
+
+Use the toolbox to do so.
+
+++ Resources
+
+Add the following resources to you module and create them:
+
+<geshi type="php">
+public static function getResources()
+{
+	return array(
+		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'tmp' . DIRECTORY_SEPARATOR . self::NAME),
+		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'modules' . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'db'),
+		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'htdocs' . DIRECTORY_SEPARATOR . 'modulesVar' . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'cache'),
+		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'htdocs' . DIRECTORY_SEPARATOR . 'modulesVar' . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'uploads'),
+		\Foomo\Modules\Resource\Fs::getAbsoluteResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'themes'),
+		\Foomo\Modules\Resource\Fs::getAbsoluteResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'plugins'),
+	);
+}
+</geshi>
+
+++ Symlinks
+
+Add a theme symlink
+
+<geshi type="bash">
+cd /path/to/modules/<MODULE_NAME>/htdocs/content/themes
+ln -s ../../../../Wordpress/htdocs/wp-content/themes/twentyten
+</geshi>
+
+
+++ Apache rewirte rules
+
+Add a .htaccess file to your document root or edit your vhost conf
+
+<geshi type="apache">
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteRule ^$ /<ROOT_HTTP>/modules/Wordpress/index.php [L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_URI} !\.(jpg|gif|png|jpeg|zip|tar|tgz)$
+    RewriteRule . /<ROOT_HTTP>/modules/Wordpress/index.php [L]
+</IfModule>
+# END WordPress
+</geshi>
+
+
+++ Databse
+
+Prepare a database
+
+++ Wordpress configuration
+
+Add a wp-config.php file to your document root and fill out the
+
+* database section
+* secret section
+* and maybe set the $default_url to your domain (i.e. www.foomo.org)
+
+<geshi type="php">
+/**
+ * The base configurations of the WordPress.
+ *
+ * This file has the following configurations: MySQL settings, Table Prefix,
+ * Secret Keys, WordPress Language, and ABSPATH. You can find more information
+ * by visiting {@link http://codex.wordpress.org/Editing_wp-config.php Editing
+ * wp-config.php} Codex page. You can get the MySQL settings from your web host.
+ *
+ * This file is used by the wp-config.php creation script during the
+ * installation. You don't have to use the web site, you can just copy this file
+ * to "wp-config.php" and fill in the values.
+ *
+ * @package WordPress
+ */
+
+// ** MySQL settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define('DB_NAME', 'database');
+
+/** MySQL database username */
+define('DB_USER', 'username');
+
+/** MySQL database password */
+define('DB_PASSWORD', 'password');
+
+/** MySQL hostname */
+define('DB_HOST', '127.0.0.1');
+
+/** Database Charset to use in creating database tables. */
+define('DB_CHARSET', 'utf8');
+
+/** The Database Collate type. Don't change this if in doubt. */
+define('DB_COLLATE', '');
+
+/**
+ * Authentication Unique Keys and Salts.
+ *
+ * Change these to different unique phrases!
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
+ * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define('AUTH_KEY',         'secretkey');
+define('SECURE_AUTH_KEY',  'secretkey');
+define('LOGGED_IN_KEY',    'secretkey');
+define('NONCE_KEY',        'secretkey');
+define('AUTH_SALT',        'secretkey');
+define('SECURE_AUTH_SALT', 'secretkey');
+define('LOGGED_IN_SALT',   'secretkey');
+define('NONCE_SALT',       'secretkey');
+
+/**
+ * WordPress Database Table prefix.
+ *
+ * You can have multiple installations in one database if you give each a unique
+ * prefix. Only numbers, letters, and underscores please!
+ */
+$table_prefix  = 'wp_';
+
+/**
+ * WordPress Localized Language, defaults to English.
+ *
+ * Change this to localize WordPress. A corresponding MO file for the chosen
+ * language must be installed to wp-content/languages. For example, install
+ * de_DE.mo to wp-content/languages and set WPLANG to 'de_DE' to enable German
+ * language support.
+ */
+define('WPLANG', '');
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ */
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', false);
+define('WP_DEBUG_DISPLAY', false);
+
+# multisite
+define('WP_ALLOW_MULTISITE', false);
+
+#  base url
+$default_url = 'http://' . $_SERVER['HTTP_HOST'];
+$base_url = 'http://' . $_SERVER['HTTP_HOST'];
+
+$dir = dirname(dirname(__FILE__));
+$base_dir = $dir . '/htdocs';
+$content_url = $base_url . '/content';
+$content_dir = $base_dir . '/content';
+$tmp_dir = $dir . '/tmp';
+
+# site url
+define('WP_HOME', $default_url);
+define('WP_SITEURL', $base_url . \Wordpress\Module::getHtdocsPath());
+
+# content settings
+define('WP_CONTENT_DIR', \Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . <MODULE_NAME> . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content');
+define('WP_CONTENT_URL', $base_url . DIRECTORY_SEPARATOR . 'content');
+
+# plugin dir
+define('WP_PLUGIN_DIR', WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'plugins');
+define('WP_PLUGIN_URL', WP_CONTENT_URL . DIRECTORY_SEPARATOR . 'plugins');
+
+/* That's all, stop editing! Happy blogging. */
+
+# Absolute path to the WordPress directory.
+if ( !defined('ABSPATH') ) define('ABSPATH', \Wordpress\Module::getHtdocsDir());
+
+# Sets up WordPress vars and included files.
+require_once(ABSPATH . 'wp-settings.php');
+</geshi>
+
+++ Wordpress Setup
+
+Visit you site and you'll be redirected to your setup site.
+Follow as instructed and finish the installation process.
+
+
++++ Wordpress Settings
+
+Go to Settings -> Media and set the "Store uploads in this folder" to sth like:
+
+<geshi type="text">
+/var/www/<YOUR_SITE>/var/<RUN_MODE>/htdocs/modulesVar/<MODULE_NAME>/uploads
+</geshi>
+
+and the "Full URL path to files" to:
+
+<geshi type="text">
+/foomo/modulesVar/<MODULE_NAME>/uploads
+</geshi>
