@@ -49,7 +49,9 @@ class Module extends ModuleBase
 	 */
 	public static function getResources()
 	{
-		return array();
+		return array(
+			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Wordpress.config'),
+		);
 	}
 
 	/**
@@ -98,5 +100,13 @@ class Module extends ModuleBase
 	public static function getHtdocsDir()
 	{
 		return \Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'htdocs';
+	}
+
+	/**
+	 * @return Foomo\Wordpress\DomainConfig
+	 */
+	public static function getConfig()
+	{
+		return \Foomo\Config::getConf(self::NAME, 'Foomo.Wordpress.config');
 	}
 }
