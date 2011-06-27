@@ -13,7 +13,7 @@ git checkout master
 ++ Update Wordpress
 
 <geshi type="bash">
-cd /path/to/modules/Wordpress/htdocs
+cd /path/to/modules/Foomo.Wordpress/htdocs
 rm -rf content
 svn co http://core.svn.wordpress.org/tags/3.1.3 content
 </geshi>
@@ -23,7 +23,7 @@ svn co http://core.svn.wordpress.org/tags/3.1.3 content
 Set the version in the Module
 
 <geshi type="bash">
-vi lib/Wordpress/Module.php
+vi lib/Foomo/Wordpress/Module.php
 </geshi>
 
 <geshi type="php">

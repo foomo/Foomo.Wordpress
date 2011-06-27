@@ -1,6 +1,6 @@
 <?php
 
-namespace Wordpress\Plugins;
+namespace Foomo\Wordpress\Plugins;
 
 class Toolkit
 {

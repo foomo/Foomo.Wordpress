@@ -1,10 +1,10 @@
 <?php
-namespace Wordpress;
+namespace Foomo\Wordpress;
 
 use Foomo\Modules\ModuleBase;
 
 /**
- * Module Wordpress for foomo
+ * Module Foomo\Wordpress for foomo
  */
 class Module extends ModuleBase
 {
@@ -15,7 +15,7 @@ class Module extends ModuleBase
 	/**
 	 * the name of this module
 	 */
-	const NAME = 'Wordpress';
+	const NAME = 'Foomo.Wordpress';
 	/**
 	 * current wordpress version
 	 */
