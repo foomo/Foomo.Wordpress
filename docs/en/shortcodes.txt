@@ -1,0 +1,5 @@
+++ Fomo run
+
+<geshi type="text">
+[foomo_run app="Your\\App\\Name"]
+</geshi>

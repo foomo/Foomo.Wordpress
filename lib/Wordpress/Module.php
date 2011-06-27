@@ -55,6 +55,38 @@ class Module extends ModuleBase
 	/**
 	 * @return string
 	 */
+	public static function getPluginsPath()
+	{
+		return self::getHtdocsPath() . DIRECTORY_SEPARATOR . 'plugins';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getPluginsDir()
+	{
+		return self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'plugins';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getWordpressPath()
+	{
+		return self::getHtdocsPath() . DIRECTORY_SEPARATOR . 'content';
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getWordpressDir()
+	{
+		return self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content';
+	}
+
+	/**
+	 * @return string
+	 */
 	public static function getHtdocsPath()
 	{
 		return \Foomo\ROOT_HTTP . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . self::NAME;

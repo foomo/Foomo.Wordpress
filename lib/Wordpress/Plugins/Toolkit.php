@@ -8,8 +8,8 @@ class Toolkit
 	// ~ Constants
 	//---------------------------------------------------------------------------------------------
 
-	const name = 'foomo-toolkit';
-	const title = 'Foomo Toolkit Plugin';
+	const NAME = 'foomo-toolkit';
+	const TITLE = 'Foomo Toolkit Plugin';
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Variables
@@ -38,10 +38,26 @@ class Toolkit
 	public function __construct()
 	{
         # get options
-		$this->_loadOptions();
+		#$this->_loadOptions();
 
-		# load language
-		load_textdomain(self::name, WPP_UTILS_PATH . '/locales/' . get_locale() . '.mo');
+		add_shortcode('foomo_run', array($this, 'foomo_run_shortcode_handler'));
+	}
+
+	/**
+	 * @see http://codex.wordpress.org/Shortcode_API
+	 *
+	 * @param array $atts
+	 * @param string $content
+	 * @param type $code
+	 */
+	public function foomo_run_shortcode_handler($atts, $content=null, $code="")
+	{
+		global $post;
+		extract(shortcode_atts(array('app' => null), $atts));
+		if (is_null($app)) return null;
+		$baseUrl = str_replace(home_url(), '', get_permalink($post->ID));
+		if (substr($baseUrl, -1) == '/') $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
+		return \Foomo\MVC::run($app, $baseUrl);
 	}
 
 	//---------------------------------------------------------------------------------------------

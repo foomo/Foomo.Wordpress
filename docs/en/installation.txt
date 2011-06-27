@@ -28,24 +28,33 @@ Add a theme symlink
 
 <geshi type="bash">
 cd /path/to/modules/<MODULE_NAME>/htdocs/content/themes
-ln -s ../../../../Wordpress/htdocs/wp-content/themes/twentyten
+ln -s ../../../../Wordpress/htdocs/content/wp-content/themes/twentyten
 </geshi>
 
+Add plugin symlink
+
+<geshi type="bash">
+cd /path/to/modules/<MODULE_NAME>/htdocs/content/plugins
+ln -s ../../../../Wordpress/htdocs/plugins/foomo-toolkit
+</geshi>
 
 ++ Apache rewirte rules
 
 Add a .htaccess file to your document root or edit your vhost conf
 
 <geshi type="apache">
+
+Redirect /admin /<ROOT_HTTP>/modules/Wordpress/content/wp-admin/
+
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
-    RewriteRule ^$ /<ROOT_HTTP>/modules/Wordpress/index.php [L]
+    RewriteRule ^$ /<ROOT_HTTP>/modules/Wordpress/content/index.php [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_URI} !\.(jpg|gif|png|jpeg|zip|tar|tgz)$
-    RewriteRule . /<ROOT_HTTP>/modules/Wordpress/index.php [L]
+    RewriteRule . /<ROOT_HTTP>/modules/Wordpress/content/index.php [L]
 </IfModule>
 # END WordPress
 </geshi>
@@ -160,7 +169,7 @@ $tmp_dir = $dir . '/tmp';
 
 # site url
 define('WP_HOME', $default_url);
-define('WP_SITEURL', $base_url . \Wordpress\Module::getHtdocsPath());
+define('WP_SITEURL', $base_url . \Wordpress\Module::getWordpressPath());
 
 # content settings
 define('WP_CONTENT_DIR', \Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . <MODULE_NAME> . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content');
@@ -173,7 +182,7 @@ define('WP_PLUGIN_URL', WP_CONTENT_URL . DIRECTORY_SEPARATOR . 'plugins');
 /* That's all, stop editing! Happy blogging. */
 
 # Absolute path to the WordPress directory.
-if ( !defined('ABSPATH') ) define('ABSPATH', \Wordpress\Module::getHtdocsDir());
+if ( !defined('ABSPATH') ) define('ABSPATH', \Wordpress\Module::getWordpressDir());
 
 # Sets up WordPress vars and included files.
 require_once(ABSPATH . 'wp-settings.php');
