@@ -77,7 +77,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function getPluginsPath()
 	{
-		return self::getHtdocsUrl('plugins');
+		return self::getHtdocsPath('plugins');
 	}
 
 	/**
