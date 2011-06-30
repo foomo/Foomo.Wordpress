@@ -1,12 +1,30 @@
 <?php
+
+/*
+ * This file is part of the foomo Opensource Framework.
+ *
+ * The foomo Opensource Framework is free software: you can redistribute it
+ * and/or modify it under the terms of the GNU Lesser General Public License as
+ * published  by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * The foomo Opensource Framework is distributed in the hope that it will
+ * be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 namespace Foomo\Wordpress;
 
-use Foomo\Modules\ModuleBase;
-
 /**
- * Module Foomo\Wordpress for foomo
+ * @link www.foomo.org
+ * @license www.gnu.org/licenses/lgpl.txt
+ * @author franklin <franklin@weareinteractive.com>
  */
-class Module extends ModuleBase
+class Module extends \Foomo\Modules\ModuleBase
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constants
@@ -49,7 +67,9 @@ class Module extends ModuleBase
 	 */
 	public static function getResources()
 	{
-		return array();
+		return array(
+			\Foomo\Modules\Resource\Module::getResource('Foomo', self::VERSION),
+		);
 	}
 
 	/**
@@ -57,7 +77,7 @@ class Module extends ModuleBase
 	 */
 	public static function getPluginsPath()
 	{
-		return self::getHtdocsPath() . DIRECTORY_SEPARATOR . 'plugins';
+		return self::getHtdocsUrl('plugins');
 	}
 
 	/**
@@ -65,7 +85,7 @@ class Module extends ModuleBase
 	 */
 	public static function getPluginsDir()
 	{
-		return self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'plugins';
+		return self::getHtdocsDir('plugins');
 	}
 
 	/**
@@ -73,7 +93,7 @@ class Module extends ModuleBase
 	 */
 	public static function getWordpressPath()
 	{
-		return self::getHtdocsPath() . DIRECTORY_SEPARATOR . 'content';
+		return self::getHtdocsPath('content');
 	}
 
 	/**
@@ -81,22 +101,6 @@ class Module extends ModuleBase
 	 */
 	public static function getWordpressDir()
 	{
-		return self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content';
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function getHtdocsPath()
-	{
-		return \Foomo\ROOT_HTTP . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . self::NAME;
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function getHtdocsDir()
-	{
-		return \Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'htdocs';
+		return self::getHtdocsDir('content');
 	}
 }
