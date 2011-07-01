@@ -2134,7 +2134,7 @@ function plugins_url($path = '', $plugin = '') {
 		$url = str_replace( 'http://', 'https://', $url );
 
 	if ( !empty($plugin) && is_string($plugin) ) {
-		$folder = dirname(plugin_basename($plugin));
+		$folder = basename(dirname(plugin_basename($plugin)));
 		if ( '.' != $folder )
 			$url .= '/' . ltrim($folder, '/');
 	}
