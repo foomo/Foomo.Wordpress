@@ -5,8 +5,6 @@
 		<div style="border:2px solid #cc0000; padding:8px; font-weight:bold; margin:10px;"><?= $model['message']; ?></div>
 	<? endif; ?>
 
-	<h3><? _e('Admin Settings', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></h3>
-
 	<table class="widefat">
 		<thead>
 			<tr>
@@ -34,7 +32,7 @@
 			</tr>
 		</tbody>
 	</table>
-
+	<br/>
 	<table class="widefat">
 		<thead>
 			<tr>
@@ -46,10 +44,6 @@
 				<td>
 					<form method="post" action="">
 						<table class="form-table">
-							<tr>
-								<th scope="row"><? _e('Enable Twig', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
-								<td><input type="checkbox" name="enableTwig"<?= ($model['options']['enableTwig']) ? ' checked="checked"' : ''; ?>/></td>
-							</tr>
 							<tr>
 								<th scope="row"><? _e('Enable Shortcodes', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
 								<td><input type="checkbox" name="enableShortcodes"<?= ($model['options']['enableShortcodes']) ? ' checked="checked"' : ''; ?>/></td>

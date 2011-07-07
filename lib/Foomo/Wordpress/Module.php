@@ -37,7 +37,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	/**
 	 * current wordpress version
 	 */
-	const WORDPRESS_VERSION = '3.1.3';
+	const WORDPRESS_VERSION = '3.2';
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods

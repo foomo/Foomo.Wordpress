@@ -49,10 +49,6 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	 * @var boolean
 	 */
 	public $enableShortcodes = true;
-	/**
-	 * @var boolean
-	 */
-	public $enableTwig = true;
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Protected methods
@@ -80,7 +76,6 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	protected function getOptions()
 	{
 		return array(
-			'enableTwig',
 			'enableShortcodes',
 			'disableCoreUpdates',
 			'disablePluginUpdates',
@@ -93,7 +88,6 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	protected function addHooks()
 	{
 		if ($this->enableShortcodes) new \Foomo\Wordpress\Shortcodes();
-		if ($this->enableTwig) new \Foomo\Wordpress\Twig();
 	}
 
 	/**
@@ -141,7 +135,6 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 				$params['message'] = __('Options Saved.', self::NAME);
 				break;
 			case (isset($_POST['themingSettingsSubmit'])):
-				$this->enableTwig = (isset($_POST['enableTwig']) && $_POST['enableTwig'] = 'on');
 				$this->enableShortcodes = (isset($_POST['enableShortcodes']) && $_POST['enableShortcodes'] = 'on');
 				$this->saveOptions();
 				$params['message'] = __('Options Saved.', self::NAME);

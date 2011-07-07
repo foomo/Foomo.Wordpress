@@ -10,12 +10,24 @@ git status
 git checkout master
 </geshi>
 
+
+Update the current tag if needed and possible
+
+<geshi type="bash">
+git tag -l
+....
+git tag -d wordpress-3.1.3
+git tag wordpress-3.1.3
+git push --tags
+</geshi>
+
+
 ++ Update Wordpress
 
 <geshi type="bash">
 cd /path/to/modules/Foomo.Wordpress/htdocs
 rm -rf content
-svn co http://core.svn.wordpress.org/tags/3.1.3 content
+svn export http://core.svn.wordpress.org/tags/3.2 content --ignore-externals
 </geshi>
 
 ++ Update version
@@ -30,9 +42,18 @@ vi lib/Foomo/Wordpress/Module.php
 /**
  * current wordpress version
  */
-const WORDPRESS_VERSION = '3.1.3';
+const WORDPRESS_VERSION = '3.2';
 </geshi>
 
+
++++ Apply patches
+
+Apply all patches in the /patches folder i.e.:
+
+<geshi type="bash">
+patch -p0 < patches/link-template.php.patch --dry-run
+patch -p0 < patches/link-template.php.patch
+</geshi>
 
 ++ Git it
 
@@ -40,7 +61,7 @@ const WORDPRESS_VERSION = '3.1.3';
 git status
 # check changes
 ...
-git commit -a -m "Updated wordpress to 3.1.3"
+git commit -a -m "Updated wordpress to 3.2"
 git tag wordpress-3.1.3
 git push --tags
 </geshi>
