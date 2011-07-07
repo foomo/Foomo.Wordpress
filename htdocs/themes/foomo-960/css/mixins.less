@@ -1,0 +1,143 @@
+/*
+	Variable Grid System.
+	Learn more ~ http://www.spry-soft.com/grids/
+	Based on 960 Grid System - http://960.gs/
+
+	Licensed under GPL and MIT.
+*/
+
+/*
+  Forces backgrounds to span full width,
+  even if there is horizontal scrolling.
+  Increase this if your layout is wider.
+
+  Note: IE6 works fine without this fix.
+*/
+
+@grid-body() {
+  min-width: @grid-width;
+}
+
+/* Containers
+----------------------------------------------------------------------------------------------------*/
+
+@container(@width: @grid-width) {
+	margin-left: auto;
+	margin-right: auto;
+	width: @width;
+}
+
+/* Grid >> Global
+----------------------------------------------------------------------------------------------------*/
+
+@grid(@column: 1; @column-count: @grid-column-count; @gutter-width: @grid-gutter-width; @width: @grid-width) {
+	display:inline;
+	float: left;
+	position: relative;
+	margin-left: @gutter-width / 2;
+	margin-right: @gutter-width / 2;
+	width: (((@width / @column-count) * @column) - @gutter-width);
+}
+
+/* Push Space >> x Columns
+----------------------------------------------------------------------------------------------------*/
+
+
+@push(@column: 1; @column-count: @grid-column-count; @gutter-width: @grid-gutter-width; @width: @grid-width) {
+	position: relative;
+	left: (((@width - (@column-count * @gutter-width)) / @column-count) + @gutter-width) * @column;
+}
+
+
+/* Pull Space >> x Columns
+----------------------------------------------------------------------------------------------------*/
+
+
+@pull(@column: 1; @column-count: @grid-column-count; @gutter-width: @grid-gutter-width; @width: @grid-width) {
+	position: relative;
+	left: -(((@width - (@column-count * @gutter-width)) / @column-count) + @gutter-width) * @column;
+}
+
+
+/* Grid >> Children (Alpha ~ First; Omega ~ Last)
+----------------------------------------------------------------------------------------------------*/
+
+@alpha() {
+	margin-left: 0;
+}
+
+@omega() {
+	margin-right: 0;
+}
+
+
+/* Prefix Extra Space >> x Columns
+----------------------------------------------------------------------------------------------------*/
+
+
+@prefix(@column: 1; @column-count: @grid-column-count; @gutter-width: @grid-gutter-width; @width: @grid-width) {
+	position: relative;
+	padding-left: (((@width - (@column-count * @gutter-width)) / @column-count) + @gutter-width) * @column;
+}
+
+
+
+/* Suffix Extra Space >> x Columns
+----------------------------------------------------------------------------------------------------*/
+
+@suffix(@column: 1; @column-count: @grid-column-count; @gutter-width: @grid-gutter-width; @width: @grid-width) {
+	position: relative;
+	padding-right: (((@width - (@column-count * @gutter-width)) / @column-count) + @gutter-width) * @column;
+}
+
+
+/* `Clear Floated Elements
+----------------------------------------------------------------------------------------------------*/
+
+/* http://sonspring.com/journal/clearing-floats */
+
+@clear() {
+	clear: both;
+	display: block;
+	overflow: hidden;
+	visibility: hidden;
+	width: 0;
+	height: 0;
+}
+
+/* http://www.yuiblog.com/blog/2010/09/27/clearfix-reloaded-overflowhidden-demystified */
+
+
+/*
+  The following zoom:1 rule is specifically for IE6 + IE7.
+  Move to separate stylesheet if invalid CSS is a problem.
+*/
+
+@clearbefore() {
+	:before {
+	  content: '\0020';
+	  display: block;
+	  overflow: hidden;
+	  visibility: hidden;
+	  width: 0;
+	  height: 0;
+	}
+}
+
+@clearafter() {
+	:after {
+		clear: both;
+		content: '\0020';
+		display: block;
+		overflow: hidden;
+		visibility: hidden;
+		width: 0;
+		height: 0;
+	}
+}
+
+@clearfix() {
+	zoom: 1;
+	@clearbefore();
+	@clearafter();
+}

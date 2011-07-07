@@ -1,6 +1,6 @@
 <?php
 
-$config = Foomo\Wordpress\Module::getConfig();
+$config = \Foomo\Wordpress\Module::getSiteConfig();
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */

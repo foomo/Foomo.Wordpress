@@ -69,24 +69,24 @@ class Module extends \Foomo\Modules\ModuleBase
 	{
 		return array(
 			\Foomo\Modules\Resource\Module::getResource('Foomo', self::VERSION),
-			\Foomo\Modules\Resource\Config::getResource(self::NAME, 'Foomo.Wordpress.config'),
+			\Foomo\Modules\Resource\Config::getResource((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, Site\Config::NAME),
 		);
 	}
 
 	/**
-	 * @return string
+	 * @return Foomo\Wordpress\DomainConfig
 	 */
-	public static function getPluginsPath()
+	public static function getSiteConfig()
 	{
-		return self::getHtdocsPath('plugins');
+		return \Foomo\Config::getConf((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, Site\Config::NAME);
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getPluginsDir()
+	public static function getWordpressDir()
 	{
-		return self::getHtdocsDir('plugins');
+		return self::getHtdocsDir('content');
 	}
 
 	/**
@@ -100,16 +100,32 @@ class Module extends \Foomo\Modules\ModuleBase
 	/**
 	 * @return string
 	 */
-	public static function getWordpressDir()
+	public static function getPluginsDir()
 	{
-		return self::getHtdocsDir('content');
+		return self::getHtdocsDir('plugins');
 	}
 
 	/**
-	 * @return Foomo\Wordpress\DomainConfig
+	 * @return string
 	 */
-	public static function getConfig()
+	public static function getPluginsPath()
 	{
-		return \Foomo\Config::getConf(self::NAME, 'Foomo.Wordpress.config');
+		return self::getHtdocsPath('plugins');
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getThemesDir()
+	{
+		return self::getHtdocsDir('themes');
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getThemesPath()
+	{
+		return self::getHtdocsPath('themes');
 	}
 }

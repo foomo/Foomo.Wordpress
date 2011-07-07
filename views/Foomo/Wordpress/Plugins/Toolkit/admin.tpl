@@ -10,7 +10,7 @@
 	<table class="widefat">
 		<thead>
 			<tr>
-				<th><? _e('Disable Updates', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
+				<th><? _e('Admin Settings', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -20,15 +20,43 @@
 						<table class="form-table">
 							<tr>
 								<th scope="row"><? _e('Disable Core Updates', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
-								<td><input type="checkbox" name="coreUpdatesDisabled"<?= ($model['options']['coreUpdatesDisabled']) ? ' checked="checked"' : ''; ?>/></td>
+								<td><input type="checkbox" name="disableCoreUpdates"<?= ($model['options']['disableCoreUpdates']) ? ' checked="checked"' : ''; ?>/></td>
 							</tr>
 							<tr>
 								<th scope="row"><? _e('Disable Plugin Updates', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
-								<td><input type="checkbox" name="pluginUpdatesDisabled"<?= ($model['options']['pluginUpdatesDisabled']) ? ' checked="checked"' : ''; ?>/></td>
+								<td><input type="checkbox" name="disablePluginUpdates"<?= ($model['options']['disablePluginUpdates']) ? ' checked="checked"' : ''; ?>/></td>
 							</tr>
 						</table>
 						<br/>
-						<p><input type="submit" name="disableUpdatesSubmit" class="button" value="<? _e('Save Changes') ?>"/></p>
+						<p><input type="submit" name="adminSettingsSubmit" class="button" value="<? _e('Save Changes') ?>"/></p>
+					</form>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="widefat">
+		<thead>
+			<tr>
+				<th><? _e('Theming Settings', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<form method="post" action="">
+						<table class="form-table">
+							<tr>
+								<th scope="row"><? _e('Enable Twig', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
+								<td><input type="checkbox" name="enableTwig"<?= ($model['options']['enableTwig']) ? ' checked="checked"' : ''; ?>/></td>
+							</tr>
+							<tr>
+								<th scope="row"><? _e('Enable Shortcodes', \Foomo\Wordpress\Plugins\Toolkit::ID); ?></th>
+								<td><input type="checkbox" name="enableShortcodes"<?= ($model['options']['enableShortcodes']) ? ' checked="checked"' : ''; ?>/></td>
+							</tr>
+						</table>
+						<br/>
+						<p><input type="submit" name="themingSettingsSubmit" class="button" value="<? _e('Save Changes') ?>"/></p>
 					</form>
 				</td>
 			</tr>

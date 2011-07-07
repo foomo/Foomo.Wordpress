@@ -1,42 +1,12 @@
 To implement Wordpress into you module please follow these steps:
 
-++ Create your module
+++ Modules
 
-Use the toolbox to do so.
-
-++ Resources
-
-Add the following resources to you module and create them:
-
-<geshi type="php">
-public static function getResources()
-{
-	return array(
-		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'tmp' . DIRECTORY_SEPARATOR . self::NAME),
-		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'modules' . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'db'),
-		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'htdocs' . DIRECTORY_SEPARATOR . 'modulesVar' . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'cache'),
-		\Foomo\Modules\Resource\Fs::getVarResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, 'htdocs' . DIRECTORY_SEPARATOR . 'modulesVar' . DIRECTORY_SEPARATOR . self::NAME . DIRECTORY_SEPARATOR . 'uploads'),
-		\Foomo\Modules\Resource\Fs::getAbsoluteResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'themes'),
-		\Foomo\Modules\Resource\Fs::getAbsoluteResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'plugins'),
-	);
-}
-</geshi>
-
-++ Symlinks
-
-Add a theme symlink
-
-<geshi type="bash">
-cd /path/to/modules/<MODULE_NAME>/htdocs/content/themes
-ln -s ../../../../Foomo.Wordpress/htdocs/content/wp-content/themes/twentyten
-</geshi>
-
-Add plugin symlink
-
-<geshi type="bash">
-cd /path/to/modules/<MODULE_NAME>/htdocs/content/plugins
-ln -s ../../../../Foomo.Wordpress/htdocs/plugins/foomo-toolkit
-</geshi>
+* Create your module (Tip: Use the toolbox to do so.)
+* Extend \Foomo\Worpdress\Modules\ModuleBase to get some nice folder/paths shortcuts
+* Remove "public static function getResources()" if it's there or call parent method
+* Enable your module and Foomo.Wordpress if not already enabled
+* Create missing resources
 
 ++ Apache rewirte rules
 
@@ -44,6 +14,7 @@ Add a .htaccess file to your document root or edit your vhost conf
 
 <geshi type="apache">
 
+# admin shortcut
 Redirect /admin /<ROOT_HTTP>/modules/Foomo.Wordpress/content/wp-admin/
 
 # BEGIN WordPress
@@ -68,7 +39,7 @@ Prepare a database and update the "Foomo.Wordpress.config" config.
 
 Add a wp-config.php file to your document root and fill out the
 
-* secret section
+* secret section (@see https://api.wordpress.org/secret-key/1.1/salt/)
 * and maybe set the $default_url to your domain (i.e. www.foomo.org)
 
 <geshi type="php">
@@ -126,23 +97,17 @@ define('WP_ALLOW_MULTISITE', false);
 $default_url = 'http://' . $_SERVER['HTTP_HOST'];
 $base_url = 'http://' . $_SERVER['HTTP_HOST'];
 
-$dir = dirname(dirname(__FILE__));
-$base_dir = $dir . '/htdocs';
-$content_url = $base_url . '/content';
-$content_dir = $base_dir . '/content';
-$tmp_dir = $dir . '/tmp';
-
 # site url
 define('WP_HOME', $default_url);
 define('WP_SITEURL', $base_url . \Foomo\Wordpress\Module::getWordpressPath());
 
 # content settings
-define('WP_CONTENT_DIR', \Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . <MODULE_NAME> . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content');
-define('WP_CONTENT_URL', $base_url . DIRECTORY_SEPARATOR . 'content');
+define('WP_CONTENT_DIR', \<MODULE_NAMESPACE>\Site\Module::getContentDir());
+define('WP_CONTENT_URL', $base_url . \<MODULE_NAMESPACE>\Site\Module::getContentPath());
 
 # plugin dir
-define('WP_PLUGIN_DIR', WP_CONTENT_DIR . DIRECTORY_SEPARATOR . 'plugins');
-define('WP_PLUGIN_URL', WP_CONTENT_URL . DIRECTORY_SEPARATOR . 'plugins');
+define('WP_PLUGIN_DIR', \<MODULE_NAMESPACE>\Site\Module::getPluginsDir());
+define('WP_PLUGIN_URL', $base_url . \<MODULE_NAMESPACE>\Site\Module::getPluginsPath());
 </geshi>
 
 ++ Wordpress Setup
@@ -162,5 +127,9 @@ Go to Settings -> Media and set the "Store uploads in this folder" to sth like:
 and the "Full URL path to files" to:
 
 <geshi type="text">
-/foomo/modulesVar/<MODULE_NAME>/uploads
+http://<YOUR_DOMAIN>/foomo/modulesVar/<MODULE_NAME>/uploads
 </geshi>
+
++++ Plugins
+
+Enable Foomo Toolkit Plugin

@@ -40,11 +40,19 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	/**
 	 * @var boolean
 	 */
-	public $coreUpdatesDisabled = false;
+	public $disableCoreUpdates = true;
 	/**
 	 * @var boolean
 	 */
-	public $pluginUpdatesDisabled = false;
+	public $disablePluginUpdates = true;
+	/**
+	 * @var boolean
+	 */
+	public $enableShortcodes = true;
+	/**
+	 * @var boolean
+	 */
+	public $enableTwig = true;
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Protected methods
@@ -72,8 +80,10 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	protected function getOptions()
 	{
 		return array(
-			'coreUpdatesDisabled',
-			'pluginUpdatesDisabled',
+			'enableTwig',
+			'enableShortcodes',
+			'disableCoreUpdates',
+			'disablePluginUpdates',
 		);
 	}
 
@@ -82,7 +92,8 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	 */
 	protected function addHooks()
 	{
-		add_shortcode('foomo-run', array($this, 'foomo_run_shortcode_handler'));
+		if ($this->enableShortcodes) new \Foomo\Wordpress\Shortcodes();
+		if ($this->enableTwig) new \Foomo\Wordpress\Twig();
 	}
 
 	/**
@@ -90,7 +101,7 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	 */
 	protected function addAdminHooks()
 	{
-		add_action('admin_menu', array(&$this, 'admin_menu'));
+		add_action('admin_menu', array($this, 'admin_menu'));
 	}
 
 	/**
@@ -98,8 +109,8 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	 */
 	protected function run()
 	{
-		if ($this->coreUpdatesDisabled)	\Foomo\Wordpress\Utils::disableCoreUpdates();
-		if ($this->coreUpdatesDisabled)	\Foomo\Wordpress\Utils::disablePluginUpdates();
+		if ($this->disableCoreUpdates) \Foomo\Wordpress\Admin::disableCoreUpdates();
+		if ($this->disablePluginUpdates) \Foomo\Wordpress\Admin::disablePluginUpdates();
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -111,7 +122,7 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
      */
 	public function admin_menu()
     {
-		add_options_page(self::NAME, 'Foomo Toolkit', 'manage_options', self::ID, array(&$this, 'add_options_page'));
+		add_options_page(self::NAME, 'Foomo Toolkit', 'manage_options', self::ID, array($this, 'add_options_page'));
 	}
 
     /**
@@ -123,9 +134,15 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 
 		# save data
 		switch (true) {
-			case (isset($_POST['disableUpdatesSubmit'])):
-				$this->coreUpdatesDisabled = (isset($_POST['coreUpdatesDisabled']) && $_POST['coreUpdatesDisabled'] = 'on');
-				$this->pluginUpdatesDisabled = (isset($_POST['pluginUpdatesDisabled']) && $_POST['pluginUpdatesDisabled'] = 'on');
+			case (isset($_POST['adminSettingsSubmit'])):
+				$this->disableCoreUpdates = (isset($_POST['disableCoreUpdates']) && $_POST['disableCoreUpdates'] = 'on');
+				$this->disablePluginUpdates = (isset($_POST['disablePluginUpdates']) && $_POST['disablePluginUpdates'] = 'on');
+				$this->saveOptions();
+				$params['message'] = __('Options Saved.', self::NAME);
+				break;
+			case (isset($_POST['themingSettingsSubmit'])):
+				$this->enableTwig = (isset($_POST['enableTwig']) && $_POST['enableTwig'] = 'on');
+				$this->enableShortcodes = (isset($_POST['enableShortcodes']) && $_POST['enableShortcodes'] = 'on');
 				$this->saveOptions();
 				$params['message'] = __('Options Saved.', self::NAME);
 				break;
@@ -136,46 +153,5 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 
 		# render view
 		echo $this->renderView('admin', $params);
-	}
-
-	/**
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public function foomo_run_shortcode_handler($atts, $content=null, $code="")
-	{
-		global $post;
-		extract(shortcode_atts(array('app' => null), $atts));
-
-		if (is_null($app)) return null;
-
-		if (!is_null($content)) {
-			# read content
-			$json = stripslashes(\Foomo\Wordpress\Utils::decodeHtmlEntities($content));
-			$content = json_decode($json, true);
-			if (is_null($content)) trigger_error('Could not decode ' . $content, E_USER_WARNING);
-
-			# get reflection
-			$appClass = new \ReflectionClass($app);
-			$method = $appClass->getMethod('__construct');
-			$methodParms = $method->getParameters();
-
-			# set parameters
-			if (count($methodParms) > 0) {
-				# order parms
-				$appParams = array();
-				foreach ($methodParms as $methodParm) {
-					$appParams[] = (isset($content[$methodParm->name])) ? $content[$methodParm->name] : null;
-				}
-				# create instance
-				$app = $appClass->newInstanceArgs($appParams);
-			}
-		}
-
-		$baseUrl = str_replace(home_url(), '', get_permalink($post->ID));
-		if (substr($baseUrl, -1) == '/') $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
-
-		return \Foomo\MVC::run($app, $baseUrl . '/?');
 	}
 }

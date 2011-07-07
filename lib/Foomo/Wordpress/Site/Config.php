@@ -1,14 +1,14 @@
 <?php
 
-namespace Foomo\Wordpress;
+namespace Foomo\Wordpress\Site;
 
-class DomainConfig extends \Foomo\Config\AbstractConfig
+class Config extends \Foomo\Config\AbstractConfig
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constants
 	//---------------------------------------------------------------------------------------------
 
-	const NAME = 'Foomo.Wordpress.config';
+	const NAME = 'Foomo.Wordpress.siteConfig';
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Variables

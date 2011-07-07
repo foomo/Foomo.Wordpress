@@ -1,3 +1,3 @@
-+ Update
 + Installation
 + Shortcodes
++ Update
