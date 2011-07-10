@@ -30,121 +30,54 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	// ~ Constants
 	//---------------------------------------------------------------------------------------------
 
-	const ID = 'foomo-toolkit';
-	const NAME = 'Foomo Toolkit Plugin';
+	const ID	= 'foomo-toolkit';
+	const NAME	= 'Foomo Toolkit';
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Variables
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @var boolean
+	 * @var Foomo\Wordpress\Settings\Toolkit
 	 */
-	public $disableCoreUpdates = true;
-	/**
-	 * @var boolean
-	 */
-	public $disablePluginUpdates = true;
-	/**
-	 * @var boolean
-	 */
-	public $enableShortcodes = true;
+	public $settings;
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Protected methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @return string
+	 *
 	 */
-	protected function getId()
+	public function install()
 	{
-		return self::ID;
-	}
-
-	/**
-	 * @return string
-	 */
-	protected function getName()
-	{
-		return self::NAME;
-	}
-
-	/**
-	 * @return string[]
-	 */
-	protected function getOptions()
-	{
-		return array(
-			'enableShortcodes',
-			'disableCoreUpdates',
-			'disablePluginUpdates',
-		);
+		\Foomo\Wordpress\Settings\Toolkit::setDefaults();
 	}
 
 	/**
 	 *
 	 */
-	protected function addHooks()
+	public function uninstall()
 	{
-		if ($this->enableShortcodes) new \Foomo\Wordpress\Shortcodes();
 	}
 
 	/**
 	 *
 	 */
-	protected function addAdminHooks()
+	public function init()
 	{
-		add_action('admin_menu', array($this, 'admin_menu'));
-	}
+		$options = \Foomo\Wordpress\Settings\Toolkit::getOptions();
 
-	/**
-	 *
-	 */
-	protected function run()
-	{
-		if ($this->disableCoreUpdates) \Foomo\Wordpress\Admin::disableCoreUpdates();
-		if ($this->disablePluginUpdates) \Foomo\Wordpress\Admin::disablePluginUpdates();
-	}
+		if ($options['disableCoreUpdates']) \Foomo\Wordpress\Admin::disableCoreUpdates();
+		if ($options['disablePluginUpdates']) \Foomo\Wordpress\Admin::disablePluginUpdates();
 
-	//---------------------------------------------------------------------------------------------
-	// ~ Hooks
-	//---------------------------------------------------------------------------------------------
+		if ($options['enableShortcodeFoomoRun']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::FOOMO_RUN);
+		if ($options['enableShortcodeGithub']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GITHUB);
+		if ($options['enableShortcodeGist']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GIST);
+		if ($options['enableShortcodeGeshi']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GESHI);
 
-    /**
-     * Registeres the menu
-     */
-	public function admin_menu()
-    {
-		add_options_page(self::NAME, 'Foomo Toolkit', 'manage_options', self::ID, array($this, 'add_options_page'));
-	}
-
-    /**
-     * Returns admin menu options
-     */
-	public function add_options_page()
-    {
-		$params = array();
-
-		# save data
-		switch (true) {
-			case (isset($_POST['adminSettingsSubmit'])):
-				$this->disableCoreUpdates = (isset($_POST['disableCoreUpdates']) && $_POST['disableCoreUpdates'] = 'on');
-				$this->disablePluginUpdates = (isset($_POST['disablePluginUpdates']) && $_POST['disablePluginUpdates'] = 'on');
-				$this->saveOptions();
-				$params['message'] = __('Options Saved.', self::NAME);
-				break;
-			case (isset($_POST['themingSettingsSubmit'])):
-				$this->enableShortcodes = (isset($_POST['enableShortcodes']) && $_POST['enableShortcodes'] = 'on');
-				$this->saveOptions();
-				$params['message'] = __('Options Saved.', self::NAME);
-				break;
-		}
-
-		# load options
-		$params['options'] = $this->loadOptions();
-
-		# render view
-		echo $this->renderView('admin', $params);
+		if ($options['enableShortcodeYoutube']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::YOUTUBE);
+		if ($options['enableShortcodeGvideo']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GVIDEO);
+		if ($options['enableShortcodeVimeo']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::VIMEO);
 	}
 }

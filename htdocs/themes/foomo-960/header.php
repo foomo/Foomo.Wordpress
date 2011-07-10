@@ -16,15 +16,3 @@
 <? wp_head(); ?>
 </head>
 <body <? body_class(); ?>>
-<div id="wrapper">
-
-	<? get_template_part('header', 'above'); ?>
-
-	<div id="header">
-		<? get_template_part('header', 'content'); ?>
-	</div>
-
-	<? get_template_part('header', 'below'); ?>
-
-	<div id="main">
-

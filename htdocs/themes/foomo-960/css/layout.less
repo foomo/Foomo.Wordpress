@@ -1,0 +1,77 @@
+
+/* --- elements --------------------------------------------------------------- */
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+html {
+	background-color: @background-color;
+}
+
+
+/* --- container --------------------------------------------------------------- */
+
+#container {
+
+	#content {
+		@grid > @grid(12);
+	}
+
+	&.container-sidebars-1 {
+		#content {
+			@grid > @grid(8);
+		}
+		.aside {
+			@grid > @grid(4);
+		}
+	}
+
+	&.container-sidebars-2 {
+		#content {
+			@grid > @grid(4);
+		}
+		.aside {
+			@grid > @grid(4);
+		}
+	}
+}
+
+/* --- asides ------------------------------------------------------------------ */
+
+.aside {
+
+	ul {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+
+		li.widget {
+			list-style-type: none;
+			margin: 0 0 1.5em 0;
+			padding: 0;
+
+			:last-child {
+				margin: 0;
+			}
+		}
+	}
+
+	&.widget-containers-1 {
+		.widget-container {
+			@grid > @grid(12);
+		}
+	}
+
+	&.widget-containers-2 {
+		.widget-container {
+			@grid > @grid(6);
+		}
+	}
+
+	&.widget-containers-3 {
+		.widget-container {
+			@grid > @grid(4);
+		}
+	}
+}

@@ -36,14 +36,14 @@ abstract class AbstractTheme
 	public function __construct()
 	{
 		$admin = is_admin();
-		$this->addActions($admin);
+		$this->registerHoocks($admin);
 	}
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract methods
 	//---------------------------------------------------------------------------------------------
 
-	abstract function addActions($admin);
+	abstract function registerHoocks($admin);
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public methods
@@ -58,5 +58,30 @@ abstract class AbstractTheme
 		load_theme_textdomain($domain, TEMPLATEPATH . '/languages' );
 		#$locale_file = TEMPLATEPATH . '/languages/' . get_locale() . '.php';
 		#if (is_readable($locale_file)) require_once($locale_file);
+	}
+
+	/**
+	 * @param string $template
+	 * @param mixed $model
+	 * @return string
+	 */
+	protected function renderView($template, $model=null)
+	{
+		$module = \Foomo\Modules\Manager::getModuleByClassName(get_called_class());
+		$template = \Foomo\Config::getModuleDir($module) . '/views/' . str_replace('\\', '/', get_called_class()) . '/' . $template . '.tpl';
+		$view = \Foomo\View::fromFile($template, $model);
+		return $view->render();
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Protected static methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @return string defined constant
+	 */
+	protected static function getConstant($name)
+	{
+		return (!$name = constant(get_called_class() . '::' . $name)) ? str_replace('\\', '.', get_called_class()) : $name;
 	}
 }

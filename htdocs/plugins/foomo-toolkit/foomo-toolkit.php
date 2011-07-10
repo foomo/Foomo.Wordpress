@@ -8,8 +8,4 @@
  * Author URI: http://www.foomo.org/
  */
 
-# define constants
-define('FOOMO_TOOLKIT_PLUGIN_PATH', dirname(__FILE__));
-
-# load plugin
-$foomoToolkitPlugin = new Foomo\Wordpress\Plugins\Toolkit();
+Foomo\Wordpress\Plugins\Toolkit::setup(__FILE__);

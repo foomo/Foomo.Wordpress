@@ -36,7 +36,7 @@ class Foomo960 extends \Foomo\Wordpress\Themes\AbstractTheme
 	// ~ Abstract methods implementations
 	//---------------------------------------------------------------------------------------------
 
-	public function addActions($admin)
+	public function registerHoocks($admin)
 	{
 		add_action('after_setup_theme', array($this, 'after_setup_theme'));
 		add_action('widgets_init', array($this, 'widgets_init'));
@@ -72,11 +72,11 @@ class Foomo960 extends \Foomo\Wordpress\Themes\AbstractTheme
 		#add_editor_style();
 
 		// Make theme available for translation
-		$this->includeTextdomain(self::NAME, TEMPLATEPATH . '/languages');
+		$this->includeTextdomain(self::getConstant('ID'), TEMPLATEPATH . '/languages');
 
 		// This theme uses wp_nav_menu() in one location.
-		register_nav_menus(array('main' => __( 'Main Navigation', 'foomo-960')));
-		register_nav_menus(array('meta' => __( 'Meta Navigation', 'foomo-960')));
+		register_nav_menus(array('main' => __('Main Navigation', self::getConstant('ID'))));
+		register_nav_menus(array('meta' => __('Meta Navigation', self::getConstant('ID'))));
 	}
 
 	/**
@@ -89,53 +89,65 @@ class Foomo960 extends \Foomo\Wordpress\Themes\AbstractTheme
 	 */
 	public function widgets_init()
 	{
-		// before content
+		// before container
 		register_sidebar(array(
-			'id' => 'first-before-content-aside',
-			'name' => __( '1st before Content', 'foomo-960' ),
-			'description' => __( 'First before Content Widget area', 'foomo-960' ),
+			'id' => 'first-before-container-aside',
+			'name' => __('1st before Container', self::getConstant('ID')),
+			'description' => __('First before Container Widget area', self::getConstant('ID')),
 		));
 		register_sidebar(array(
-			'id' => 'second-before-content-aside',
-			'name' => __( '2nd before Content', 'foomo-960' ),
-			'description' => __( 'Second before Content Widget area', 'foomo-960' ),
+			'id' => 'second-before-container-aside',
+			'name' => __('2nd before Container', self::getConstant('ID')),
+			'description' => __('Second before Container Widget area', self::getConstant('ID')),
 		));
 		register_sidebar(array(
-			'id' => 'third-before-content-aside',
-			'name' => __( '3rd before Content', 'foomo-960' ),
-			'description' => __( 'Third before Content Widget area', 'foomo-960' ),
+			'id' => 'third-before-container-aside',
+			'name' => __('3rd before Container', self::getConstant('ID')),
+			'description' => __('Third before Container Widget area', self::getConstant('ID')),
 		));
-		// after content
+		// left of content
 		register_sidebar(array(
-			'id' => 'first-after-content-aside',
-			'name' => __( '1st after Content', 'foomo-960' ),
-			'description' => __( 'First after Content Widget area', 'foomo-960' ),
+			'id' => 'before-content-aside',
+			'name' => __('Left of Content', self::getConstant('ID')),
+			'description' => __('Left of Content Widget area', self::getConstant('ID')),
+		));
+		// right of content
+		register_sidebar(array(
+			'id' => 'after-content-aside',
+			'name' => __('Right of Content', self::getConstant('ID')),
+			'description' => __('Right of Content Widget area', self::getConstant('ID')),
+		));
+		// after container
+		register_sidebar(array(
+			'id' => 'first-after-container-aside',
+			'name' => __('1st after Container', self::getConstant('ID')),
+			'description' => __('First after Container Widget area', self::getConstant('ID')),
 		));
 		register_sidebar(array(
-			'id' => 'second-after-content-aside',
-			'name' => __( '2nd after Content', 'foomo-960' ),
-			'description' => __( 'Second Content Widget area', 'foomo-960' ),
+			'id' => 'second-after-container-aside',
+			'name' => __('2nd after Container', self::getConstant('ID')),
+			'description' => __('Second Container Widget area', self::getConstant('ID')),
 		));
 		register_sidebar(array(
-			'id' => 'third-after-content-aside',
-			'name' => __( '3rd after Content', 'foomo-960' ),
-			'description' => __( 'Third after Content Widget area', 'foomo-960' ),
+			'id' => 'third-after-container-aside',
+			'name' => __('3rd after Container', self::getConstant('ID')),
+			'description' => __('Third after Container Widget area', self::getConstant('ID')),
 		));
-		// footer content
+		// footer
 		register_sidebar(array(
 			'id' => 'first-footer-aside',
-			'name' => __( '1st Footer', 'foomo-960' ),
-			'description' => __( 'First footer Widget area', 'foomo-960' ),
+			'name' => __('1st Footer', self::getConstant('ID')),
+			'description' => __('First footer Widget area', self::getConstant('ID')),
 		));
 		register_sidebar(array(
 			'id' => 'second-footer-aside',
-			'name' => __( '2nd Footer', 'foomo-960' ),
-			'description' => __( 'Second Footer area', 'foomo-960' ),
+			'name' => __('2nd Footer', self::getConstant('ID')),
+			'description' => __('Second Footer area', self::getConstant('ID')),
 		));
 		register_sidebar(array(
 			'id' => 'third-footer-aside',
-			'name' => __( '3rd Footer', 'foomo-960' ),
-			'description' => __( 'Third Footer Widget area', 'foomo-960' ),
+			'name' => __('3rd Footer', self::getConstant('ID')),
+			'description' => __('Third Footer Widget area', self::getConstant('ID')),
 		));
 	}
 }

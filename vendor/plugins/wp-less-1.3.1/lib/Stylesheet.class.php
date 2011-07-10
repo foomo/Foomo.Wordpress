@@ -193,7 +193,7 @@ class WPLessStylesheet
    */
   public function hasToCompile()
   {
-    return $this->is_new || filemtime($this->getSourcePath()) > $this->target_timestamp;
+    return true;//$this->is_new || filemtime($this->getSourcePath()) > $this->target_timestamp;
   }
 
   /**

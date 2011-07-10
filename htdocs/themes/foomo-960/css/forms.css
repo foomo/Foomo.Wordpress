@@ -1,100 +1,87 @@
-/* --------------------------------------------------------------
-
-   forms.css
-   * Sets up some default styling for forms
-   * Gives you classes to enhance your forms
-
-   Usage:
-   * For text fields, use class .title or .text
-   * For inline forms, use .inline (even when using columns)
-
+/* =Fonts
 -------------------------------------------------------------- */
 
-label {
-	font-weight: bold;
+input, textarea {
+	font-family: Georgia, "Bitstream Charter", serif;
 }
-fieldset {
-	padding:1.4em;
-	margin: 0 0 1.5em 0;
-	border: 1px solid #ccc;
+
+input[type=submit] {
+	font-family: "Helvetica Neue", Arial, Helvetica, "Nimbus Sans L", sans-serif;
 }
-legend {
-	font-weight: bold;
-	font-size:1.2em;
-}
-/* Form fields
+
+/* =Global Elements
 -------------------------------------------------------------- */
 
-input[type=text], input[type=password], input.text, input.title, textarea, select {
-	background-color:#fff;
-	border:1px solid #ccc;
-}
-input[type=text]:focus, input[type=password]:focus, input.text:focus, input.title:focus, textarea:focus, select:focus {
-	border-color:#777;
-}
-input[type=text], input[type=password], input.text, input.title, textarea, select {
-	margin:0.5em 0;
-}
-input.text, input.title {
-	width: 300px;
-	padding:5px;
-}
-input.title {
-	font-size:1.5em;
-}
+input,
 textarea {
-	width: 600px;
-	height: 250px;
-	padding:5px;
-        background-color: #f3f3f3;
+	color: #666;
+	font-size: 12px;
+	line-height: 18px;
 }
-input[type=checkbox], input[type=radio], input.checkbox, input.radio {
-	position:relative;
-	top:.25em;
+
+
+input[type="text"],
+textarea {
+	background: #f9f9f9;
+	border: 1px solid #ccc;
+	box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
+	-moz-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
+	-webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.1);
+	padding: 2px;
 }
-form.inline {
-	line-height:3;
-}
-form.inline p {
-	margin-bottom:0;
-}
-#submit, #searchsubmit {
-        padding: 5px;
-        border: solid 1px #ccc;
-        background-color: #f3f3f3;
-}
-#s {
-        margin: 10px 0px 0px 0px;
-}
-/* Success, notice and error boxes
+
+
+
+/* =Content
 -------------------------------------------------------------- */
 
-.error, .notice, .success {
-	padding: .8em;
-	margin-bottom: 1em;
-	border: 2px solid #ddd;
+
+#content input,
+#content textarea {
+	color: #333;
+	font-size: 16px;
+	line-height: 24px;
 }
-.error {
-	background: #FBE3E4;
-	color: #8a1f11;
-	border-color: #FBC2C4;
+.entry-content input {
+	margin: 0 0 24px 0;
 }
-.notice {
-	background: #FFF6BF;
-	color: #514721;
-	border-color: #FFD324;
+.entry-content input.file,
+.entry-content input.button {
+	margin-right: 24px;
 }
-.success {
-	background: #E6EFC2;
-	color: #264409;
-	border-color: #C6D880;
+
+
+/* Comments form */
+input[type=submit] {
+	color: #333;
 }
-.error a {
-	color: #8a1f11;
+#respond label {
+	color: #888;
+	font-size: 12px;
 }
-.notice a {
-	color: #514721;
+#respond input {
+	margin: 0 0 9px;
+	width: 98%;
 }
-.success a {
-	color: #264409;
+#respond textarea {
+	width: 98%;
+}
+#respond .required {
+	color: #ff4b33;
+	font-weight: bold;
+}
+#respond .form-allowed-tags {
+	color: #888;
+	font-size: 12px;
+	line-height: 18px;
+}
+#respond .form-allowed-tags code {
+	font-size: 11px;
+}
+#respond .form-submit {
+	margin: 12px 0;
+}
+#respond .form-submit input {
+	font-size: 14px;
+	width: auto;
 }

@@ -35,7 +35,7 @@ class Admin
 	 */
 	public static function disableCoreUpdates()
 	{
-		add_filter( 'pre_site_transient_update_core', create_function( '$a', "return null;" ) );
+		add_filter('pre_site_transient_update_core', create_function('$a', "return null;"));
 	}
 
 	/**
@@ -43,7 +43,7 @@ class Admin
 	 */
 	public static function disablePluginUpdates()
 	{
-		remove_action( 'load-update-core.php', 'wp_update_plugins' );
-		add_filter( 'pre_site_transient_update_plugins', create_function( '$a', "return null;" ) );
+		remove_action('load-update-core.php', 'wp_update_plugins');
+		add_filter('pre_site_transient_update_plugins', create_function('$a', "return null;"));
 	}
 }
