@@ -1,5 +1,82 @@
 ++ Fomo run
 
 <geshi type="text">
-[foomo_run app="Your\\App\\Name"]
+# full class name
+[foomo_run app="Your\\App\\Name\\Frontend"]
+
+# frontend id
+[foomo_run app="Your.App.Name"]
+
+
+# app constructor parameters (json)
+[foomo_run app="Your.App.Name"]{"name":"value"}[/foomo_run]
+
+
+# or on several lines
+[foomo_run app="Foomo.Todo"]
+{
+"name":"pong"
+}
+[/foomo_run]
+
+</geshi>
+
+
+++ BBCode
+
+<geshi type="text">
+
+[b]bold[/b]
+[i]italic[/i]
+[u]underline[/u]
+[url="http://www.foomo.org"]Google[/url]
+[url="http://www.foomo.org"]
+[url=http://www.foomo.org]
+[url]http://www.foomo.org[/url]
+[img]http://www.foomo.org/image.png[/img]
+[quote]quote[/quote]
+[color=red]red text[/color]
+[s]strike through[/s]
+[center]centered[/center]
+[code]code[/code]
+[size=12]12px text[/size]
+[ol]ordred list[/ol]
+[ul]unordred list[/ul]
+[li]list entry[/li]
+
+</geshi>
+
+
+++ Media
+
+
+<geshi type="text">
+
+[vimeo width="400" height="325" fullscreen="true"]ID[/vimeo]
+[gvideo width="400" height="325" fullscreen="true"]ID[/gvideo]
+[youtube width="400" height="325" fullscreen="true"]ID[/youtube]
+
+</geshi>
+
+
+++ Geshi
+
+
+<geshi type="text">
+
+[geshi lang="php"]
+# your code
+[/vimeo]
+
+</geshi>
+
+
+++ Github
+
+
+<geshi type="text">
+
+[github url="<GITHUB_URL>" ttl="1 day" lang="php"]
+[gist id="<GIST_ID>" ttl="1 day" lang="php"]
+
 </geshi>

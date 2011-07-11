@@ -55,6 +55,7 @@ class Toolkit extends \Foomo\Wordpress\Settings\AbstractSetting
 		$editorSection->addSettingsField('enableShortcodeGithub', __('Enable: github'), array(&$adminSection, 'input_checkbox'));
 		$editorSection->addSettingsField('enableShortcodeGist', __('Enable: gist'), array(&$adminSection, 'input_checkbox'));
 		$editorSection->addSettingsField('enableShortcodeGeshi', __('Enable: geshi'), array(&$adminSection, 'input_checkbox'));
+		$editorSection->addSettingsField('enableShortcodeBbcode', __('Enable: bbcode'), array(&$adminSection, 'input_checkbox'));
 		$editorSection->addSettingsField('enableShortcodeYoutube', __('Enable: youtube'), array(&$adminSection, 'input_checkbox'));
 		$editorSection->addSettingsField('enableShortcodeGvideo', __('Enable: gvideo'), array(&$adminSection, 'input_checkbox'));
 		$editorSection->addSettingsField('enableShortcodeVimeo', __('Enable: vimeo'), array(&$adminSection, 'input_checkbox'));
@@ -75,6 +76,7 @@ class Toolkit extends \Foomo\Wordpress\Settings\AbstractSetting
 		$options['enableShortcodeGithub'] = (isset($input['enableShortcodeGithub']) && $input['enableShortcodeGithub'] == 'on');
 		$options['enableShortcodeGist'] = (isset($input['enableShortcodeGist']) && $input['enableShortcodeGist'] == 'on');
 		$options['enableShortcodeGeshi'] = (isset($input['enableShortcodeGeshi']) && $input['enableShortcodeGeshi'] == 'on');
+		$options['enableShortcodeBbcode'] = (isset($input['enableShortcodeGeshi']) && $input['enableShortcodeGeshi'] == 'on');
 		$options['enableShortcodeYoutube'] = (isset($input['enableShortcodeYoutube']) && $input['enableShortcodeYoutube'] == 'on');
 		$options['enableShortcodeGvideo'] = (isset($input['enableShortcodeGvideo']) && $input['enableShortcodeGvideo'] == 'on');
 		$options['enableShortcodeVimeo'] = (isset($input['enableShortcodeVimeo']) && $input['enableShortcodeVimeo'] == 'on');
@@ -85,6 +87,10 @@ class Toolkit extends \Foomo\Wordpress\Settings\AbstractSetting
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 
+	/**
+	 *
+	 * @return type
+	 */
 	public static function setDefaults()
 	{
 		if (get_option(self::ID) != false) return;
@@ -95,6 +101,7 @@ class Toolkit extends \Foomo\Wordpress\Settings\AbstractSetting
 			'enableShortcodeGithub' => false,
 			'enableShortcodeGist' => false,
 			'enableShortcodeGeshi' => false,
+			'enableShortcodeBbcode' => false,
 			'enableShortcodeYoutube' => false,
 			'enableShortcodeGvideo' => false,
 			'enableShortcodeVimeo' => false,

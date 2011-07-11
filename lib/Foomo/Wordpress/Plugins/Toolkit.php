@@ -66,6 +66,7 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	 */
 	public function init()
 	{
+		\Foomo\Wordpress\Core::setup();
 		$options = \Foomo\Wordpress\Settings\Toolkit::getOptions();
 
 		if ($options['disableCoreUpdates']) \Foomo\Wordpress\Admin::disableCoreUpdates();
@@ -75,6 +76,7 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 		if ($options['enableShortcodeGithub']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GITHUB);
 		if ($options['enableShortcodeGist']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GIST);
 		if ($options['enableShortcodeGeshi']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GESHI);
+		if ($options['enableShortcodeBbcode']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::BBCODE);
 
 		if ($options['enableShortcodeYoutube']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::YOUTUBE);
 		if ($options['enableShortcodeGvideo']) \Foomo\Wordpress\Shortcodes::register(\Foomo\Wordpress\Shortcodes::GVIDEO);
