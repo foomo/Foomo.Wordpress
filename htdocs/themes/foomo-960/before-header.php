@@ -1,1 +1,1 @@
-<div id="before-header"></div>
+<!-- before-header -->

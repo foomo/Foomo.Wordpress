@@ -1,1 +1,1 @@
-<div id="after-footer"></div>
+<!-- after-footer -->

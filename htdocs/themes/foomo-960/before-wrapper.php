@@ -1,1 +1,1 @@
-<div id="before-wrapper"></div>
+<!-- before-wrapper -->

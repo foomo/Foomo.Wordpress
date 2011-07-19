@@ -1,1 +1,1 @@
-<div id="after-header"></div>
+<!-- after-header -->

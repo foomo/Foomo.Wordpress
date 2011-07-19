@@ -1,1 +1,1 @@
-<div id="before-footer"></div>
+<!-- before-footer -->
