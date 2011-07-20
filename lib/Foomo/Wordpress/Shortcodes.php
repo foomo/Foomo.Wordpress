@@ -322,7 +322,6 @@ class Shortcodes
 	 */
 	public static function shortcode_vimeo($atts, $content=null, $code="")
 	{
-		trigger_error($content);
 		extract(shortcode_atts(array('width' => '400', 'height' => '325', 'fullscreen' => 'true'), $atts));
 		if (is_null($content)) return 'No Vimeo Video ID Set';
 		return '

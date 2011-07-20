@@ -84,22 +84,6 @@ class Module extends \Foomo\Modules\ModuleBase
 	/**
 	 * @return string
 	 */
-	public static function getWordpressDir()
-	{
-		return self::getHtdocsDir('content');
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function getWordpressPath()
-	{
-		return self::getHtdocsPath('content');
-	}
-
-	/**
-	 * @return string
-	 */
 	public static function getPluginsDir()
 	{
 		return self::getHtdocsDir('plugins');

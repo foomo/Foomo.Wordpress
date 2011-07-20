@@ -15,17 +15,15 @@ Add a .htaccess file to your document root or edit your vhost conf
 <geshi type="apache">
 
 # admin shortcut
-Redirect /admin /<ROOT_HTTP>/modules/Foomo.Wordpress/content/wp-admin/
-
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteBase /
-    RewriteRule ^$ /<ROOT_HTTP>/modules/Foomo.Wordpress/content/index.php [L]
+    RewriteRule ^$ /wordpress/index.php [L]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
 	RewriteCond %{REQUEST_URI} !\.(jpg|gif|png|jpeg|zip|tar|tgz)$
-    RewriteRule . /<ROOT_HTTP>/modules/Foomo.Wordpress/content/index.php [L]
+    RewriteRule . /wordpress/index.php [L]
 </IfModule>
 # END WordPress
 </geshi>
@@ -99,7 +97,7 @@ $base_url = 'http://' . $_SERVER['HTTP_HOST'];
 
 # site url
 define('WP_HOME', $default_url);
-define('WP_SITEURL', $base_url . \Foomo\Wordpress\Module::getWordpressPath());
+define('WP_SITEURL', $base_url . \<MODULE_NAMESPACE>\Site\Module::getWordpressPath());
 
 # content settings
 define('WP_CONTENT_DIR', \<MODULE_NAMESPACE>\Site\Module::getContentDir());

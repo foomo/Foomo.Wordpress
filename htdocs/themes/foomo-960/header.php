@@ -5,8 +5,8 @@
 <!--[if IE 9 ]>    <html lang="de" dir="ltr" class="no-js ie ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html <? language_attributes(); ?> dir="ltr" class="no-js"> <!--<![endif]-->
 <head>
-<title dir="ltr"><? foomo_get_title() ?></title>
-<meta name="title" content="<? foomo_get_title() ?>"></title>
+<title><? wp_title(''); ?></title>
+<meta name="title" content="<? wp_title(''); ?>"></title>
 <meta charset="<? bloginfo('charset'); ?>" />
 <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" >
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
