@@ -5,4 +5,16 @@
 		-webkit-box-shadow: @attr;
 		box-shadow: @attr;
 	}
+
+	@border-radius(@attr){
+		border-radius: @attr;
+		-webkit-border-radius: @attr;
+		-moz-border-radius: @attr;
+	}
+
+	@background-gradient(@color1, @color2){
+		background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, @color1), color-stop(1, @color2) );
+		background:-moz-linear-gradient( center top, @color1 5%, @color2 100% );
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='@color1', endColorstr='@color2');
+	}
 }

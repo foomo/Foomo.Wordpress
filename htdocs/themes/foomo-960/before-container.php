@@ -1,0 +1,1 @@
+<? if (!is_home()) yoast_breadcrumb('<p id="breadcrumbs">','</p>'); ?>

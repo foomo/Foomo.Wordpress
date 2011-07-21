@@ -141,7 +141,7 @@ class Shortcodes
 
 		$geshi = new \GeSHi(\Foomo\Wordpress\RemoteFile::getFile($url, $ttl), $lang);
 
-		return str_replace(array('<pre class="' . $lang . '"'), array('<pre class="' . implode(' ', $classes) . '"'), $geshi->parse_code());
+		return '<div class="geshiCode">' . $geshi->parse_code() . '</div>';
 	}
 
 	/**
@@ -163,7 +163,7 @@ class Shortcodes
 
 		$geshi = new \GeSHi(\Foomo\Wordpress\RemoteFile::getFile($url, $ttl), $lang);
 
-		return str_replace(array('<pre class="' . $lang . '"'), array('<pre class="' . implode(' ', $classes) . '"'), $geshi->parse_code());
+		return '<div class="geshiCode">' . $geshi->parse_code() . '</div>';
 	}
 
 	/**
@@ -181,11 +181,11 @@ class Shortcodes
 
 		$content = trim($content);
 
-		$classes = array('geshi', 'language-' . $lang);
+		$classes = array('geshiCode', 'language-' . $lang);
 
 		$geshi = new \GeSHi($content, $lang);
 
-		return str_replace(array('<pre class="' . $lang . '"'), array('<pre class="' . implode(' ', $classes) . '"'), $geshi->parse_code());
+		return '<div class="geshiCode">' . $geshi->parse_code() . '</div>';
 	}
 
 	/**
