@@ -92,8 +92,8 @@ define('WP_DEBUG_DISPLAY', false);
 define('WP_ALLOW_MULTISITE', false);
 
 #  base url
-$default_url = 'http://' . $_SERVER['HTTP_HOST'];
-$base_url = 'http://' . $_SERVER['HTTP_HOST'];
+$base_url = \Foomo\Utils::getServerUrl();
+$default_url = \Foomo\Utils::getServerUrl();
 
 # site url
 define('WP_HOME', $default_url);
