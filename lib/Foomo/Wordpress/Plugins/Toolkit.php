@@ -67,6 +67,8 @@ class Toolkit extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	public function init()
 	{
 		\Foomo\Wordpress\Core::setup();
+
+
 		$options = \Foomo\Wordpress\Settings\Toolkit::getOptions();
 
 		if ($options['disableCoreUpdates']) \Foomo\Wordpress\Admin::disableCoreUpdates();

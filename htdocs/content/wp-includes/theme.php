@@ -952,7 +952,7 @@ function get_page_template() {
 	if ( !$pagename && $id > 0 ) {
 		// If a static page is set as the front page, $pagename will not be set. Retrieve it from the queried object
 		$post = get_queried_object();
-		$pagename = $post->post_name;
+		$pagename = (isset($post->post_name)) ? $post->post_name : null;
 	}
 
 	if ( 'default' == $template )

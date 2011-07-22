@@ -27,7 +27,7 @@ namespace Foomo\Wordpress;
 class Core
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Constructor
+	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
@@ -39,7 +39,15 @@ class Core
 		add_filter('the_content', array(__CLASS__, 'wpautop'), 99);
 	}
 
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static internal methods
+	//---------------------------------------------------------------------------------------------
+
+
 	/**
+	 * Calls "no_wpautop_shortcodes" and excludes the given shortcodes from formatting
+	 *
+	 * @internal
 	 * @param string $pee
 	 * @param boolean $br
 	 * @return string
@@ -79,7 +87,7 @@ class Core
 		$pee = $pee . "\n"; // just to make things a little easier, pad the end
 		$pee = preg_replace('|<br />\s*<br />|', "\n\n", $pee);
 		// Space things out a little
-		$allcodes = '(?:' . implode('|', apply_filters('no_wpautop_shortcodes', array('raw'))) . ')';
+		$allcodes = '(?:' . implode('|', apply_filters('no_wpautop_shortcodes', array())) . ')';
 		$allblocks = '(?:table|thead|tfoot|caption|col|colgroup|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|option|form|map|area|blockquote|address|math|style|input|p|h[1-6]|hr|fieldset|legend|section|article|aside|hgroup|header|footer|nav|figure|figcaption|details|menu|summary)';
 
 		$pee = preg_replace('!(\[' . $allcodes . '[^>]*\])!', "\n$1", $pee);
@@ -131,7 +139,18 @@ class Core
 		return $pee;
 	}
 
+	//---------------------------------------------------------------------------------------------
+	// ~ Private static methods
+	//---------------------------------------------------------------------------------------------
 
+	/**
+	 *
+	 * @param string $text
+	 * @param array $stack
+	 * @param array $disabled_elements
+	 * @param string $opening
+	 * @param string $closing
+	 */
 	private static function wpautop_pushpop_element($text, &$stack, $disabled_elements, $opening = '<', $closing = '>')
 	{
 		if (strncmp($opening . '/', $text, 2)) {

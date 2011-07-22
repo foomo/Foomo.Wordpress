@@ -7,7 +7,7 @@
 				<p>Posted by <?php the_author_posts_link(); ?> on <?php the_time('l, F j, Y'); ?></p>
 			</div>
 
-	<?php if (is_archive() || is_search()) : ?>
+	<?php if (is_search()) : ?>
 			<div class="entry-summary">
 				<?php the_excerpt(); ?>
 			</div>
