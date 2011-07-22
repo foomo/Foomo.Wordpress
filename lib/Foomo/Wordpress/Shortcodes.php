@@ -98,7 +98,6 @@ class Shortcodes
 		if (!is_null($content)) {
 			# trim content
 			$content = json_decode(trim($content), true);
-			#return var_export($content, true);
 			if (is_null($content)) trigger_error('Could not decode ' . $content, E_USER_WARNING);
 
 			# get reflection
@@ -121,7 +120,7 @@ class Shortcodes
 		$baseUrl = str_replace(home_url(), '', get_permalink($post->ID));
 		if (substr($baseUrl, -1) == '/') $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
 
-		return \Foomo\MVC::run($app, $baseUrl . '/?');
+		return \Foomo\MVC::run($app, $baseUrl . '/?', false, true);
 	}
 
 	/**
