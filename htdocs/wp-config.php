@@ -42,3 +42,8 @@ if ( !defined('ABSPATH') ) define('ABSPATH', \Foomo\Wordpress\Module::getWordpre
 
 # Sets up WordPress vars and included files.
 require_once(ABSPATH . 'wp-settings.php');
+
+\Foomo\Wordpress::init();
+\Foomo\Wordpress\Admin::init();
+\Foomo\Wordpress\Plugins::init();
+\Foomo\Wordpress\Shortcodes::init();

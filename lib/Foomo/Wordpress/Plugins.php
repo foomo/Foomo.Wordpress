@@ -17,24 +17,31 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress\Plugins;
+namespace Foomo\Wordpress;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Toolkit extends AbstractPlugin
+class Plugins
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Abstract method implementations
+	// ~ Static variables
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 *
+	 * @var array
 	 */
+	private static $classes;
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static methods
+	//---------------------------------------------------------------------------------------------
+
 	public static function init()
 	{
+		self::$classes = \Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Plugins\\AbstractPlugin');
 		self::setupSettings();
 		self::validateSettings();
 	}
@@ -48,13 +55,13 @@ class Toolkit extends AbstractPlugin
 	 */
 	private static function setupSettings()
 	{
-		\Foomo\Wordpress\Admin::addSettingsSection('foomo-general-admin', 'Admin Settings', function(){}, 'foomo');
+		\Foomo\Wordpress\Admin::addSettingsSection('foomo-plugins', 'Enabled Plugins', function(){}, 'foomo-plugins');
 
-		\Foomo\Wordpress\Admin::registerSetting('foomo', 'foomo_disableCoreUpdates');
-		\Foomo\Wordpress\Admin::registerSetting('foomo', 'foomo_disablePluginUpdates');
-
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_disableCoreUpdates', 'Disable Core Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_disablePluginUpdates', 'Disable Plugin Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
+		foreach (self::$classes as $class) {
+			$id = 'foomo_enablePlugin_' . str_replace('\\', '', $class);
+			\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', $id);
+			\Foomo\Wordpress\Admin::addSettingsField($id, substr($class, strrpos($class, '\\') + 1), array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo-plugins', 'foomo-plugins');
+		};
 	}
 
 	/**
@@ -62,14 +69,9 @@ class Toolkit extends AbstractPlugin
 	 */
 	private static function validateSettings()
 	{
-		if (!is_admin()) return;
-		if (get_option('foomo_disableCoreUpdates', false)) {
-			add_filter('pre_site_transient_update_core', create_function('$a', "return null;"));
-		}
-
-		if (get_option('foomo_disablePluginUpdates', false)) {
-			remove_action('load-update-core.php', 'wp_update_plugins');
-			add_filter('pre_site_transient_update_plugins', create_function('$a', "return null;"));
+		foreach (self::$classes as $class) {
+			$id = 'foomo_enablePlugin_' . str_replace('\\', '', $class);
+			if (get_option($id, false)) $class::init();
 		}
 	}
 }

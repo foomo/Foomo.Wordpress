@@ -17,15 +17,40 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress;
+namespace Foomo;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Core
+class Wordpress
 {
+	//---------------------------------------------------------------------------------------------
+	// ~ Static variables
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @var array
+	 */
+	private static $enqueuedScripts = array();
+	/**
+	 * @var array
+	 */
+	private static $enqueuedStyles = array();
+	/**
+	 * @var string
+	 */
+	private static $headerScript = '';
+	/**
+	 * @var string
+	 */
+	private static $prependFooterScript = '';
+	/**
+	 * @var string
+	 */
+	private static $appendFooterScript = '';
+
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
@@ -33,15 +58,79 @@ class Core
 	/**
 	 *
 	 */
-	public static function setup()
+	public static function init()
 	{
+		if (is_admin()) return;
+
+		# add some javascript libs
+		wp_register_script('swfobject', \Foomo\Flash\Module::getHtdocsPath('js') . '/swfobject-2.2.min.js', array(), '2.2', true);
+
+		# add actions
+		add_action('print_head_scripts', array(__CLASS__, 'print_head_scripts'));
+		add_action('wp_print_footer_scripts', array(__CLASS__, 'wp_print_footer_scripts'));
+		add_action('print_footer_scripts', array(__CLASS__, 'print_footer_scripts'));
+
+		# remove/add filters
 		remove_filter('the_content', 'wpautop');
 		add_filter('the_content', array(__CLASS__, 'wpautop'));
+	}
+
+	/**
+	 * @param string $script
+	 */
+	public static function addHeaderScript($script)
+	{
+		self::$headerScript .= $script;
+	}
+
+	/**
+	 * @param string $script
+	 * @param boolean $prepend
+	 */
+	public static function addFooterScript($script, $prepend=false)
+	{
+		if ($prepend) {
+			self::$prependFooterScript .= $script;
+		} else {
+			self::$appendFooterScript .= $script;
+		}
 	}
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static internal methods
 	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @internal
+	 * @return output
+	 */
+	public static function print_head_scripts()
+	{
+		#trigger_error(__FUNCTION__);
+		if (empty(self::$headerScript)) return;
+		echo '<script type="text/javascript">' . PHP_EOL . trim(self::$headerScript) . PHP_EOL . '</script>' . PHP_EOL;
+	}
+	/**
+	 * @internal
+	 * @return output
+	 */
+	public static function wp_print_footer_scripts()
+	{
+		#trigger_error(__FUNCTION__);
+		if (empty(self::$prependFooterScript)) return;
+		echo '<script type="text/javascript">' . PHP_EOL . trim(self::$prependFooterScript) . PHP_EOL . '</script>' . PHP_EOL;
+	}
+
+	/**
+	 * @internal
+	 * @return output
+	 */
+	public static function print_footer_scripts()
+	{
+		#trigger_error(__FUNCTION__);
+		if (empty(self::$appendFooterScript)) return;
+		echo '<script type="text/javascript">' . PHP_EOL . trim(self::$appendFooterScript) . PHP_EOL . '</script>' . PHP_EOL;
+	}
 
 
 	/**

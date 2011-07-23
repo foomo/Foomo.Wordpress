@@ -17,7 +17,7 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress;
+namespace Foomo\Wordpress\Utils;
 
 /**
  * @link www.foomo.org
@@ -43,7 +43,7 @@ class RemoteFile
 	 * @param string $ttl
 	 * @return string
 	 */
-	public static function getFile($url, $ttl='1 day')
+	public static function getFile($url, $ttl='7 day')
 	{
 		$cache_path = \Foomo\Wordpress\Module::getCacheDir('RemoteFile');
 		$cache_file = $cache_path . '/' . md5($url) . '.dat';
@@ -53,7 +53,7 @@ class RemoteFile
 			return file_get_contents($cache_file);
 		}
 
-		trigger_error('Getting remote file: ' . $url);
+		#trigger_error('Getting remote file: ' . $url);
 
 		/* Need to regenerate the cache. First thing to do here is update
 		 * the modification time on the cache file so that no one else

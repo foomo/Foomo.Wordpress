@@ -27,52 +27,29 @@ namespace Foomo\Wordpress;
 class Shortcodes
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Constants
+	// ~ Static variables
 	//---------------------------------------------------------------------------------------------
 
-	const FOOMO_RUN		= 'foomo_run';
-	const GITHUB		= 'github';
-	const GESHI			= 'geshi';
-	const GIST			= 'gist';
-	const BBCODE		= 'bbcode';
-	const GVIDEO		= 'gvideo';
-	const VIMEO			= 'vimeo';
-	const YOUTUBE		= 'youtube';
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Variables
-	//---------------------------------------------------------------------------------------------
-
-	private static $enabled = array();
+	/**
+	 * @var array
+	 */
+	private static $classes;
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 
-	private static $available = array(
-		'foomo_run' => array('foomo_run'),
-		'geshi'		=> array('geshi'),
-		'gist'		=> array('gist'),
-		'github'	=> array('github'),
-		'youtube'	=> array('youtube'),
-		'vimeo'		=> array('vimeo'),
-		'bbcode'	=> array('b', 'i', 'u', 'url', 'img', 'quote', 'color', 's', 'center', 'code', 'size', 'ul', 'ol', 'li'),
-
-	);
-
-	/**
-	 *
-	 */
-	public static function register($shortcode)
+	public static function init()
 	{
-		$shortcode = strtolower($shortcode);
-		if (!isset(self::$available[$shortcode]) || in_array($shortcode, self::$enabled)) return;
-		self::$enabled[] = $shortcode;
-		foreach (self::$available[$shortcode] as $code) add_shortcode($code, array(__CLASS__, 'shortcode_' . $shortcode));
-		if (count(self::$enabled) == 1) {
-			add_filter('no_texturize_shortcodes', array(__CLASS__, 'no_texturize_shortcodes'));
-			add_filter('no_wpautop_shortcodes', array(__CLASS__, 'no_wpautop_shortcodes'));
-		}
+		if (is_admin()) return;
+
+		self::$classes = \Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Shortcodes\\AbstractShortcodes');
+
+		self::setupSettings();
+		self::validateSettings();
+
+		add_filter('no_texturize_shortcodes', array(__CLASS__, '_no_texturize_shortcodes'));
+		add_filter('no_wpautop_shortcodes', array(__CLASS__, '_no_wpautop_shortcodes'));
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -81,265 +58,17 @@ class Shortcodes
 
 	/**
 	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
+	 * @param array $shortcodes
+	 * @return string
 	 */
-	public static function shortcode_foomo_run($atts, $content=null, $code="")
+	public static function _no_texturize_shortcodes($shortcodes)
 	{
-		global $post;
-		extract(shortcode_atts(array('app' => null), $atts));
-
-		if (is_null($app)) return null;
-
-		if (strpos($app, '.') >= 0) $app = str_replace('.', '\\', $app) . '\\Frontend';
-
-
-		if (!is_null($content)) {
-			# trim content
-			$content = json_decode(trim($content), true);
-			if (is_null($content)) trigger_error('Could not decode ' . $content, E_USER_WARNING);
-
-			# get reflection
-			$appClass = new \ReflectionClass($app);
-			$method = $appClass->getMethod('__construct');
-			$methodParms = $method->getParameters();
-
-			# set parameters
-			if (count($methodParms) > 0) {
-				# order parms
-				$appParams = array();
-				foreach ($methodParms as $methodParm) {
-					$appParams[] = (isset($content[$methodParm->name])) ? $content[$methodParm->name] : null;
-				}
-				# create instance
-				$app = $appClass->newInstanceArgs($appParams);
+		foreach (self::$classes as $class) {
+			if (!$class::noTexturize()) continue;
+			foreach ($class::getShortcodes() as $codes) {
+				$shortcodes = array_merge($shortcodes, $codes);
 			}
 		}
-
-		$baseUrl = str_replace(home_url(), '', get_permalink($post->ID));
-		if (substr($baseUrl, -1) == '/') $baseUrl = substr($baseUrl, 0, strlen($baseUrl) - 1);
-
-		return \Foomo\MVC::run($app, $baseUrl . '/?', false, true);
-	}
-
-	/**
-	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public static function shortcode_gist($atts, $content=null, $code="")
-	{
-		global $post;
-		extract(shortcode_atts(array('id' => null, 'ttl' => '1 day', 'lang' => 'php'), $atts));
-
-		if (is_null($id)) return null;
-		$url = 'https://raw.github.com/gist/' . $id . '/';
-
-		$classes = array('geshi', 'remote-file', 'gist', 'language-' . $lang);
-
-		$geshi = new \GeSHi(\Foomo\Wordpress\RemoteFile::getFile($url, $ttl), $lang);
-
-		return '<div class="geshiCode">' . $geshi->parse_code() . '</div>';
-	}
-
-	/**
-	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public static function shortcode_github($atts, $content=null, $code="")
-	{
-		global $post;
-		extract(shortcode_atts(array('url' => null, 'ttl' => '1 day', 'lang' => 'php'), $atts));
-
-		if (is_null($url)) return null;
-
-		$url .= '?raw=true';
-
-		$classes = array('geshi', 'remote-file', 'github', 'language-' . $lang);
-
-		$geshi = new \GeSHi(\Foomo\Wordpress\RemoteFile::getFile($url, $ttl), $lang);
-
-		return '<div class="geshiCode">' . $geshi->parse_code() . '</div>';
-	}
-
-	/**
-	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public static function shortcode_geshi($atts, $content=null, $code="")
-	{
-		global $post;
-		extract(shortcode_atts(array('lang' => 'php'), $atts));
-
-		if (is_null($content)) return null;
-
-		$content = trim($content);
-
-		$classes = array('geshiCode', 'language-' . $lang);
-
-		$geshi = new \GeSHi($content, $lang);
-
-		return '<div class="geshiCode">' . $geshi->parse_code() . '</div>';
-	}
-
-	/**
-	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public static function shortcode_bbcode($atts, $content=null, $code="")
-	{
-		if (is_null($content)) return '';
-		if (isset($atts[0]) && !empty($atts[0])) {
-			if (0 !== preg_match('#=("|\')(.*?)("|\')#', $atts[0], $match)) $atts[0] = $match[2];
-		}
-
-		trigger_error($code);
-
-		switch (strtolower($code)) {
-			case 'b':
-				return '<strong>' . do_shortcode($content) . '</strong>';
-				break;
-			case 'i':
-				return '<em>' . do_shortcode($content) . '</em>';
-				break;
-			case 'u':
-				return '<span style="text-decoration:underline">' . do_shortcode($content) . '</span>';
-				break;
-			case 'url':
-				if (isset($atts[0]) ) {
-					// [url="http://www.google.com/"]Google[/url]
-					$url = $atts[0];
-					$url = implode("",$atts);
-				}
-				if (substr($url,0,1) == '=') {
-					//If it starts with an = start 1 more along [URL=http://..]
-					$suburl = substr ( $url, 1);
-					$text =  $content;
-				} elseif ( substr($url,0,1) !== '"') {
-					//If it starts with an " start at 0 [URL="http://..]
-					$suburl = substr ( $url, 0);
-					$text =  $content;
-				} else {
-					// [url]http://www.google.com/[/url]
-					$url = $text = $content;
-				}
-
-				if (empty($url)) return '';
-				if (empty($text)) $text = $url;
-
-				return '<a href="' . $url . '">' . do_shortcode($text) . '</a>';
-				break;
-			case 'img':
-				return '<img src="' . $content . '" alt="" />';
-				break;
-			case 'quote':
-				return '<blockquote>' . do_shortcode($content) . '</blockquote>';
-				break;
-			case 'color':
-				$attribs = implode("",$atts);
-				$subattribs = substr ($attribs, 1);
-				return '<span style="color:' . $subattribs . '">' . do_shortcode($content) . '</span>';
-				break;
-			case 's':
-				return '<del>' . do_shortcode($content) . '</del>';
-				break;
-			case 'center':
-				return '<center>' . do_shortcode($content) . '</center>';
-				break;
-			case 'code':
-				return '<code>' . do_shortcode($content) . '</code>';
-				break;
-			case 'size':
-				$attribs = implode("",$atts);
-				$subattribs = substr ( $attribs, 1);
-				return '<span style="font-size:' . $subattribs . 'px">' . do_shortcode($content) . '</span>';
-				break;
-			case 'ol':
-				return '<ol>' . do_shortcode($content) . '</ol>';
-				break;
-			case 'ul':
-				return '<ul>' . do_shortcode($content) . '</ul>';
-				break;
-			case 'li':
-				return '<li>' . do_shortcode($content) . '</li>';
-				break;
-		}
-	}
-
-
-	/**
-	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public static function shortcode_youtube($atts, $content=null, $code="")
-	{
-		extract(shortcode_atts(array('width' => '400', 'height' => '325', 'fullscreen' => 'true'), $atts));
-		if (is_null($content)) return 'No YouTube Video ID Set';
-		return '
-			<object width="' . $width . '" height="' . $height . '">
-				<param name="allowfullscreen" value="' . $fullscreen . '"></param>
-				<param name="movie" value="http://www.youtube.com/v/' .$content . '"></param>
-				<embed src="http://www.youtube.com/v/' . $content . '" type="application/x-shockwave-flash" width="' . $width .'" height="' . $height . '" allowfullscreen="' . $fullscreen . '"></embed>
-			</object>
-		';
-	}
-
-	/**
-	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public static function shortcode_gvideo($atts, $content=null, $code="")
-	{
-		extract(shortcode_atts(array('width' => '400', 'height' => '325', 'fullscreen' => 'true'), $atts));
-		if (is_null($content)) return 'No Google Video ID Set';
-		return '
-			<object width="' . $width . '" height="' . $height . '">
-				<param name="allowfullscreen" value="' . $fullscreen . '"></param>
-				<param name="movie" value="http://video.google.com/googleplayer.swf?docId=' .$content . '"></param>
-				<embed src="http://video.google.com/googleplayer.swf?docId=' . $content . '" type="application/x-shockwave-flash" width="' . $width .'" height="' . $height . '" allowfullscreen="' . $fullscreen . '"></embed>
-			</object>
-		';
-	}
-
-	/**
-	 * @internal
-	 * @param array $atts
-	 * @param string $content
-	 * @param type $code
-	 */
-	public static function shortcode_vimeo($atts, $content=null, $code="")
-	{
-		extract(shortcode_atts(array('width' => '400', 'height' => '325', 'fullscreen' => 'true'), $atts));
-		if (is_null($content)) return 'No Vimeo Video ID Set';
-		return '
-			<object width="' . $width . '" height="' . $height . '">
-				<param name="allowfullscreen" value="' . $fullscreen . '"></param>
-				<param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=' . $content . '&server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&color=ff9933&fullscreen=1"></param>
-				<embed src="http://vimeo.com/moogaloop.swf?clip_id=' . $content . '&server=vimeo.com&show_title=1&show_byline=1&show_portrait=0&color=ff9933&fullscreen=1" type="application/x-shockwave-flash" width="' . $width .'" height="' . $height . '" allowfullscreen="' . $fullscreen . '"></embed>
-			</object>
-		';
-	}
-
-	/**
-	 * @internal
-	 * @param array $shortcodes
-	 * @return string
-	 */
-	public static function no_texturize_shortcodes($shortcodes)
-	{
-		foreach (self::$enabled as $enabled) $shortcodes = array_merge($shortcodes, self::$available[$enabled]);
 		return $shortcodes;
 	}
 
@@ -348,9 +77,60 @@ class Shortcodes
 	 * @param array $shortcodes
 	 * @return string
 	 */
-	public static function no_wpautop_shortcodes($shortcodes)
+	public static function _no_wpautop_shortcodes($shortcodes)
 	{
-		foreach (self::$enabled as $enabled) $shortcodes = array_merge($shortcodes, self::$available[$enabled]);
+		foreach (self::$classes as $class) {
+			if (!$class::noWpautop()) continue;
+			foreach ($class::getShortcodes() as $codes) {
+				$shortcodes = array_merge($shortcodes, $codes);
+			}
+		}
 		return $shortcodes;
+	}
+
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Private satatic methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 *
+	 */
+	private static function setupSettings()
+	{
+		\Foomo\Wordpress\Admin::addSettingsSection('foomo-shortcodes', 'Enabled Shortcodes', function(){}, 'foomo-shortcodes');
+
+		foreach (self::$classes as $class) {
+			$id = 'foomo_enableShortcodes_' . str_replace('\\', '', $class);
+			$args = array();
+			$args['description'] = array();
+			$shortcodes = $class::getShortcodes();
+			foreach ($shortcodes as $method => $codes) {
+				$args['description'] = array_merge($args['description'], $codes);
+			}
+			$args['description'] = implode(', ', $args['description']);
+			\Foomo\Wordpress\Admin::registerSetting('foomo-shortcodes', $id);
+			\Foomo\Wordpress\Admin::addSettingsField($id, substr($class, strrpos($class, '\\') + 1), array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo-shortcodes', 'foomo-shortcodes', $args);
+		};
+	}
+
+	/**
+	 *
+	 */
+	private static function validateSettings()
+	{
+		foreach (self::$classes as $class) {
+			$id = 'foomo_enableShortcodes_' . str_replace('\\', '', $class);
+			if (get_option($id, false)) {
+				$shortcodes = $class::getShortcodes();
+				$class::enqueueScripts();
+				$class::enqueueStyles();
+				foreach ($shortcodes as $method => $codes) {
+					foreach ($codes as $code) {
+						add_shortcode($code, array($class, $method));
+					}
+				}
+			}
+		}
 	}
 }

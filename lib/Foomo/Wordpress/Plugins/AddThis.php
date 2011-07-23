@@ -24,7 +24,7 @@ namespace Foomo\Wordpress\Plugins;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Toolkit extends AbstractPlugin
+class AddThis extends AbstractPlugin
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract method implementations
@@ -35,26 +35,43 @@ class Toolkit extends AbstractPlugin
 	 */
 	public static function init()
 	{
+		self::initSettings();
 		self::setupSettings();
 		self::validateSettings();
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getHtml()
+	{
+		return get_option('foomo_addthis_html', '');
 	}
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Private satatic methods
 	//---------------------------------------------------------------------------------------------
 
+	private static function initSettings()
+	{
+		if (!is_admin()) return;
+		if (get_option('foomo_addthis_config', '') == '') update_option('foomo_addthis_config', '{"data_track_clickback":true}');
+	}
+
 	/**
 	 *
 	 */
 	private static function setupSettings()
 	{
-		\Foomo\Wordpress\Admin::addSettingsSection('foomo-general-admin', 'Admin Settings', function(){}, 'foomo');
+		\Foomo\Wordpress\Admin::addSettingsSection('foomo-plugins-addthis', 'AddThis Settings', function(){}, 'foomo-plugins');
 
-		\Foomo\Wordpress\Admin::registerSetting('foomo', 'foomo_disableCoreUpdates');
-		\Foomo\Wordpress\Admin::registerSetting('foomo', 'foomo_disablePluginUpdates');
+		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_addthis_html');
+		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_addthis_script');
+		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_addthis_profileId');
 
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_disableCoreUpdates', 'Disable Core Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_disablePluginUpdates', 'Disable Plugin Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
+		\Foomo\Wordpress\Admin::addSettingsField('foomo_addthis_profileId', 'Profile ID', array('Foomo\\Wordpress\\Settings\\Fields', 'text'), 'foomo-plugins', 'foomo-plugins-addthis');
+		\Foomo\Wordpress\Admin::addSettingsField('foomo_addthis_config', 'Config (JSON)', array('Foomo\\Wordpress\\Settings\\Fields', 'textarea'), 'foomo-plugins', 'foomo-plugins-addthis');
+		\Foomo\Wordpress\Admin::addSettingsField('foomo_addthis_html', 'HTML Tags', array('Foomo\\Wordpress\\Settings\\Fields', 'textarea'), 'foomo-plugins', 'foomo-plugins-addthis');
 	}
 
 	/**
@@ -62,14 +79,7 @@ class Toolkit extends AbstractPlugin
 	 */
 	private static function validateSettings()
 	{
-		if (!is_admin()) return;
-		if (get_option('foomo_disableCoreUpdates', false)) {
-			add_filter('pre_site_transient_update_core', create_function('$a', "return null;"));
-		}
-
-		if (get_option('foomo_disablePluginUpdates', false)) {
-			remove_action('load-update-core.php', 'wp_update_plugins');
-			add_filter('pre_site_transient_update_plugins', create_function('$a', "return null;"));
-		}
+		wp_enqueue_script('addthis', 'http://s7.addthis.com/js/250/addthis_widget.js#pubid=' . get_option('foomo_addthis_profileId', ''), array(), false, true);
+		\Foomo\Wordpress::addFooterScript('var addthis_config = ' . get_option('foomo_addthis_config') . ';', true);
 	}
 }

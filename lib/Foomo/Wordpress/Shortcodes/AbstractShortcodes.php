@@ -17,59 +17,53 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress\Plugins;
+namespace Foomo\Wordpress\Shortcodes;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Toolkit extends AbstractPlugin
+abstract class AbstractShortcodes
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Abstract method implementations
+	// ~ Abstract methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 *
+	 * @return array method_name => [shorcodes]
 	 */
-	public static function init()
+	abstract static function getShortcodes();
+	/**
+	 * @see wp_enqueue_script
+	 */
+	abstract static function enqueueScripts();
+	/**
+	 * @see wp_enqueue_style
+	 */
+	abstract static function enqueueStyles();
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Public methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * Include shortcodes in no_texturize_shortcodes
+	 *
+	 * @return boolean
+	 */
+	public static function noTexturize()
 	{
-		self::setupSettings();
-		self::validateSettings();
+		return true;
 	}
 
-	//---------------------------------------------------------------------------------------------
-	// ~ Private satatic methods
-	//---------------------------------------------------------------------------------------------
-
 	/**
+	 * Include shortcodes in no_wpautop_shortcodes
 	 *
+	 * @return boolean
 	 */
-	private static function setupSettings()
+	public static function noWpautop()
 	{
-		\Foomo\Wordpress\Admin::addSettingsSection('foomo-general-admin', 'Admin Settings', function(){}, 'foomo');
-
-		\Foomo\Wordpress\Admin::registerSetting('foomo', 'foomo_disableCoreUpdates');
-		\Foomo\Wordpress\Admin::registerSetting('foomo', 'foomo_disablePluginUpdates');
-
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_disableCoreUpdates', 'Disable Core Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_disablePluginUpdates', 'Disable Plugin Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
-	}
-
-	/**
-	 *
-	 */
-	private static function validateSettings()
-	{
-		if (!is_admin()) return;
-		if (get_option('foomo_disableCoreUpdates', false)) {
-			add_filter('pre_site_transient_update_core', create_function('$a', "return null;"));
-		}
-
-		if (get_option('foomo_disablePluginUpdates', false)) {
-			remove_action('load-update-core.php', 'wp_update_plugins');
-			add_filter('pre_site_transient_update_plugins', create_function('$a', "return null;"));
-		}
+		return true;
 	}
 }
