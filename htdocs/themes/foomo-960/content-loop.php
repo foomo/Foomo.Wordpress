@@ -1,7 +1,7 @@
 <?php while (have_posts()) : the_post(); ?>
 
 		<div id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf(esc_attr__('Permalink to %s', 'foomo960'), the_title_attribute('echo=0')); ?>" rel="bookmark"><?php the_title(); ?></a></h2>
+			<h2 class="entry-title"><a href="<?php the_permalink(); ?>" title="<?php printf(esc_attr__('Permalink to %s', 'foomo960'), the_title_attribute('echo=0')); ?>"><?php the_title(); ?></a></h2>
 
 			<div class="entry-meta">
 				<p>Posted by <?php the_author_posts_link(); ?> on <?php the_time('l, F j, Y'); ?></p>

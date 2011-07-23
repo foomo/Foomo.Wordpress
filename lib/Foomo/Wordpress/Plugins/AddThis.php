@@ -66,7 +66,7 @@ class AddThis extends AbstractPlugin
 		\Foomo\Wordpress\Admin::addSettingsSection('foomo-plugins-addthis', 'AddThis Settings', function(){}, 'foomo-plugins');
 
 		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_addthis_html');
-		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_addthis_script');
+		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_addthis_config');
 		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_addthis_profileId');
 
 		\Foomo\Wordpress\Admin::addSettingsField('foomo_addthis_profileId', 'Profile ID', array('Foomo\\Wordpress\\Settings\\Fields', 'text'), 'foomo-plugins', 'foomo-plugins-addthis');

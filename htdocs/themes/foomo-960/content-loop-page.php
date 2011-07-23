@@ -12,4 +12,5 @@
 				</div>
 			</div>
 
+			<?php comments_template('', true); ?>
 <? endwhile; ?>

@@ -37,7 +37,6 @@ class Fields
 	{
 		$id = $args['id'];
 		$option = get_option($id);
-		trigger_error($id . ' -> ' . $option);
 		$description = (isset($args['description'])) ? $args['description'] : '';
 		echo "
 			<fieldset>
