@@ -41,11 +41,12 @@ class Shortcodes
 
 	public static function init()
 	{
-		if (is_admin()) return;
-
 		self::$classes = \Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Shortcodes\\AbstractShortcodes');
 
 		self::setupSettings();
+
+		if (is_admin()) return;
+
 		self::validateSettings();
 
 		add_filter('no_texturize_shortcodes', array(__CLASS__, '_no_texturize_shortcodes'));
@@ -98,7 +99,7 @@ class Shortcodes
 	 */
 	private static function setupSettings()
 	{
-		\Foomo\Wordpress\Admin::addSettingsSection('foomo-shortcodes', 'Enabled Shortcodes', function(){}, 'foomo-shortcodes');
+		\Foomo\Wordpress\Admin::addSettingsSection('foomo-shortcodes-enabled', 'Enabled Shortcodes', function(){}, 'foomo-shortcodes');
 
 		foreach (self::$classes as $class) {
 			$id = 'foomo_enableShortcodes_' . str_replace('\\', '', $class);
@@ -110,7 +111,7 @@ class Shortcodes
 			}
 			$args['description'] = implode(', ', $args['description']);
 			\Foomo\Wordpress\Admin::registerSetting('foomo-shortcodes', $id);
-			\Foomo\Wordpress\Admin::addSettingsField($id, substr($class, strrpos($class, '\\') + 1), array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo-shortcodes', 'foomo-shortcodes', $args);
+			\Foomo\Wordpress\Admin::addSettingsField($id, substr($class, strrpos($class, '\\') + 1), array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo-shortcodes', 'foomo-shortcodes-enabled', $args);
 		};
 	}
 

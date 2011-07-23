@@ -55,8 +55,6 @@ class Toolkit extends AbstractPlugin
 
 		\Foomo\Wordpress\Admin::addSettingsField('foomo_disableCoreUpdates', 'Disable Core Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
 		\Foomo\Wordpress\Admin::addSettingsField('foomo_disablePluginUpdates', 'Disable Plugin Updates', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
-
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_disableCommentsOnPages', 'Disable Comments on Pages', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo', 'foomo-general-admin');
 	}
 
 	/**
@@ -74,21 +72,5 @@ class Toolkit extends AbstractPlugin
 			remove_action('load-update-core.php', 'wp_update_plugins');
 			add_filter('pre_site_transient_update_plugins', create_function('$a', "return null;"));
 		}
-
-		add_filter('comments_open', array(__CLASS__, '_comments_open'), 10, 2);
-		add_filter('comments_template', array(__CLASS__, '_comments_template'), 10, 1);
-
 	}
-
-	public static function _comments_open($open, $post_id=null)
-	{
-		$post = get_post($post_id);
-		return $open && $post->post_type !== 'page';
-	}
-
-	public static function _comments_template($file)
-	{
-		return is_page() ? dirname(__FILE__).'/empty' : $file;
-	}
-
 }

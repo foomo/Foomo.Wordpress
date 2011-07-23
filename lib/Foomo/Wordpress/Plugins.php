@@ -55,12 +55,12 @@ class Plugins
 	 */
 	private static function setupSettings()
 	{
-		\Foomo\Wordpress\Admin::addSettingsSection('foomo-plugins', 'Enabled Plugins', function(){}, 'foomo-plugins');
+		\Foomo\Wordpress\Admin::addSettingsSection('foomo-plugins-enabled', 'Enabled Plugins', function(){}, 'foomo-plugins');
 
 		foreach (self::$classes as $class) {
 			$id = 'foomo_enablePlugin_' . str_replace('\\', '', $class);
 			\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', $id);
-			\Foomo\Wordpress\Admin::addSettingsField($id, substr($class, strrpos($class, '\\') + 1), array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo-plugins', 'foomo-plugins');
+			\Foomo\Wordpress\Admin::addSettingsField($id, substr($class, strrpos($class, '\\') + 1), array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo-plugins', 'foomo-plugins-enabled');
 		};
 	}
 
