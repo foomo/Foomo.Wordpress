@@ -90,9 +90,9 @@ class Wordpress
 	public static function addFooterScript($script, $prepend=false)
 	{
 		if ($prepend) {
-			self::$prependFooterScript .= $script;
+			self::$prependFooterScript .= $script . PHP_EOL;
 		} else {
-			self::$appendFooterScript .= $script;
+			self::$appendFooterScript .= $script . PHP_EOL;
 		}
 	}
 

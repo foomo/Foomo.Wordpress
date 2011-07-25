@@ -1,3 +1,4 @@
+	<? if (\Foomo\Wordpress\Themes\Foomo960::$debug) echo '<!-- content-header -->' ?>
 	<div id="header">
 		<? $heading_tag = (is_home() || is_front_page() ) ? 'h1' : 'div'; ?>
 		<<?= $heading_tag; ?> id="site-title">

@@ -1,1 +1,1 @@
-<!-- before-footer -->
+<? if (\Foomo\Wordpress\Themes\Foomo960::$debug) echo '<!-- before-footer -->' ?>

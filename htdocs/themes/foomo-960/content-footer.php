@@ -1,3 +1,4 @@
+		<? if (\Foomo\Wordpress\Themes\Foomo960::$debug) echo '<!-- content-footer -->' ?>
 		<div id="footer">
 			<? get_sidebar('footer') ?>
 

@@ -1,1 +1,1 @@
-<? if (!is_home()) yoast_breadcrumb('<p id="breadcrumbs">','</p>'); ?>
+<? if (\Foomo\Wordpress\Themes\Foomo960::$debug) echo '<!-- before-container -->' ?>

@@ -33,11 +33,18 @@ class Foomo960 extends \Foomo\Wordpress\Themes\AbstractTheme
 	const NAME = 'foomo-960';
 
 	//---------------------------------------------------------------------------------------------
+	// ~ Variables
+	//---------------------------------------------------------------------------------------------
+
+	public static $debug = false;
+
+	//---------------------------------------------------------------------------------------------
 	// ~ Abstract methods implementations
 	//---------------------------------------------------------------------------------------------
 
 	public function registerHoocks($admin)
 	{
+		add_filter('show_recent_comments_widget_style', '__return_false');
 		add_action('after_setup_theme', array($this, 'after_setup_theme'));
 		add_action('widgets_init', array($this, 'widgets_init'));
 	}

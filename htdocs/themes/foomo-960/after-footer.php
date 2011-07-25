@@ -1,1 +1,1 @@
-<!-- after-footer -->
+<? if (\Foomo\Wordpress\Themes\Foomo960::$debug) echo '<!-- after-footer -->' ?>

@@ -1,3 +1,4 @@
+<? if (\Foomo\Wordpress\Themes\Foomo960::$debug) echo '<!-- content-loop-page -->' ?>
 <? while (have_posts()) : the_post(); ?>
 
 			<div id="post-<? the_ID(); ?>" <? post_class(); ?>>
