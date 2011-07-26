@@ -17,68 +17,61 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress\Themes;
+namespace Foomo\Wordpress\Widgets;
+
+// this is a autoloader hack
+include_once(\Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . \Foomo\Wordpress\Module::NAME . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'wp-includes' . DIRECTORY_SEPARATOR . 'widgets.php');
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-abstract class AbstractTheme
+abstract class AbstractWidget extends \WP_Widget
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constructor
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 *
+	 * @param string $id_base Optional Base ID for the widget, lower case,
+	 * if left empty a portion of the widget's class name will be used. Has to be unique.
+	 * @param string $name Name for the widget displayed on the configuration page.
+	 * @param array $widget_options Optional Passed to wp_register_sidebar_widget()
+	 *	 - description: shown on the configuration page
+	 *	 - classname
+	 * @param array $control_options Optional Passed to wp_register_widget_control()
+	 *	 - width: required if more than 250px
+	 *	 - height: currently not used but may be needed in the future
 	 */
-	public function __construct()
+	public function __construct($id_base=false, $name, $widget_options=array(), $control_options=array())
 	{
-		$admin = is_admin();
-		$this->registerHoocks($admin);
+		parent::__construct($id_base, $name, $widget_options, $control_options);
 	}
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract methods
 	//---------------------------------------------------------------------------------------------
 
-	abstract function registerHoocks($admin);
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Public methods
-	//---------------------------------------------------------------------------------------------
-
 	/**
-	 * Make theme available for translation
-	 * Translations can be filed in the /languages/ directory
+	 * Outputs the content of the widget
+	 *
+	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
+	 * @param array $instance The settings for the particular instance of the widget
 	 */
-	protected function includeTextdomain($domain)
-	{
-		load_theme_textdomain($domain, TEMPLATEPATH . '/languages' );
-		#$locale_file = TEMPLATEPATH . '/languages/' . get_locale() . '.php';
-		#if (is_readable($locale_file)) require_once($locale_file);
-	}
+	//abstract function widget($args, $instance);
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Protected methods
+	//---------------------------------------------------------------------------------------------
 
 	/**
 	 * @param string $template
 	 * @param mixed $model
 	 * @return string
 	 */
-	protected function renderView($template, $model=null)
+	protected static function renderView($template, $model=null)
 	{
 		return \Foomo\Wordpress\View::render(get_called_class(), $template, $model);
-	}
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Protected static methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 * @return string defined constant
-	 */
-	protected static function getConstant($name)
-	{
-		return (!$name = constant(get_called_class() . '::' . $name)) ? str_replace('\\', '.', get_called_class()) : $name;
 	}
 }

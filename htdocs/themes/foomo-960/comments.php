@@ -17,9 +17,8 @@
 				<div class="nav-next"><? next_comments_link( __( 'Newer Comments <span class="meta-nav">&rarr;</span>', 'foomo960' ) ); ?></div>
 			</div>
 <? endif; ?>
-
 			<ol class="commentlist">
-				<? wp_list_comments(); ?>
+				<? wp_list_comments(array('walker' => new \Foomo\Wordpress\Walkers\Comment())); ?>
 			</ol>
 
 <? if (get_comment_pages_count() > 1 && get_option('page_comments')): ?>
@@ -32,7 +31,7 @@
 <? else: ?>
 
 	<? if (!comments_open()): ?>
-		<p class="nocomments"><? _e( 'Comments are closed.', 'foomo960' ); ?></p>
+		<? #<p class="nocomments"><? _e( 'Comments are closed.', 'foomo960' ); ? ></p> ?>
 	<? endif; ?>
 
 <? endif; ?>

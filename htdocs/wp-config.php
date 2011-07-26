@@ -2,7 +2,6 @@
 /** Enable W3 Total Cache */
 define('WP_CACHE', true); // Added by W3 Total Cache
 
-
 $config = \Foomo\Wordpress\Module::getSiteConfig();
 
 // ** MySQL settings - You can get this info from your web host ** //
@@ -24,6 +23,8 @@ define('DB_CHARSET', $config->database['charset']);
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', $config->database['collate']);
 
+/** Must use plugins */
+define('WPMU_PLUGIN_DIR', Foomo\Wordpress\Module::getHtdocsDir('mu-plugins'));
 
 /**
  * WordPress Database Table prefix.
@@ -42,8 +43,3 @@ if ( !defined('ABSPATH') ) define('ABSPATH', \Foomo\Wordpress\Module::getWordpre
 
 # Sets up WordPress vars and included files.
 require_once(ABSPATH . 'wp-settings.php');
-
-\Foomo\Wordpress::init();
-\Foomo\Wordpress\Admin::init();
-\Foomo\Wordpress\Plugins::init();
-\Foomo\Wordpress\Shortcodes::init();

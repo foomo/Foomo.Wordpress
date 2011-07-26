@@ -27,6 +27,15 @@ namespace Foomo\Wordpress;
 class Admin
 {
 	//---------------------------------------------------------------------------------------------
+	// ~ Constants
+	//---------------------------------------------------------------------------------------------
+
+	const MENU_PAGE_FOOMO_GENERAL = 'foomo';
+	const MENU_PAGE_FOOMO_PLUGINS = 'foomo-plugins';
+	const MENU_PAGE_FOOMO_WIDGETS = 'foomo-widgets';
+	const MENU_PAGE_FOOMO_SHORTCODES = 'foomo-shortcodes';
+
+	//---------------------------------------------------------------------------------------------
 	// ~ Static variables
 	//---------------------------------------------------------------------------------------------
 
@@ -113,7 +122,6 @@ class Admin
 		self::$settingsFields[] = (object) array('id' => $id, 'title' => $title, 'callback' => $callback, 'page' => $page, 'section' => $section, 'args' => $args);
 	}
 
-
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
@@ -139,10 +147,11 @@ class Admin
 	 */
 	public function admin_menu()
 	{
-		add_menu_page('Foomo', 'foomo', 'manage_options', 'foomo', array(__CLASS__, 'submenu_page_general'));
-		self::addSubmenuPage('General', 'General', 'manage_options', 'foomo', array(__CLASS__, 'submenu_page_general'));
-		self::addSubmenuPage('Plugins', 'Plugins', 'manage_options', 'foomo-plugins', array(__CLASS__, 'submenu_page_plugins'));
-		self::addSubmenuPage('Shortcodes', 'Shortcodes', 'manage_options', 'foomo-shortcodes', array(__CLASS__, 'submenu_page_shortcodes'));
+		add_menu_page('Foomo', 'foomo', 'manage_options', self::MENU_PAGE_FOOMO_GENERAL, array(__CLASS__, '_submenu_page_general'));
+		self::addSubmenuPage('General', 'General', 'manage_options', self::MENU_PAGE_FOOMO_GENERAL, array(__CLASS__, '_submenu_page_general'));
+		self::addSubmenuPage('Plugins', 'Plugins', 'manage_options', self::MENU_PAGE_FOOMO_PLUGINS, array(__CLASS__, '_submenu_page_plugins'));
+		self::addSubmenuPage('Widgets', 'Widgets', 'manage_options', self::MENU_PAGE_FOOMO_WIDGETS, array(__CLASS__, '_submenu_page_widgets'));
+		self::addSubmenuPage('Shortcodes', 'Shortcodes', 'manage_options', self::MENU_PAGE_FOOMO_SHORTCODES, array(__CLASS__, '_submenu_page_shortcodes'));
 
 		foreach (self::$submenuPages as $submenuPage) {
 	        add_submenu_page($submenuPage->parent_slug, $submenuPage->page_title, $submenuPage->menu_title, $submenuPage->capability, $submenuPage->menu_slug, $submenuPage->function);
@@ -152,7 +161,7 @@ class Admin
 	/**
 	 * @internal
 	 */
-	public static function submenu_page_general()
+	public static function _submenu_page_general()
 	{
 		echo self::renderView('General', 'general');
 	}
@@ -160,7 +169,7 @@ class Admin
 	/**
 	 * @internal
 	 */
-	public static function submenu_page_plugins()
+	public static function _submenu_page_plugins()
 	{
 		echo self::renderView('Plugins', 'plugins');
 	}
@@ -168,7 +177,15 @@ class Admin
 	/**
 	 * @internal
 	 */
-	public static function submenu_page_shortcodes()
+	public static function _submenu_page_widgets()
+	{
+		echo self::renderView('Widgets', 'widgets');
+	}
+
+	/**
+	 * @internal
+	 */
+	public static function _submenu_page_shortcodes()
 	{
 		echo self::renderView('Shortcodes', 'shortcodes');
 	}
