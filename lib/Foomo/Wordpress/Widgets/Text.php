@@ -45,11 +45,13 @@ class Text extends \Foomo\Wordpress\Widgets\AbstractWidget
 	{
 		extract($args);
 		$title = apply_filters('widget_title', empty($instance['title']) ? '' : $instance['title'], $instance, $this->id_base);
+		$title_link = apply_filters('widget_title_link', empty($instance['title_link']) ? '' : $instance['title_link'], $instance, $this->id_base);
 		$text = apply_filters('widget_text', $instance['text'], $instance);
 		$widget = $this;
 		$model = (object) compact(
 			'text',
 			'title',
+			'title_link',
 			'instance',
 			'before_widget',
 			'after_widget',
@@ -63,26 +65,24 @@ class Text extends \Foomo\Wordpress\Widgets\AbstractWidget
 	public function update($new_instance, $old_instance)
 	{
 		$instance = $old_instance;
-		if (current_user_can('unfiltered_html')) {
-			$instance['title'] = $new_instance['title'];
-			$instance['text'] = $new_instance['text'];
-		} else {
-			$instance['title'] = strip_tags($new_instance['title']);
-			$instance['text'] = stripslashes(wp_filter_post_kses(addslashes($new_instance['text']))); // wp_filter_post_kses() expects slashed
-		}
+		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['title_link'] = $new_instance['title_link'];
+		$instance['text'] = $new_instance['text'];
 		$instance['filter'] = isset($new_instance['filter']);
 		return $instance;
 	}
 
 	public function form($instance)
 	{
-		$instance = wp_parse_args((array) $instance, array('title' => '', 'text' => ''));
+		$instance = wp_parse_args((array) $instance, array('title' => '', 'title_link' => '', 'text' => ''));
 		$title = strip_tags($instance['title']);
+		$title_link = $instance['title_link'];
 		$text = esc_textarea($instance['text']);
 		$widget = $this;
 		$model = (object) compact(
 			'text',
 			'title',
+			'title_link',
 			'instance',
 			'widget'
 		);

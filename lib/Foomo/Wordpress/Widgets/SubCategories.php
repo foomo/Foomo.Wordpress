@@ -60,6 +60,7 @@ class SubCategories extends \Foomo\Wordpress\Widgets\AbstractWidget
 		$hide_empty_cats = empty($instance['hide_empty_cats']) ? 0 : $instance['hide_empty_cats'];
 		$show_post_count = empty($instance['show_post_count']) ? 0 : $instance['show_post_count'];
 		$title = apply_filters('widget_title', empty($instance['title'] ) ? __('Sub Categories', 'sub_categories') : $instance['title'], $instance, $this->id_base);
+		$title_link = apply_filters('widget_title_link', empty($instance['title_link']) ? '' : $instance['title_link'], $instance, $this->id_base);
 
 		$categories = get_categories(array('parent' => $category_id, 'hide_empty' => $hide_empty_cats, 'show_count' => $show_post_count));
 
@@ -69,6 +70,7 @@ class SubCategories extends \Foomo\Wordpress\Widgets\AbstractWidget
 				'instance',
 				'categories',
 				'title',
+				'title_link',
 				'category_id',
 				'hide_empty_cats',
 				'show_post_count',
@@ -89,6 +91,7 @@ class SubCategories extends \Foomo\Wordpress\Widgets\AbstractWidget
 		$instance = $old_instance;
 
 		$instance['title'] = trim(strip_tags($new_instance['title']));
+		$instance['title_link'] = $new_instance['title_link'];
 		$instance['category_id'] = (int) $new_instance['category_id'];
 		$instance['hide_empty_cats'] = (int) $new_instance['hide_empty_cats'];
 		$instance['show_post_count'] = (int) $new_instance['show_post_count'];
@@ -101,8 +104,12 @@ class SubCategories extends \Foomo\Wordpress\Widgets\AbstractWidget
 	 */
 	public function form($instance)
 	{
-		$instance = wp_parse_args((array) $instance, array('title' => __('Sub Categories', 'sub_categories'), 'category_id' => 1, 'hide_empty_cats' => 0, 'show_post_count' => 1));
-		$model = (object) array('this' => $this, 'instance' => $instance);
+		$instance = wp_parse_args((array) $instance, array('title' => __('Sub Categories', 'sub_categories'), 'title_link' => '', 'category_id' => 1, 'hide_empty_cats' => 0, 'show_post_count' => 1));
+		$widget = $this;
+		$model = (object) compact(
+			'widget',
+			'instance'
+		);
 		echo $this->renderView('form', $model);
 	}
 }

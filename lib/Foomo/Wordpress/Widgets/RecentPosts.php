@@ -64,6 +64,7 @@ class RecentPosts extends \Foomo\Wordpress\Widgets\AbstractWidget
 		extract($args);
 
 		$title = apply_filters('widget_title', empty($instance['title']) ? __('Recent Posts') : $instance['title'], $instance, $this->id_base);
+		$title_link = apply_filters('widget_title_link', empty($instance['title_link']) ? '' : $instance['title_link'], $instance, $this->id_base);
 		if (!$number = absint($instance['number'])) $number = 10;
 
 		$output = '';
@@ -72,6 +73,7 @@ class RecentPosts extends \Foomo\Wordpress\Widgets\AbstractWidget
 			$widget = $this;
 			$model = (object) compact(
 				'title',
+				'title_link',
 				'r',
 				'instance',
 				'before_widget',
@@ -97,6 +99,7 @@ class RecentPosts extends \Foomo\Wordpress\Widgets\AbstractWidget
 	{
 		$instance = $old_instance;
 		$instance['title'] = strip_tags($new_instance['title']);
+		$instance['title_link'] = $new_instance['title_link'];
 		$instance['number'] = (int) $new_instance['number'];
 		$this->flush_widget_cache();
 
@@ -112,10 +115,12 @@ class RecentPosts extends \Foomo\Wordpress\Widgets\AbstractWidget
 	public function form($instance)
 	{
 		$title = isset($instance['title']) ? esc_attr($instance['title']) : '';
+		$title_link = isset($instance['title_link']) ? $instance['title_link'] : '';
 		$number = isset($instance['number']) ? absint($instance['number']) : 5;
 		$widget = $this;
 		$model = (object) compact(
 			'title',
+			'title_link',
 			'number',
 			'instance',
 			'widget'

@@ -46,9 +46,11 @@ class Archives extends \Foomo\Wordpress\Widgets\AbstractWidget
 		$count = $instance['count'] ? '1' : '0';
 		$dropdown = $instance['dropdown'] ? '1' : '0';
 		$title = apply_filters('widget_title', empty($instance['title']) ? __('Archives') : $instance['title'], $instance, $this->id_base);
+		$title_link = apply_filters('widget_title_link', empty($instance['title_link']) ? '' : $instance['title_link'], $instance, $this->id_base);
 		$widget = $this;
 		$model = (object) compact(
 			'title',
+			'title_link',
 			'count',
 			'dropdown',
 			'instance',
