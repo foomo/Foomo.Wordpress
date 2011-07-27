@@ -101,7 +101,7 @@ class RecentPosts extends \Foomo\Wordpress\Widgets\AbstractWidget
 		$instance['title'] = strip_tags($new_instance['title']);
 		$instance['title_link'] = $new_instance['title_link'];
 		$instance['number'] = (int) $new_instance['number'];
-		$this->flush_widget_cache();
+		$this->_flush_widget_cache();
 
 		$alloptions = wp_cache_get('alloptions', 'options');
 		if (isset($alloptions['widget_recent_entries'])) delete_option('widget_recent_entries');
