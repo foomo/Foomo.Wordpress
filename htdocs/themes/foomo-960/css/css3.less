@@ -17,4 +17,10 @@
 		background: -webkit-gradient(linear, left top, left bottom, from(@color1),to(@color2));
 		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=@color1, endColorstr=@color2);	
 	}
+
+	@opacity(@attr) {
+		filter:alpha( opacity=(@attr * 100) ); /* IE */
+		-moz-opacity: @attr; /* Gecko-Browser */
+		opacity: @attr; /* Opera 9+ */
+	}
 }
