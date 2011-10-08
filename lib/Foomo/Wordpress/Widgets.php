@@ -49,7 +49,7 @@ class Widgets
 	public static function init()
 	{
 		self::$classes = \Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Widgets\\AbstractWidget');
-		self::setupSettings();
+		if (is_admin()) self::setupSettings();
 		add_action('widgets_init', array(__CLASS__, '_remove_default_widgets'), 0);
 		add_action('widgets_init', array(__CLASS__, '_widgets_init'));
 	}

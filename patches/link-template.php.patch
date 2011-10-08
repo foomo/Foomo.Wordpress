@@ -1,8 +1,8 @@
---- htdocs/content/wp-includes/link-template.php.orig	2011-07-01 19:09:03.000000000 +0200
-+++ htdocs/content/wp-includes/link-template.php	2011-07-01 19:01:48.000000000 +0200
+--- htdocs/wordpress/wp-includes/link-template.php.orig	2011-07-01 19:09:03.000000000 +0200
++++ htdocs/wordpress/wp-includes/link-template.php	2011-07-01 19:01:48.000000000 +0200
 @@ -2134,7 +2134,7 @@
  		$url = str_replace( 'http://', 'https://', $url );
- 
+
  	if ( !empty($plugin) && is_string($plugin) ) {
 -		$folder = dirname(plugin_basename($plugin));
 +		$folder = basename(dirname(plugin_basename($plugin)));

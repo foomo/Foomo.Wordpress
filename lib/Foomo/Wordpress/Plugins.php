@@ -39,6 +39,9 @@ class Plugins
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 
+	/**
+	 * @todo only include classes that are within this context
+	 */
 	public static function init()
 	{
 		self::$classes = \Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Plugins\\AbstractPlugin');

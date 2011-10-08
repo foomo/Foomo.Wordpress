@@ -19,7 +19,7 @@
 
 namespace Foomo\Wordpress\Widgets;
 
-if (!class_exists('WP_Widget')) require(self::getWordpressDir() .  DIRECTORY_SEPARATOR . 'wp-includes' .  DIRECTORY_SEPARATOR . 'widgets.php');
+if (!class_exists('WP_Widget')) include_once(\Foomo\Wordpress\Module::getWordpressDir() .  DIRECTORY_SEPARATOR . 'wp-includes' .  DIRECTORY_SEPARATOR . 'widgets.php');
 
 /**
  * @link www.foomo.org

@@ -19,7 +19,7 @@
 
 namespace Foomo\Wordpress\Walkers;
 
-if (!class_exists('Walker')) require_once(\Foomo\Wordpress\Module::getWordpressDir() .  DIRECTORY_SEPARATOR . 'wp-includes' .  DIRECTORY_SEPARATOR . 'class-wp-walker.php');
+if (!class_exists('Walker')) include_once(\Foomo\Wordpress\Module::getWordpressDir() .  DIRECTORY_SEPARATOR . 'wp-includes' .  DIRECTORY_SEPARATOR . 'class-wp-walker.php');
 
 /**
  * @link www.foomo.org
