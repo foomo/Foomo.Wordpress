@@ -42,6 +42,9 @@ class Foomo960 extends \Foomo\Wordpress\Themes\AbstractTheme
 	// ~ Abstract methods implementations
 	//---------------------------------------------------------------------------------------------
 
+	/**
+	 * @param boolean $admin
+	 */
 	public function registerHoocks($admin)
 	{
 		add_filter('show_recent_comments_widget_style', '__return_false');

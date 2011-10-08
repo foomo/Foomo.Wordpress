@@ -63,7 +63,8 @@ class Wordpress
 		if (is_admin()) return;
 
 		# add some javascript libs
-		wp_register_script('swfobject', \Foomo\Flash\Module::getHtdocsPath('js') . '/swfobject-2.2.min.js', array(), '2.2', true);
+		// @todo don't require foomo/flash
+		#wp_register_script('swfobject', \Foomo\Flash\Module::getHtdocsPath('js') . '/swfobject-2.2.min.js', array(), '2.2', true);
 
 		# add actions
 		add_action('print_head_scripts', array(__CLASS__, 'print_head_scripts'));

@@ -35,21 +35,23 @@ class Fancybox extends AbstractPlugin
 	 */
 	public static function init()
 	{
-		self::initSettings();
-		self::setupSettings();
-		self::validateSettings();
+		if (is_admin()) self::initSettings();
+		if (is_admin()) self::setupSettings();
+		if (!is_admin()) self::validateSettings();
 
-		add_filter('the_content', array(__CLASS__, '_the_content'), 99);
-		add_filter('the_excerpt', array(__CLASS__, '_the_content'), 99);
+		if (!is_admin()) add_filter('the_content', array(__CLASS__, '_the_content'), 99);
+		if (!is_admin()) add_filter('the_excerpt', array(__CLASS__, '_the_content'), 99);
 	}
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Private satatic methods
 	//---------------------------------------------------------------------------------------------
 
+	/**
+	 *
+	 */
 	private static function initSettings()
 	{
-		if (!is_admin()) return;
 		if (get_option('foomo_fancybox_script', '') == '') update_option('foomo_fancybox_script', '$(document).ready(function() {$("a[rel^=fancybox]").fancybox();});');
 	}
 
@@ -72,9 +74,9 @@ class Fancybox extends AbstractPlugin
 	 */
 	private static function validateSettings()
 	{
-		wp_register_style('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getHtdocsPath('plugins/fancybox') . '/jquery.fancybox-1.3.4.css', array(), '1.3.4', 'screen');
-		wp_register_script('jquery.easing', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getHtdocsPath('plugins/fancybox') . '/jquery.easing-1.3.pack.js', array('jquery'), '1.3', true);
-		wp_register_script('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getHtdocsPath('plugins/fancybox') . '/jquery.fancybox-1.3.4.pack.js', array('jquery', 'jquery.easing'), '1.3.4', true);
+		wp_register_style('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath('fancybox') . '/jquery.fancybox-1.3.4.css', array(), '1.3.4', 'screen');
+		wp_register_script('jquery.easing', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath('fancybox') . '/jquery.easing-1.3.pack.js', array('jquery'), '1.3', true);
+		wp_register_script('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath('fancybox') . '/jquery.fancybox-1.3.4.pack.js', array('jquery', 'jquery.easing'), '1.3.4', true);
 		\Foomo\Wordpress::addFooterScript(get_option('foomo_fancybox_script'));
 
 		if (get_option('foomo_fancybox_automode', false)) {

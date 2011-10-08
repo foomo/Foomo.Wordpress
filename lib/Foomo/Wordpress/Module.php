@@ -34,10 +34,6 @@ class Module extends \Foomo\Modules\ModuleBase
 	 * the name of this module
 	 */
 	const NAME = 'Foomo.Wordpress';
-	/**
-	 * current wordpress version
-	 */
-	const WORDPRESS_VERSION = '3.2';
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
@@ -57,7 +53,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function getDescription()
 	{
-		return 'Wordpress integration';
+		return 'Foomo Wordpress integration';
 	}
 
 	/**
@@ -84,9 +80,25 @@ class Module extends \Foomo\Modules\ModuleBase
 	/**
 	 * @return string
 	 */
+	public static function getWordpressDir()
+	{
+		return self::getHtdocsDir('wordpress');
+	}
+
+	/**
+	 * @return string
+	 */
+	public static function getWordpressPath()
+	{
+		return self::getHtdocsPath('wordpress');
+	}
+
+	/**
+	 * @return string
+	 */
 	public static function getPluginsDir()
 	{
-		return self::getHtdocsDir('plugins');
+		return self::getHtdocsDir('content/plugins');
 	}
 
 	/**
@@ -94,7 +106,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function getPluginsPath()
 	{
-		return self::getHtdocsPath('plugins');
+		return self::getHtdocsPath('content/plugins');
 	}
 
 	/**
@@ -102,7 +114,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function getThemesDir()
 	{
-		return self::getHtdocsDir('themes');
+		return self::getHtdocsDir('content/themes');
 	}
 
 	/**
@@ -110,6 +122,6 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function getThemesPath()
 	{
-		return self::getHtdocsPath('themes');
+		return self::getHtdocsPath('content/themes');
 	}
 }

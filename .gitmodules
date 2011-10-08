@@ -1,3 +1,6 @@
 [submodule "vendor/plugins/Twig-for-WordPress"]
 	path = vendor/plugins/Twig-for-WordPress
 	url = https://github.com/acleon/Twig-for-WordPress.git
+[submodule "vendor/wordpress"]
+	path = vendor/wordpress
+	url = ../WordPress.git

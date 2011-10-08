@@ -19,8 +19,7 @@
 
 namespace Foomo\Wordpress\Walkers;
 
-// this is a autoloader hack
-include_once(\Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . \Foomo\Wordpress\Module::NAME . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'wp-includes' . DIRECTORY_SEPARATOR . 'class-wp-walker.php');
+if (!class_exists('Walker')) require_once(\Foomo\Wordpress\Module::getWordpressDir() .  DIRECTORY_SEPARATOR . 'wp-includes' .  DIRECTORY_SEPARATOR . 'class-wp-walker.php');
 
 /**
  * @link www.foomo.org

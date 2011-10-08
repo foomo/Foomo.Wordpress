@@ -19,8 +19,7 @@
 
 namespace Foomo\Wordpress\Widgets;
 
-// this is a autoloader hack
-include_once(\Foomo\CORE_CONFIG_DIR_MODULES . DIRECTORY_SEPARATOR . \Foomo\Wordpress\Module::NAME . DIRECTORY_SEPARATOR . 'htdocs' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'wp-includes' . DIRECTORY_SEPARATOR . 'widgets.php');
+if (!class_exists('WP_Widget')) require(self::getWordpressDir() .  DIRECTORY_SEPARATOR . 'wp-includes' .  DIRECTORY_SEPARATOR . 'widgets.php');
 
 /**
  * @link www.foomo.org

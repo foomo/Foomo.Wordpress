@@ -15,6 +15,14 @@ class Config extends \Foomo\Config\AbstractConfig
 	//---------------------------------------------------------------------------------------------
 
 	/**
+	 * @var string
+	 */
+	public $lang = 'en_US';
+	/**
+	 * @var boolean
+	 */
+	public $allowMultiSite = false;
+	/**
 	 * @var array
 	 */
 	public $database = array(
@@ -25,5 +33,18 @@ class Config extends \Foomo\Config\AbstractConfig
 		'charset' => 'utf8',
 		'collate' => '',
 		'prefix' => 'wp_'
+	);
+	/**
+	 * @var array
+	 */
+	public $security = array(
+		'authKey' => '',
+		'secureAuthKey' => '',
+		'loggedInKey' => '',
+		'nonceKey' => '',
+		'authSalt' => '',
+		'secureAuthSalt' => '',
+		'loggedInSalt' => '',
+		'nonceSalt' => '',
 	);
 }
