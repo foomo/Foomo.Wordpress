@@ -40,7 +40,6 @@ class ModuleBase extends \Foomo\Modules\ModuleBase
 			\Foomo\Modules\Resource\Fs::getAbsoluteResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'themes'),
 			\Foomo\Modules\Resource\Fs::getAbsoluteResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'plugins'),
 			\Foomo\Modules\Resource\Symlink::getResource('../../../../Foomo.Wordpress/htdocs/content/wp-content/themes/twentyten', self::getThemesDir() . DIRECTORY_SEPARATOR . 'twentyten'),
-			\Foomo\Modules\Resource\Symlink::getResource('../../../../Foomo.Wordpress/htdocs/plugins/foomo-toolkit', self::getPluginsDir() . DIRECTORY_SEPARATOR . 'foomo-toolkit'),
 			\Foomo\Modules\Resource\Symlink::getResource('../../Foomo.Wordpress/htdocs/content', self::getWordpressDir()),
 			\Foomo\Modules\Resource\Config::getResource(self::getModuleName(), 'Foomo.Wordpress.siteConfig'),
 		);

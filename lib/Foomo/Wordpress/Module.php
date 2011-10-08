@@ -69,7 +69,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	{
 		return array(
 			\Foomo\Modules\Resource\Module::getResource('Foomo', self::VERSION),
-			\Foomo\Modules\Resource\Config::getResource((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, Site\Config::NAME),
+			\Foomo\Modules\Resource\Config::getResource((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, 'Foomo.Wordpress.siteConfig'),
 		);
 	}
 
@@ -78,7 +78,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function getSiteConfig()
 	{
-		return \Foomo\Config::getConf((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, Site\Config::NAME);
+		return \Foomo\Config::getConf((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, 'Foomo.Wordpress.siteConfig');
 	}
 
 	/**
