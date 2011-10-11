@@ -11,4 +11,4 @@ Plugin URI: http://wordpress.org/extend/plugins/wp-less/
   http://www.opensource.org/licenses/gpl-3.0.html
 */
 
-require_once('wp-less/bootstrap.php');
+require_once('bootstrap.php');

@@ -24,7 +24,7 @@ namespace Foomo\Wordpress\Plugins;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class AddThis extends AbstractPlugin
+class AddThis// extends AbstractPlugin
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract method implementations

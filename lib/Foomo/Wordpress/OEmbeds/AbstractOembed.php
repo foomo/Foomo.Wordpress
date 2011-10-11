@@ -5,14 +5,14 @@
  * and open the template in the editor.
  */
 
-namespace Foomo\Wordpress\Plugins;
+namespace Foomo\Wordpress\OEmbeds;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-abstract class AbstractPlugin
+abstract class AbstractOEmbed
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Static variables
@@ -24,65 +24,27 @@ abstract class AbstractPlugin
 	private static $registered = array();
 
 	//---------------------------------------------------------------------------------------------
-	// ~ Variables
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 * @var string
-	 */
-	protected $file;
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Constructor
+	// ~ Abstract methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
 	 *
 	 */
-	public function __construct($file)
-	{
-		$this->file = $file;
-		$this->setup();
-		\Foomo\Wordpress\Hooks::add($this);
-	}
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Abstract static methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 *
-	 */
-	abstract public function setup();
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Protected methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 * @param string $template
-	 * @param mixed $model
-	 * @return string
-	 */
-	protected function renderView($template, $model=null)
-	{
-		return \Foomo\Wordpress\View::render(get_class($this), $template, $model);
-	}
+	abstract function addProvider();
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @param string $file
 	 * @return boolean
 	 */
-	public static function register($file)
+	public static function register()
 	{
 		$className = \get_called_class();
 		if (isset(self::$registered[$className])) return false;
 		self::$registered[$className] = func_get_args();
-		add_action('_foomo_plugins_loaded', array(__CLASS__, '_foomo_plugins_loaded'));
+		add_action('_foomo_oembeds_loaded', array(__CLASS__, '_foomo_oembeds_loaded'));
 		return true;
 	}
 
@@ -113,7 +75,7 @@ abstract class AbstractPlugin
 	/**
 	 * @internal
 	 */
-	public static function _foomo_plugins_loaded()
+	public static function _foomo_oembeds_loaded()
 	{
 		foreach (self::$registered as $className => $args) \Foomo\Reflection\Utils::createInstance($className, $args);
 	}

@@ -24,8 +24,17 @@ namespace Foomo\Wordpress\Plugins;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Fancybox extends AbstractPlugin
+class Fancybox extends \Foomo\Wordpress\Plugins\AbstractPlugin
 {
+	//---------------------------------------------------------------------------------------------
+	// ~ Variables
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @var Foomo\Wordpress\Options
+	 */
+	private $options;
+
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract method implementations
 	//---------------------------------------------------------------------------------------------
@@ -33,56 +42,30 @@ class Fancybox extends AbstractPlugin
 	/**
 	 *
 	 */
-	public static function init()
+	public function setup()
 	{
-		if (is_admin()) self::initSettings();
-		if (is_admin()) self::setupSettings();
-		if (!is_admin()) self::validateSettings();
+		# Creating an options object
+		$this->options = new \Foomo\Wordpress\Options('foomo_fancybox', $this->file, array(
+			'automode' => false,
+			'footer_script' => '$(document).ready(function() {$("a[rel^=fancybox]").fancybox();});',
+		));
 
-		if (!is_admin()) add_filter('the_content', array(__CLASS__, '_the_content'), 99);
-		if (!is_admin()) add_filter('the_excerpt', array(__CLASS__, '_the_content'), 99);
-	}
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Private satatic methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 *
-	 */
-	private static function initSettings()
-	{
-		if (get_option('foomo_fancybox_script', '') == '') update_option('foomo_fancybox_script', '$(document).ready(function() {$("a[rel^=fancybox]").fancybox();});');
-	}
-
-	/**
-	 *
-	 */
-	private static function setupSettings()
-	{
-		\Foomo\Wordpress\Admin::addSettingsSection('foomo-plugins-fancybox', 'Fancybox Settings', function(){}, 'foomo-plugins');
-
-		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_fancybox_script');
-		\Foomo\Wordpress\Admin::registerSetting('foomo-plugins', 'foomo_fancybox_automode');
-
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_fancybox_automode', 'Activate automode', array('Foomo\\Wordpress\\Settings\\Fields', 'checkbox'), 'foomo-plugins', 'foomo-plugins-fancybox');
-		\Foomo\Wordpress\Admin::addSettingsField('foomo_fancybox_script', 'Footer script', array('Foomo\\Wordpress\\Settings\\Fields', 'textarea'), 'foomo-plugins', 'foomo-plugins-fancybox');
-	}
-
-	/**
-	 *
-	 */
-	private static function validateSettings()
-	{
-		wp_register_style('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.fancybox-1.3.4.css', array(), '1.3.4', 'screen');
-		wp_register_script('jquery.easing', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.easing-1.3.pack.js', array('jquery'), '1.3', true);
-		wp_register_script('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.fancybox-1.3.4.pack.js', array('jquery', 'jquery.easing'), '1.3.4', true);
-		\Foomo\Wordpress::addFooterScript(get_option('foomo_fancybox_script'));
-
-		if (get_option('foomo_fancybox_automode', false)) {
-			wp_enqueue_script('jquery.fancybox');
-			wp_enqueue_style('jquery.fancybox');
+		# do plugin stuff
+		if (!is_admin()) {
+			wp_enqueue_style('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.fancybox-1.3.4.css', array(), '1.3.4', 'screen');
+			wp_enqueue_script('jquery.easing', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.easing-1.3.pack.js', array('jquery'), '1.3', true);
+			wp_enqueue_script('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.fancybox-1.3.4.pack.js', array('jquery', 'jquery.easing'), '1.3.4', true);
+			\Foomo\Wordpress\Frontend::addFooterScript($this->options->footer_script);
+			if ($this->options->automode) {
+				add_filter('the_content', array($this, '_the_content'), 99);
+				add_filter('the_excerpt', array($this, '_the_content'), 99);
+			}
 		}
+
+
+
+		# admin page
+		\Foomo\Wordpress\AdminPage\Fancybox::register($this->file, $this->options);
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -95,7 +78,7 @@ class Fancybox extends AbstractPlugin
 	 * @param type $content
 	 * @return type
 	 */
-	public static function _the_content($content)
+	public function _the_content($content)
 	{
 		global $post;
 		$pattern        = "/(<a(?![^>]*?rel=['\"]fancybox.*)[^>]*?href=['\"][^'\"]+?\.(?:bmp|gif|jpg|jpeg|png)['\"][^\>]*)>/i";

@@ -5,23 +5,23 @@
  * and open the template in the editor.
  */
 
-namespace Foomo\Wordpress\Plugins;
+namespace Foomo\Wordpress\OEmbeds;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Slideshare extends AbstractPlugin
+class SlideShare extends \Foomo\Wordpress\OEmbeds\AbstractOEmbed
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Abstract method implementations
+	// ~ Constructor
 	//---------------------------------------------------------------------------------------------
 
 	/**
 	 *
 	 */
-	public static function init()
+	public function addProvider()
 	{
 		wp_oembed_add_provider('#http://(www\.)?slideshare.net/*#i', 'http://www.slideshare.net/api/oembed/1', true);
 	}
