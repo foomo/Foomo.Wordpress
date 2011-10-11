@@ -24,8 +24,26 @@ namespace Foomo\Wordpress\Shortcodes;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-abstract class AbstractShortcodes
+abstract class AbstractShortcode
 {
+	//---------------------------------------------------------------------------------------------
+	// ~ Static variables
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @var array
+	 */
+	private static $registered = array();
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Constructor
+	//---------------------------------------------------------------------------------------------
+
+	public function __construct()
+	{
+
+	}
+
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract methods
 	//---------------------------------------------------------------------------------------------
@@ -33,18 +51,51 @@ abstract class AbstractShortcodes
 	/**
 	 * @return array method_name => [shorcodes]
 	 */
-	abstract static function getShortcodes();
-	/**
-	 * @see wp_enqueue_script
-	 */
-	abstract static function enqueueScripts();
-	/**
-	 * @see wp_enqueue_style
-	 */
-	abstract static function enqueueStyles();
+	abstract public function getShortcodes();
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public methods
+	//---------------------------------------------------------------------------------------------
+	/**
+	 * @see wp_enqueue_script
+	 */
+	public function enqueueScripts()
+	{
+
+	}
+	/**
+	 * @see wp_enqueue_style
+	 */
+	public function enqueueStyles()
+	{
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Internal methods
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @internal
+	 */
+	public function _no_texturize_shortcodes($shortcodes)
+	{
+		if (!$this->noTexturize()) return $shortcodes;
+		foreach ($this->getShortcodes() as $codes) $shortcodes = array_merge($shortcodes, $codes);
+		return $shortcodes;
+	}
+
+	/**
+	 * @internal
+	 */
+	public function _no_wpautop_shortcodes($shortcodes)
+	{
+		if (!$this->noWpautop()) return $shortcodes;
+		foreach ($this->getShortcodes() as $codes) $shortcodes = array_merge($shortcodes, $codes);
+		return $shortcodes;
+	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
@@ -65,5 +116,59 @@ abstract class AbstractShortcodes
 	public static function noWpautop()
 	{
 		return true;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public static function register()
+	{
+		$className = \get_called_class();
+		if (isset(self::$registered[$className])) return false;
+		self::$registered[$className] = func_get_args();
+		add_action('_foomo_shortcodes_loaded', array(__CLASS__, '_foomo_shortcodes_loaded'));
+		return true;
+	}
+
+	/**
+	 * @param string $oldClassName
+	 * @param string $newClassName
+	 * @return boolean
+	 */
+	public static function replace($oldClassName, $newClassName)
+	{
+		if (!isset(self::$registered[$oldClassName])) return false;
+		self::$registered[$newClassName] = self::$registered[$oldClassName];
+		unset(self::$registered[$oldClassName]);
+		return true;
+	}
+
+	/**
+	 * @param string $className
+	 * @return boolean
+	 */
+	public static function remove($className)
+	{
+		if (!isset(self::$registered[$className])) return false;
+		unset(self::$registered[$className]);
+		return true;
+	}
+
+	/**
+	 * @internal
+	 */
+	public static function _foomo_shortcodes_loaded()
+	{
+		foreach (self::$registered as $className => $args) {
+			$inst = \Foomo\Reflection\Utils::createInstance($className, $args);
+			add_filter('no_texturize_shortcodes', array($inst, '_no_texturize_shortcodes'));
+			add_filter('no_wpautop_shortcodes', array($inst, '_no_wpautop_shortcodes'));
+			$shortcodes = $inst->getShortcodes();
+			$inst->enqueueScripts();
+			$inst->enqueueStyles();
+			foreach ($shortcodes as $method => $codes) {
+				foreach ($codes as $code) add_shortcode($code, array($inst, $method));
+			}
+		}
 	}
 }

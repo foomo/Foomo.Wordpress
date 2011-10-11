@@ -6,6 +6,9 @@
  * @package WordPress
  */
 
+
+\Foomo\Timer::addMarker('Index start');
+
 /**
  * Tells WordPress to load the WordPress theme and output it.
  *
@@ -20,7 +23,15 @@ $wp_did_header = true;
 /** The config file resides in ABSPATH */
 require_once(dirname(realpath(__FILE__)) . '/wp-config.php' );
 
+\Foomo\Timer::addMarker('Included config');
+
 wp();
 
+\Foomo\Timer::addMarker('Called wp()');
+
 require_once( ABSPATH . WPINC . '/template-loader.php' );
+
+\Foomo\Timer::addMarker('Loaded template');
+
+if (\WP_DEBUG) echo '<!--' . \Foomo\Timer::getStats() . '-->';
 ?>

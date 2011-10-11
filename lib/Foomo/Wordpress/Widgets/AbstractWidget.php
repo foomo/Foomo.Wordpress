@@ -19,7 +19,7 @@
 
 namespace Foomo\Wordpress\Widgets;
 
-if (!class_exists('WP_Widget')) include_once(\Foomo\Wordpress\Module::getWordpressDir() .  DIRECTORY_SEPARATOR . 'wp-includes' .  DIRECTORY_SEPARATOR . 'widgets.php');
+if (!class_exists('WP_Widget')) include_once(\Foomo\Wordpress\Module::getWordpressDir() . DIRECTORY_SEPARATOR . 'wp-includes' . DIRECTORY_SEPARATOR . 'widgets.php');
 
 /**
  * @link www.foomo.org
@@ -29,36 +29,14 @@ if (!class_exists('WP_Widget')) include_once(\Foomo\Wordpress\Module::getWordpre
 abstract class AbstractWidget extends \WP_Widget
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Constructor
+	// ~ Static variables
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @param string $id_base Optional Base ID for the widget, lower case,
-	 * if left empty a portion of the widget's class name will be used. Has to be unique.
-	 * @param string $name Name for the widget displayed on the configuration page.
-	 * @param array $widget_options Optional Passed to wp_register_sidebar_widget()
-	 *	 - description: shown on the configuration page
-	 *	 - classname
-	 * @param array $control_options Optional Passed to wp_register_widget_control()
-	 *	 - width: required if more than 250px
-	 *	 - height: currently not used but may be needed in the future
+	 * @var array
 	 */
-	public function __construct($id_base=false, $name, $widget_options=array(), $control_options=array())
-	{
-		parent::__construct($id_base, $name, $widget_options, $control_options);
-	}
+	private static $registered = array();
 
-	//---------------------------------------------------------------------------------------------
-	// ~ Abstract methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 * Outputs the content of the widget
-	 *
-	 * @param array $args Display arguments including before_title, after_title, before_widget, and after_widget.
-	 * @param array $instance The settings for the particular instance of the widget
-	 */
-	//abstract function widget($args, $instance);
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Protected methods
@@ -69,8 +47,60 @@ abstract class AbstractWidget extends \WP_Widget
 	 * @param mixed $model
 	 * @return string
 	 */
-	protected static function renderView($template, $model=null)
+	protected function renderView($template, $model=null)
 	{
 		return \Foomo\Wordpress\View::render(get_called_class(), $template, $model);
 	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Static variables
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 *
+	 * @param string $file
+	 * @param string $base
+	 * @return boolean
+	 */
+	public static function register($file='', $base='')
+	{
+		$className = \get_called_class();
+		if (isset(self::$registered[$className])) return false;
+		self::$registered[$className] = func_get_args();
+		add_action('_foomo_widgets_loaded', array(__CLASS__, '_foomo_widgets_loaded'));
+		return true;
+	}
+
+	/**
+	 * @param string $oldClassName
+	 * @param string $newClassName
+	 * @return boolean
+	 */
+	public static function replace($oldClassName, $newClassName)
+	{
+		if (!isset(self::$registered[$oldClassName])) return false;
+		self::$registered[$newClassName] = self::$registered[$oldClassName];
+		unset(self::$registered[$oldClassName]);
+		return true;
+	}
+
+	/**
+	 * @param string $className
+	 * @return boolean
+	 */
+	public static function remove($className)
+	{
+		if (!isset(self::$registered[$className])) return false;
+		unset(self::$registered[$className]);
+		return true;
+	}
+
+	/**
+	 * @internal
+	 */
+	public static function _foomo_widgets_loaded()
+	{
+		foreach (self::$registered as $className => $args) \register_widget($className);
+	}
+
 }

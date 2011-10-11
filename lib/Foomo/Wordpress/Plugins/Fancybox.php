@@ -20,9 +20,9 @@
 namespace Foomo\Wordpress\Plugins;
 
 /**
- * @link www.foomo.org
+ * @link	www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
- * @author franklin <franklin@weareinteractive.com>
+ * @author	franklin <franklin@weareinteractive.com>
  */
 class Fancybox extends \Foomo\Wordpress\Plugins\AbstractPlugin
 {
@@ -31,7 +31,7 @@ class Fancybox extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * @var Foomo\Wordpress\Options
+	 * @var Foomo\Wordpress\Admin\Options
 	 */
 	private $options;
 
@@ -45,16 +45,16 @@ class Fancybox extends \Foomo\Wordpress\Plugins\AbstractPlugin
 	public function setup()
 	{
 		# Creating an options object
-		$this->options = new \Foomo\Wordpress\Options('foomo_fancybox', $this->file, array(
+		$this->options = new \Foomo\Wordpress\Admin\Options('foomo_fancybox', $this->file, array(
 			'automode' => false,
-			'footer_script' => '$(document).ready(function() {$("a[rel^=fancybox]").fancybox();});',
+			'footer_script' => 'jQuery(document).ready(function($) {$("a[rel^=fancybox]").fancybox();});',
 		));
 
 		# do plugin stuff
 		if (!is_admin()) {
-			wp_enqueue_style('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.fancybox-1.3.4.css', array(), '1.3.4', 'screen');
-			wp_enqueue_script('jquery.easing', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.easing-1.3.pack.js', array('jquery'), '1.3', true);
-			wp_enqueue_script('jquery.fancybox', \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/fancybox/jquery.fancybox-1.3.4.pack.js', array('jquery', 'jquery.easing'), '1.3.4', true);
+			wp_enqueue_style('jquery.fancybox', $this->getPluginPath('fancybox') . '/jquery.fancybox-1.3.4.css', array(), '1.3.4', 'screen');
+			wp_enqueue_script('jquery.easing', $this->getPluginPath('fancybox') . '/jquery.easing-1.3.pack.js', array('jquery'), '1.3', true);
+			wp_enqueue_script('jquery.fancybox', $this->getPluginPath('fancybox') . '/jquery.fancybox-1.3.4.pack.js', array('jquery', 'jquery.easing'), '1.3.4', true);
 			\Foomo\Wordpress\Frontend::addFooterScript($this->options->footer_script);
 			if ($this->options->automode) {
 				add_filter('the_content', array($this, '_the_content'), 99);
@@ -62,10 +62,8 @@ class Fancybox extends \Foomo\Wordpress\Plugins\AbstractPlugin
 			}
 		}
 
-
-
 		# admin page
-		\Foomo\Wordpress\AdminPage\Fancybox::register($this->file, $this->options);
+		\Foomo\Wordpress\Admin\Pages\Fancybox::register($this->file, $this->options);
 	}
 
 	//---------------------------------------------------------------------------------------------

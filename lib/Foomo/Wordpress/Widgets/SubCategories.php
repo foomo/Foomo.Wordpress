@@ -30,7 +30,7 @@ namespace Foomo\Wordpress\Widgets;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class SubCategories extends \Foomo\Wordpress\Widgets\AbstractWidget
+class SubCategories //extends \Foomo\Wordpress\Widgets\AbstractWidget
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Constructor
@@ -41,8 +41,8 @@ class SubCategories extends \Foomo\Wordpress\Widgets\AbstractWidget
 	 */
 	public function __construct()
 	{
-		$widget_ops = array('classname' => 'widget_sub_categories', 'description' => __('Lists the sub-categories for a given category.', 'sub_categories') );
-		parent::__construct('sub_categories_widget', __('Sub Categories', 'sub_categories'), $widget_ops);
+		$widget_ops = array('classname' => 'widget_sub_categories', 'description' => __('Lists the sub-categories for a given category.'));
+		parent::__construct('sub_categories_widget', __('Sub Categories'), $widget_ops);
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ class SubCategories extends \Foomo\Wordpress\Widgets\AbstractWidget
 	 */
 	public function form($instance)
 	{
-		$instance = wp_parse_args((array) $instance, array('title' => __('Sub Categories', 'sub_categories'), 'title_link' => '', 'category_id' => 1, 'hide_empty_cats' => 0, 'show_post_count' => 1));
+		$instance = wp_parse_args((array) $instance, array('title' => __('Sub Categories'), 'title_link' => '', 'category_id' => 1, 'hide_empty_cats' => 0, 'show_post_count' => 1));
 		$widget = $this;
 		$model = (object) compact(
 			'widget',

@@ -21,8 +21,9 @@ class SlideShare extends \Foomo\Wordpress\OEmbeds\AbstractOEmbed
 	/**
 	 *
 	 */
-	public function addProvider()
+	public function enableOpenembed()
 	{
 		wp_oembed_add_provider('#http://(www\.)?slideshare.net/*#i', 'http://www.slideshare.net/api/oembed/1', true);
+		wp_oembed_add_provider('http://slidesha.re/*', 'http://www.slideshare.net/api/oembed/1', false);
 	}
 }

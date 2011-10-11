@@ -99,7 +99,7 @@ if (!defined('WP_PLUGIN_URL')) define('WP_PLUGIN_URL', $base_url . call_user_fun
 /* That's all, stop editing! Happy blogging. */
 
 # Absolute path to the WordPress directory.
-define('ABSPATH', call_user_func(array($moduleClassName, 'getWordpressDir')) . '/');
+define('ABSPATH', \Foomo\Wordpress\Module::getWordpressDir() . '/');
 
 # Sets up WordPress vars and included files.
 require_once(ABSPATH . 'wp-settings.php');

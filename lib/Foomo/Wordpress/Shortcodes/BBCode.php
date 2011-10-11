@@ -24,7 +24,7 @@ namespace Foomo\Wordpress\Shortcodes;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class BBCode extends AbstractShortcodes
+class BBCode extends \Foomo\Wordpress\Shortcodes\AbstractShortcode
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract method implementations
@@ -33,27 +33,11 @@ class BBCode extends AbstractShortcodes
 	/**
 	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
 	 */
-	public static function getShortcodes()
+	public function getShortcodes()
 	{
 		return array(
 			'shortcode_bbcode'	=> array('b', 'i', 'u', 'url', 'img', 'quote', 'color', 's', 'center', 'code', 'size', 'ul', 'ol', 'li'),
 		);
-	}
-
-	/**
-	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
-	 */
-	public static function enqueueScripts()
-	{
-		wp_enqueue_script('swfobject');
-	}
-
-	/**
-	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
-	 */
-	public static function enqueueStyles()
-	{
-
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -66,7 +50,7 @@ class BBCode extends AbstractShortcodes
 	 * @param string $content
 	 * @param type $code
 	 */
-	public static function shortcode_bbcode($atts, $content=null, $code="")
+	public function shortcode_bbcode($atts, $content=null, $code="")
 	{
 		if (is_null($content)) return '';
 		if (isset($atts[0]) && !empty($atts[0])) {
@@ -75,13 +59,13 @@ class BBCode extends AbstractShortcodes
 
 		switch (strtolower($code)) {
 			case 'b':
-				return '<strong>' . do_shortcode($content) . '</strong>';
+				return \Foomo\Wordpress\View::html('strong', do_shortcode($content));
 				break;
 			case 'i':
-				return '<em>' . do_shortcode($content) . '</em>';
+				return \Foomo\Wordpress\View::html('em', do_shortcode($content));
 				break;
 			case 'u':
-				return '<span style="text-decoration:underline">' . do_shortcode($content) . '</span>';
+				return \Foomo\Wordpress\View::html('span', do_shortcode($content), array('style' => 'text-decoration:underline'));
 				break;
 			case 'url':
 				if (isset($atts[0]) ) {
@@ -105,41 +89,41 @@ class BBCode extends AbstractShortcodes
 				if (empty($url)) return '';
 				if (empty($text)) $text = $url;
 
-				return '<a href="' . $url . '">' . do_shortcode($text) . '</a>';
+				return \Foomo\Wordpress\View::link($url, do_shortcode($text));
 				break;
 			case 'img':
-				return '<img src="' . $content . '" alt="" />';
+				return \Foomo\Wordpress\View::html('img', null, array('src' => $content));
 				break;
 			case 'quote':
-				return '<blockquote>' . do_shortcode($content) . '</blockquote>';
+				return \Foomo\Wordpress\View::html('blockquote', do_shortcode($content));
 				break;
 			case 'color':
 				$attribs = implode("",$atts);
 				$subattribs = substr ($attribs, 1);
-				return '<span style="color:' . $subattribs . '">' . do_shortcode($content) . '</span>';
+				return \Foomo\Wordpress\View::html('span', do_shortcode($content), array('style' => 'color:' . $subattribs));
 				break;
 			case 's':
-				return '<del>' . do_shortcode($content) . '</del>';
+				return \Foomo\Wordpress\View::html('del', do_shortcode($content));
 				break;
 			case 'center':
-				return '<center>' . do_shortcode($content) . '</center>';
+				return \Foomo\Wordpress\View::html('center', do_shortcode($content));
 				break;
 			case 'code':
-				return '<code>' . do_shortcode($content) . '</code>';
+				return \Foomo\Wordpress\View::html('code', do_shortcode($content));
 				break;
 			case 'size':
 				$attribs = implode("",$atts);
 				$subattribs = substr ( $attribs, 1);
-				return '<span style="font-size:' . $subattribs . 'px">' . do_shortcode($content) . '</span>';
+				return \Foomo\Wordpress\View::html('span', do_shortcode($content), array('style' => 'font-size:' . $subattribs . 'px'));
 				break;
 			case 'ol':
-				return '<ol>' . do_shortcode($content) . '</ol>';
+				return \Foomo\Wordpress\View::html('ol', do_shortcode($content));
 				break;
 			case 'ul':
-				return '<ul>' . do_shortcode($content) . '</ul>';
+				return \Foomo\Wordpress\View::html('ul', do_shortcode($content));
 				break;
 			case 'li':
-				return '<li>' . do_shortcode($content) . '</li>';
+				return \Foomo\Wordpress\View::html('li', do_shortcode($content));
 				break;
 		}
 	}

@@ -17,7 +17,7 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress;
+namespace Foomo\Wordpress\Admin;
 
 /**
  * Container for an array of options

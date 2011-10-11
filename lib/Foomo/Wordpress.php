@@ -35,7 +35,7 @@ class Wordpress
 	 */
 	private static $file;
 	/**
-	 * @var Foomo\Wordpress\Options
+	 * @var Foomo\Wordpress\Admin\Options
 	 */
 	private static $options;
 
@@ -50,19 +50,7 @@ class Wordpress
 	{
 		self::$file = $file;
 
-		if (is_admin()) self::initAdmin();
-		\Foomo\Wordpress\Hooks::add(__CLASS__);
-	}
 
-	//---------------------------------------------------------------------------------------------
-	// ~ Private static methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 *
-	 */
-	private static function initAdmin()
-	{
 		$defaults = array();
 
 		# plugins
@@ -73,20 +61,51 @@ class Wordpress
 		$defaults['enabled_oembeds'] = array();
 		foreach (\Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\OEmbeds\\AbstractOEmbed') as $class) $defaults['enabled_oembeds'][$class] = false;
 
+		# default widgets
+		$defaults['disabled_default_widgets'] = array(
+			'WP_Widget_Pages' => false,
+			'WP_Widget_Calendar' => false,
+			'WP_Widget_Archives' => false,
+			'WP_Widget_Links' => false,
+			'WP_Widget_Meta' => false,
+			'WP_Widget_Search' => false,
+			'WP_Widget_Text' => false,
+			'WP_Widget_Categories' => false,
+			'WP_Widget_Recent_Posts' => false,
+			'WP_Widget_Recent_Comments' => false,
+			'WP_Widget_RSS' => false,
+			'WP_Widget_Tag_Cloud' => false,
+			'WP_Nav_Menu_Widget' => false,
+		);
+
+		# widgets
+		$defaults['enabled_widgets'] = array();
+		foreach (\Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Widgets\\AbstractWidget') as $class) $defaults['enabled_widgets'][$class] = false;
+
+		# shortcodes
+		$defaults['enabled_shortcodes'] = array();
+		foreach (\Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Shortcodes\\AbstractShortcode') as $class) $defaults['enabled_shortcodes'][$class] = false;
+
 		# toolkit
 		$defaults['toolkit'] = array(
 			'disable_core_updates' => false,
-			'disable_plugin_updates' => false
+			'disable_plugin_updates' => false,
+			'overwrite_jquery_script' => false,
 		);
 
 
 		# Creating an options object
-		self::$options = new \Foomo\Wordpress\Options('foomo', self::$file, $defaults);
+		self::$options = new \Foomo\Wordpress\Admin\Options('foomo', self::$file, $defaults);
 
-		#trigger_error(var_export($defaults, true));
+		\Foomo\Wordpress\Admin\Pages\Foomo::register(self::$file, self::$options);
 
-		new \Foomo\Wordpress\AdminPage\Foomo(self::$file, self::$options);
+		\Foomo\Wordpress\Utils\Hooks::register(__CLASS__);
 	}
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Private static methods
+	//---------------------------------------------------------------------------------------------
+
 
 	/**
 	 * @add_action plugins_loaded
@@ -112,6 +131,44 @@ class Wordpress
 		}
 		do_action('_foomo_oembeds_loaded');
 		do_action('foomo_oembeds_loaded');
+	}
+
+	/**
+	 * @add_action widgets_init
+	 */
+	public static function disableDefaultWidgets()
+	{
+		foreach (self::$options->disabled_default_widgets as $key => $value) {
+			if (!$value) continue;
+			$key::register();
+		}
+		do_action('foomo_default_widgets_disabled');
+	}
+
+	/**
+	 * @add_action widgets_init
+	 */
+	public static function enableWidgets()
+	{
+		foreach (self::$options->enabled_widgets as $key => $value) {
+			if (!$value) continue;
+			$key::register();
+		}
+		do_action('_foomo_widgets_loaded');
+		do_action('foomo_widgets_loaded');
+	}
+
+	/**
+	 * @add_action plugins_loaded
+	 */
+	public static function enableShortcodes()
+	{
+		foreach (self::$options->enabled_shortcodes as $key => $value) {
+			if (!$value) continue;
+			$key::register();
+		}
+		do_action('_foomo_shortcodes_loaded');
+		do_action('foomo_shortcodes_loaded');
 	}
 
 	/**

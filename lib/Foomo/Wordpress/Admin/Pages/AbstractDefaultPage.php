@@ -16,7 +16,7 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress\AdminPage;
+namespace Foomo\Wordpress\Admin\Pages;
 
 /**
  * Administration page base class
@@ -71,7 +71,7 @@ abstract class AbstractDefaultPage
 	 * scbOptions object holder
 	 * Normally, it's used for storing formdata
 	 *
-	 * @var Foomo\Wordpress\Options
+	 * @var Foomo\Wordpress\Admin\Options
 	 */
 	protected $options;
 
@@ -105,7 +105,7 @@ abstract class AbstractDefaultPage
 
 	public function __construct($file, $options=null)
 	{
-		if (is_a($options, 'Foomo\Wordpress\Options')) $this->options = $options;
+		if (is_a($options, 'Foomo\Wordpress\Admin\Options')) $this->options = $options;
 
 		$this->file = $file;
 		$this->plugin_url = plugin_dir_url($file);
@@ -206,7 +206,7 @@ abstract class AbstractDefaultPage
 	}
 
 	// This is where the form data should be validated
-	function validate($new_data, $old_data)
+	protected function validate($new_data, $old_data)
 	{
 		return $new_data;
 	}
@@ -273,7 +273,7 @@ abstract class AbstractDefaultPage
 		if (!empty($class))
 			$input_args['extra'] = "class='{$class}'";
 
-		$output = "<p class='submit'>\n" . \Foomo\Wordpress\Forms::input($input_args) . "</p>\n";
+		$output = "<p class='submit'>\n" . \Foomo\Wordpress\Admin\Forms::input($input_args) . "</p>\n";
 
 		return $output;
 	}
@@ -305,7 +305,7 @@ abstract class AbstractDefaultPage
 			$content .= call_user_func_array(array($this, 'submit_button'), $button_args);
 		}
 
-		return \Foomo\Wordpress\Forms::form_wrap($content, $this->nonce);
+		return \Foomo\Wordpress\Admin\Forms::form_wrap($content, $this->nonce);
 	}
 
 	// Generates a table wrapped in a form
@@ -350,16 +350,13 @@ abstract class AbstractDefaultPage
 	// Wraps the given content in a <table>
 	function table_wrap($content)
 	{
-		return
-				html('table class="form-table"', $content);
+		return \Foomo\Wordpress\View::html('table', $content, array('class' => 'form-table'));
 	}
 
 	// Wraps the given content in a <tr><td>
 	function row_wrap($title, $content)
 	{
-		return
-				html('tr', html('th scope="row"', $title)
-						. html('td', $content));
+		return \Foomo\Wordpress\View::html('tr', \Foomo\Wordpress\View::html('th', $title, array('scope' => 'row')) . \Foomo\Wordpress\View::html('td', $content));
 	}
 
 	// Mimic scbForms inheritance
@@ -373,7 +370,7 @@ abstract class AbstractDefaultPage
 				$args[2] = $this->nonce;
 		}
 
-		return call_user_func_array(array('Foomo\Wordpress\Forms', $method), $args);
+		return call_user_func_array(array('Foomo\Wordpress\Admin\Forms', $method), $args);
 	}
 
 	// Wraps a string in a <script> tag

@@ -1,6 +1,6 @@
 <?php
 
-namespace Foomo\Wordpress;
+namespace Foomo\Wordpress\Admin;
 
 /**
  * A wrapper for scbForms, containing the formdata
@@ -18,15 +18,15 @@ class Form {
 	}
 
 	function traverse_to( $path ) {
-		$data = \Foomo\Wordpress\Forms::get_value( $path, $this->data );
+		$data = \Foomo\Wordpress\Admin\Forms::get_value( $path, $this->data );
 
 		$prefix = array_merge( $this->prefix, (array) $path );
 
-		return new \Foomo\Wordpress\Form( $data, $prefix );
+		return new \Foomo\Wordpress\Admin\Form( $data, $prefix );
 	}
 
 	function input( $args ) {
-		$value = \Foomo\Wordpress\Forms::get_value( $args['name'], $this->data );
+		$value = \Foomo\Wordpress\Admin\Forms::get_value( $args['name'], $this->data );
 
 		if ( !is_null( $value ) ) {
 			switch ( $args['type'] ) {
@@ -49,6 +49,6 @@ class Form {
 			$args['name'] = array_merge( $this->prefix, (array) $args['name'] );
 		}
 
-		return \Foomo\Wordpress\Forms::input( $args );
+		return \Foomo\Wordpress\Admin\Forms::input( $args );
 	}
 }

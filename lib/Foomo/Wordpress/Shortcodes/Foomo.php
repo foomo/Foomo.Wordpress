@@ -20,39 +20,23 @@
 namespace Foomo\Wordpress\Shortcodes;
 
 /**
- * @link www.foomo.org
+ * @link	www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
- * @author franklin <franklin@weareinteractive.com>
+ * @author	franklin <franklin@weareinteractive.com>
  */
-class Foomo extends AbstractShortcodes
+class Foomo extends \Foomo\Wordpress\Shortcodes\AbstractShortcode
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract method implementations
 	//---------------------------------------------------------------------------------------------
-
 	/**
 	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
 	 */
-	public static function getShortcodes()
+	public function getShortcodes()
 	{
 		return array(
 			'shortcode_foomo_run' => array('foomo_run'),
 		);
-	}
-
-	/**
-	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
-	 */
-	public static function enqueueScripts()
-	{
-		wp_enqueue_script('swfobject');
-	}
-
-	/**
-	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
-	 */
-	public static function enqueueStyles()
-	{
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -64,7 +48,7 @@ class Foomo extends AbstractShortcodes
 	 * @param string $content
 	 * @param type $code
 	 */
-	public static function shortcode_foomo_run($atts, $content=null, $code="")
+	public function shortcode_foomo_run($atts, $content=null, $code="")
 	{
 		global $post;
 		extract(shortcode_atts(array('app' => null), $atts));

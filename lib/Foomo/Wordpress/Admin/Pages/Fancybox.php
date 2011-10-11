@@ -5,14 +5,14 @@
  * and open the template in the editor.
  */
 
-namespace Foomo\Wordpress\AdminPage;
+namespace Foomo\Wordpress\Admin\Pages;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Fancybox extends \Foomo\Wordpress\AdminPage\AbstractDefaultPage
+class Fancybox extends \Foomo\Wordpress\Admin\Pages\AbstractDefaultPage
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Overriden methods
@@ -54,7 +54,7 @@ class Fancybox extends \Foomo\Wordpress\AdminPage\AbstractDefaultPage
 			'extra' => array( 'rows' => 7, 'cols' => 100 )
 		);
 
-		$out .= html('h3', 'Disable Updates');
+		$out .= \Foomo\Wordpress\View::html('h3', 'Disable Updates');
 		$out .= $this->table($rows);
 
 		# output

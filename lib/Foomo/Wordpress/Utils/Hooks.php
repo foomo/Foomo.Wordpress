@@ -17,7 +17,7 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo\Wordpress;
+namespace Foomo\Wordpress\Utils;
 
 /**
  * @link www.foomo.org
@@ -33,7 +33,7 @@ class Hooks
 	/**
 	 * @param mixed $class
 	 */
-	public static function add($class)
+	public static function register($class)
 	{
 		self::_do('add', $class);
 	}
@@ -41,7 +41,7 @@ class Hooks
 	/**
 	 * @param mixed $class
 	 */
-	public static function remove($class)
+	public static function unregister($class)
 	{
 		self::_do('remove', $class);
 	}

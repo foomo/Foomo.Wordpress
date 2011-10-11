@@ -20,11 +20,11 @@
 namespace Foomo\Wordpress\Shortcodes;
 
 /**
- * @link www.foomo.org
+ * @link	www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
- * @author franklin <franklin@weareinteractive.com>
+ * @author	franklin <franklin@weareinteractive.com>
  */
-class Geshi extends AbstractShortcodes
+class Geshi extends \Foomo\Wordpress\Shortcodes\AbstractShortcode
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract method implementations
@@ -33,29 +33,13 @@ class Geshi extends AbstractShortcodes
 	/**
 	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
 	 */
-	public static function getShortcodes()
+	public function getShortcodes()
 	{
 		return array(
 			'shortcode_geshi'	=> array('geshi'),
 			'shortcode_github'	=> array('github'),
 			'shortcode_gist'	=> array('gist'),
 		);
-	}
-
-	/**
-	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
-	 */
-	public static function enqueueScripts()
-	{
-		wp_enqueue_script('swfobject');
-	}
-
-	/**
-	 * @see Foomo\Wordpress\Shortcodes\AbstractShortcodes
-	 */
-	public static function enqueueStyles()
-	{
-
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -68,7 +52,7 @@ class Geshi extends AbstractShortcodes
 	 * @param string $content
 	 * @param type $code
 	 */
-	public static function shortcode_geshi($atts, $content=null, $code="")
+	public function shortcode_geshi($atts, $content=null, $code="")
 	{
 		global $post;
 		extract(shortcode_atts(array('lang' => 'php'), $atts));
@@ -90,7 +74,7 @@ class Geshi extends AbstractShortcodes
 	 * @param string $content
 	 * @param type $code
 	 */
-	public static function shortcode_gist($atts, $content=null, $code="")
+	public function shortcode_gist($atts, $content=null, $code="")
 	{
 		global $post;
 		extract(shortcode_atts(array('id' => null, 'ttl' => '1 day', 'lang' => 'php'), $atts));
@@ -120,7 +104,7 @@ class Geshi extends AbstractShortcodes
 	 * @param string $content
 	 * @param type $code
 	 */
-	public static function shortcode_github($atts, $content=null, $code="")
+	public function shortcode_github($atts, $content=null, $code="")
 	{
 		global $post;
 		extract(shortcode_atts(array('url' => null, 'ttl' => '1 day', 'lang' => 'php'), $atts));

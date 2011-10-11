@@ -43,7 +43,7 @@ abstract class AbstractPlugin
 	{
 		$this->file = $file;
 		$this->setup();
-		\Foomo\Wordpress\Hooks::add($this);
+		\Foomo\Wordpress\Utils\Hooks::register($this);
 	}
 
 	//---------------------------------------------------------------------------------------------
@@ -58,6 +58,15 @@ abstract class AbstractPlugin
 	//---------------------------------------------------------------------------------------------
 	// ~ Protected methods
 	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @param string $plugin
+	 * @return string
+	 */
+	protected function getPluginPath($plugin)
+	{
+		return \Foomo\Utils::getServerUrl() . \Foomo\Wordpress\Module::getPluginsPath() . '/' . $plugin;
+	}
 
 	/**
 	 * @param string $template

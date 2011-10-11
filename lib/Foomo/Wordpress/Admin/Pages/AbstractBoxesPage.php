@@ -4,14 +4,14 @@
  * and open the template in the editor.
  */
 
-namespace Foomo\Wordpress\AdminPage;
+namespace Foomo\Wordpress\Admin\Pages;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-abstract class AbstractBoxesPage extends \Foomo\Wordpress\AdminPage\AbstractDefaultPage
+abstract class AbstractBoxesPage extends \Foomo\Wordpress\Admin\Pages\AbstractDefaultPage
 {
 	/*
 	  A box definition looks like this:
@@ -145,26 +145,16 @@ abstract class AbstractBoxesPage extends \Foomo\Wordpress\AdminPage\AbstractDefa
 
 	function form_handler()
 	{
-		if (empty($_POST)) return false;
+		if (empty($_POST)) return;
 
 		check_admin_referer($this->nonce);
 
-		if (!isset($this->options)) {
-			trigger_error('options handler not set', E_USER_WARNING);
-			return false;
+		// Box handler
+		foreach ($this->boxes as $box) {
+			$args = isset( $box[4] ) ? $box[4] : array();
+			$handler = $box[0] . '_handler';
+			if (method_exists($this, $handler)) call_user_func_array(array($this, $handler), $args);
 		}
-
-		$new_data = wp_array_slice_assoc($_POST, array_keys($this->options->getDefaults()));
-
-		$new_data = stripslashes_deep($new_data);
-
-		$new_data = $this->array_merge_recursive_simple($this->options->get(), $new_data);
-
-		$new_data = $this->validate($new_data, $this->options->getDefaults());
-
-		$this->options->set($new_data);
-
-		$this->admin_msg();
 	}
 
 	function uninstall()
@@ -256,41 +246,5 @@ EOT
 			</p>
 		</form>
 		<?php
-	}
-
-	/**
-	 * Takes the first array as master only overwrites what is in the additional arrays
-	 *
-	 * @return array
-	 */
-	private function array_merge_recursive_simple()
-	{
-		$arrays = func_get_args();
-		if (count($arrays) < 2) return (count($arrays) == 1) ? $arrays[0] : array();
-
-		$first = true;
-		$merged = array();
-		while ($arrays) {
-			$array = array_shift($arrays);
-			if (!is_array($array)) {
-				trigger_error(__FUNCTION__ .' encountered a non array argument', E_USER_WARNING);
-				return;
-			}
-			if (!$array) continue;
-			foreach ($array as $key => $value) {
-				if (!$first && !isset($merged[$key])) continue;
-				if (is_string($key)) {
-					if (is_array($value) && array_key_exists($key, $merged) && is_array($merged[$key])) {
-						$merged[$key] = call_user_func(array($this, __FUNCTION__), $merged[$key], $value);
-					} else {
-						$merged[$key] = $value;
-					}
-				} else {
-					$merged[] = $value;
-				}
-			}
-			$first = false;
-		}
-		return $merged;
 	}
 }
