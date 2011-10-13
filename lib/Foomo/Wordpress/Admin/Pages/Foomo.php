@@ -43,6 +43,8 @@ class Foomo extends \Foomo\Wordpress\Admin\Pages\AbstractBoxesPage
 			'menu_title' => 'Foomo',
 			'page_slug' => 'foomo',
 			'toplevel' => 'menu',
+			'screen_icon' => 'options-general',
+			'icon_url' => $this->plugin_url . 'foomo/images/foomofish-16x16.png',
 			'ajax_submit' => true,
 		);
 

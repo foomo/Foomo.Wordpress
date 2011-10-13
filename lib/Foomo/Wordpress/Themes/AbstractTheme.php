@@ -27,23 +27,35 @@ namespace Foomo\Wordpress\Themes;
 abstract class AbstractTheme
 {
 	//---------------------------------------------------------------------------------------------
+	// ~ Variables
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 * @var string
+	 */
+	protected $id;
+	protected $name;
+
+	//---------------------------------------------------------------------------------------------
 	// ~ Constructor
 	//---------------------------------------------------------------------------------------------
 
 	/**
 	 *
 	 */
-	public function __construct()
+	public function __construct($id, $name)
 	{
-		$admin = is_admin();
-		$this->registerHoocks($admin);
+		$this->id = $id;
+		$this->name = $name;
+		\Foomo\Wordpress\Utils\Hooks::register($this);
+		$this->setup();
 	}
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Abstract methods
 	//---------------------------------------------------------------------------------------------
 
-	abstract function registerHoocks($admin);
+	abstract function setup();
 
 	//---------------------------------------------------------------------------------------------
 	// ~ Public methods
@@ -55,9 +67,7 @@ abstract class AbstractTheme
 	 */
 	protected function includeTextdomain($domain)
 	{
-		load_theme_textdomain($domain, TEMPLATEPATH . '/languages' );
-		#$locale_file = TEMPLATEPATH . '/languages/' . get_locale() . '.php';
-		#if (is_readable($locale_file)) require_once($locale_file);
+		load_theme_textdomain($domain, $this->getThemePath() . '/languages' );
 	}
 
 	/**
@@ -68,17 +78,5 @@ abstract class AbstractTheme
 	protected function renderView($template, $model=null)
 	{
 		return \Foomo\Wordpress\View::render(get_called_class(), $template, $model);
-	}
-
-	//---------------------------------------------------------------------------------------------
-	// ~ Protected static methods
-	//---------------------------------------------------------------------------------------------
-
-	/**
-	 * @return string defined constant
-	 */
-	protected static function getConstant($name)
-	{
-		return (!$name = constant(get_called_class() . '::' . $name)) ? str_replace('\\', '.', get_called_class()) : $name;
 	}
 }

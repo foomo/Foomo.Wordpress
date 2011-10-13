@@ -33,5 +33,5 @@ require_once( ABSPATH . WPINC . '/template-loader.php' );
 
 \Foomo\Timer::addMarker('Loaded template');
 
-if (\WP_DEBUG) echo '<!--' . \Foomo\Timer::getStats() . '-->';
+if (\WP_DEBUG) echo PHP_EOL . '<!--' . PHP_EOL . \Foomo\Timer::getStats() . '-->';
 ?>

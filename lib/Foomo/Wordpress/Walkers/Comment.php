@@ -34,7 +34,7 @@ class Comment extends \Foomo\Wordpress\Walkers\AbstractWalker
 	 * @since 2.7.0
 	 * @var string
 	 */
-	var $tree_type = 'comment';
+	var $tree_type = array('comment');
 	/**
 	 * @see Walker::$db_fields
 	 * @since 2.7.0

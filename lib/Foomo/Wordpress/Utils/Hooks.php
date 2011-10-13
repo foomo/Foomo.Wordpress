@@ -70,7 +70,7 @@ class Hooks
 
 				if (!empty($filterMatches[1])) {
 					$filterHooks = $filterMatches[1];
-					$filterPriority = preg_match('/@filter_priority?\s+(\d+)/', $comment, $filterMatches) ? $filterMatches[1] : 10;
+					$filterPriority = preg_match('/@add_filter_priority?\s+(\d+)/', $comment, $filterMatches) ? (int) $filterMatches[1] : 10;
 					foreach ($filterHooks as $filterHook) {
 						call_user_func($action .'_filter', $filterHook, array($class, $method->name), $filterPriority, $method->getNumberOfParameters());
 					}
@@ -79,7 +79,7 @@ class Hooks
 				preg_match_all('/@add_action?\s+([^\s]+)/', $comment, $actionMatches);
 				if (!empty($actionMatches[1])) {
 					$filterHooks = $actionMatches[1];
-					$actionPriority = preg_match('/@action_priority?\s+(\d+)/', $comment, $actionMatches) ? $filterMatches[1] : 10;
+					$actionPriority = preg_match('/@add_action_priority?\s+(\d+)/', $comment, $actionMatches) ? (int) $filterMatches[1] : 10;
 					foreach ($filterHooks as $filterHook) {
 						call_user_func($action . '_action', $filterHook, array($class, $method->name), $actionPriority, $method->getNumberOfParameters());
 					}

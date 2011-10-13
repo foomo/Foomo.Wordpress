@@ -38,6 +38,7 @@ class View
 	 */
 	public static function render($class, $template, $model=null)
 	{
+		if (\is_object($class)) $class = \get_class($class);
 		$module = \Foomo\Modules\Manager::getModuleByClassName($class);
 		$docRootModule = \Foomo\Modules\Manager::getDocumentRootModule();
 		$template = '/views/' . str_replace('\\', '/', $class) . '/' . $template . '.tpl';

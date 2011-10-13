@@ -1,5 +1,5 @@
-@css3 {
-
+@css3 // namespace
+{
 	@box-shadow(@attr) {
 		-moz-box-shadow: @attr;
 		-webkit-box-shadow: @attr;
@@ -15,7 +15,7 @@
 	@background-gradient(@color1; @color2){
 		background: -moz-linear-gradient(center top, @color1 0%, @color2 100%);
 		background: -webkit-gradient(linear, left top, left bottom, from(@color1),to(@color2));
-		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=@color1, endColorstr=@color2);	
+		filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=@color1, endColorstr=@color2);
 	}
 
 	@opacity(@attr) {

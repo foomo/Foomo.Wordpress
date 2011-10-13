@@ -41,7 +41,8 @@ class ModuleBase extends \Foomo\Modules\ModuleBase
 			\Foomo\Modules\Resource\Fs::getAbsoluteResource(\Foomo\Modules\Resource\Fs::TYPE_FOLDER, self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'plugins'),
 			\Foomo\Modules\Resource\Symlink::getResource('../../../../Foomo.Wordpress/htdocs/wordpress/wp-content/themes/twentyeleven', self::getThemesDir() . DIRECTORY_SEPARATOR . 'twentyeleven'),
 			\Foomo\Modules\Resource\Symlink::getResource('../../../../Foomo.Wordpress/htdocs/wordpress/wp-content/themes/twentyten', self::getThemesDir() . DIRECTORY_SEPARATOR . 'twentyten'),
-			\Foomo\Modules\Resource\Symlink::getResource('../../Foomo.Wordpress/htdocs/index.php', self::getHtdocsDir() . DIRECTORY_SEPARATOR . 'index.php'),
+			\Foomo\Modules\Resource\Symlink::getResource('../../../Foomo.Wordpress/htdocs/content/mu-plugins', self::getHtdocsDir() . '/content/mu-plugins'),
+			\Foomo\Modules\Resource\Symlink::getResource('../../Foomo.Wordpress/htdocs/index.php', self::getHtdocsDir() . '/index.php'),
 			\Foomo\Modules\Resource\Config::getResource(self::getModuleName(), 'Foomo.Wordpress.siteConfig'),
 			\Foomo\Modules\Resource\Module::getResource('Foomo.Wordpress', self::VERSION),
 		);
