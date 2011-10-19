@@ -1,6 +1,6 @@
 [submodule "vendor/wordpress"]
 	path = vendor/wordpress
-	url = ../WordPress.git
+	url = git://github.com/markjaquith/WordPress.git
 [submodule "vendor/twitter_bootstrap"]
 	path = vendor/twitter_bootstrap
 	url = git://github.com/twitter/bootstrap.git
