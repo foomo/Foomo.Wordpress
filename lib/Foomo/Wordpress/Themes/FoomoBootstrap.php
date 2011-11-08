@@ -83,11 +83,11 @@ abstract class FoomoBootstrap extends \Foomo\Wordpress\Themes\AbstractTheme
 	public function _base_after_setup_theme()
 	{
 		// Add default posts and comments RSS feed links to <head>.
-		add_theme_support('automatic-feed-links');
+		#add_theme_support('automatic-feed-links');
 
 		// This theme uses wp_nav_menu() in one location.
-		register_nav_menus(array('main' => __('Main Menu', 'foomo-bootstrap')));
-		register_nav_menus(array('meta' => __('Meta Navigation', 'foomo-bootstrap')));
+		#register_nav_menus(array('main' => __('Main Menu', 'foomo-bootstrap')));
+		#register_nav_menus(array('meta' => __('Meta Navigation', 'foomo-bootstrap')));
 	}
 
 	/**

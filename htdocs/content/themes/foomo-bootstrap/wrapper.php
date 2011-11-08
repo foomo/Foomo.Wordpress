@@ -14,20 +14,22 @@
 	<header id="branding" role="banner" class="container">
 
 		<div class="hero-unit">
-			<h1 id="site-title"><a href="<?= esc_url(home_url('/')); ?>" title="<?= esc_attr(get_bloginfo('name', 'display')); ?>" rel="home"><? bloginfo('name'); ?></a></h1>
+			<h1><a href="<?= esc_url(home_url('/')); ?>" title="<?= esc_attr(get_bloginfo('name', 'display')); ?>" rel="home"><? bloginfo('name'); ?></a></h1>
 			<p><?php bloginfo('description'); ?></p>
 		</div>
 
 	</header>
 
-	<div id="primary" class="row">
-		<div id="content" role="main" class="span11 columns">
+	<div id="primary" class="container">
+		<div class="row">
+			<div id="content" role="main" class="span8">
 
-			<? get_template_part('loop', \Foomo\Wordpress\Themes\FoomoBootstrap::$baseTemplateName); ?>
+				<? get_template_part('loop', \Foomo\Wordpress\Themes\FoomoBootstrap::$baseTemplateName); ?>
 
-		</div>
-		<div class="span5 columns">
-			<? get_sidebar(); ?>
+			</div>
+			<div class="span4">
+				<? get_sidebar(); ?>
+			</div>
 		</div>
 	</div>
 
