@@ -39,6 +39,19 @@ abstract class AbstractWidget extends \WP_Widget
 
 
 	//---------------------------------------------------------------------------------------------
+	// ~ Constructor
+	//---------------------------------------------------------------------------------------------
+
+	/**
+	 *
+	 */
+	public function __construct( $id_base = false, $name, $widget_options = array(), $control_options = array() ) 
+	{
+		parent::__construct($id_base, $name, $widget_options, $control_options);
+		\Foomo\Wordpress\Utils\Hooks::register($this);
+	}	
+
+	//---------------------------------------------------------------------------------------------
 	// ~ Protected methods
 	//---------------------------------------------------------------------------------------------
 

@@ -89,8 +89,8 @@ class Wordpress
 		# toolkit
 		$defaults['toolkit'] = array(
 			'disable_core_updates' => false,
+			'custom_feed_templates' => false,
 			'disable_plugin_updates' => false,
-			'overwrite_jquery_script' => false,
 		);
 
 
@@ -140,7 +140,7 @@ class Wordpress
 	{
 		foreach (self::$options->disabled_default_widgets as $key => $value) {
 			if (!$value) continue;
-			$key::register();
+			unregister_widget($key);
 		}
 		do_action('foomo_default_widgets_disabled');
 	}
@@ -176,14 +176,74 @@ class Wordpress
 	 */
 	public static function toolkit()
 	{
-		# disable updates
+		# disable core updates
 		if (self::$options->toolkit['disable_core_updates']) {
 			add_filter('pre_site_transient_update_core', create_function('$a', "return null;"));
 		}
 
+		# disable plugin update
 		if (self::$options->toolkit['disable_plugin_updates']) {
 			remove_action('load-update-core.php', 'wp_update_plugins');
 			add_filter('pre_site_transient_update_plugins', create_function('$a', "return null;"));
 		}
+
+		# use custom feed templates
+		if (self::$options->toolkit['custom_feed_templates']) {
+			
+			remove_all_actions('do_feed_rss2');
+			add_action('do_feed_rss2', array(__CLASS__, '_do_feed_rss2'), 10, 1);
+
+			remove_all_actions('do_feed_atom');
+			add_action('do_feed_atom', array(__CLASS__, '_do_feed_atom'), 10, 1);
+
+			remove_all_actions('do_feed_rss');
+			add_action('do_feed_rss', array(__CLASS__, '_do_feed_rss'), 10, 1);
+
+
+			remove_all_actions('do_feed_rdf');
+			add_action('do_feed_rdf', array(__CLASS__, '_do_feed_rdf'), 10, 1);
+		}
 	}
+	
+	/**
+	 * @internal
+	 * @param type $for_comments 
+	 */
+	public static function _do_feed_rss2($for_comments) 
+	{
+		if ($for_comments) {
+			load_template(get_template_directory() . '/feed-rss2-comments.php' );
+		} else {
+			load_template(get_template_directory() . '/feed-rss2.php' );
+		}
+	}			
+	
+	/**
+	 * @internal
+	 * @param type $for_comments 
+	 */
+	public static function _do_feed_atom($for_comments) 
+	{
+		if ($for_comments) {
+			load_template(get_template_directory() . '/feed-atom-comments.php' );
+		} else {
+			load_template(get_template_directory() . '/feed-atom.php' );
+		}
+	}			
+	
+	/**
+	 * @internal
+	 */
+	public static function _do_feed_rss() 
+	{
+		load_template(get_template_directory() . '/feed-rss.php' );
+	}			
+	
+	/**
+	 * @internal
+	 */
+	public static function _do_feed_rdf() 
+	{
+		load_template(get_template_directory() . '/feed-rdf.php' );
+	}			
 }

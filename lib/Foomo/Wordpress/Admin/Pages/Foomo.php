@@ -206,6 +206,15 @@ class Foomo extends \Foomo\Wordpress\Admin\Pages\AbstractBoxesPage
 			'name'	=> array('toolkit', 'disable_plugin_updates')
 		);
 
+		# disable core updates
+		$out .= '<input type="hidden" name="toolkit[custom_feed_templates]" value="" />';
+		$rows[] = array(
+			'title' => 'Custom Feed Templates',
+			'type'	=> 'checkbox',
+			'value' => true,
+			'name'	=> array('toolkit', 'custom_feed_templates')
+		);
+
 		$out .= $this->table($rows);
 
 		# output
