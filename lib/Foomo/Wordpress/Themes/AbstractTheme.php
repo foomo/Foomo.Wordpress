@@ -56,11 +56,12 @@ abstract class AbstractTheme
 	//---------------------------------------------------------------------------------------------
 
 	abstract function setup();
-
+	
 	//---------------------------------------------------------------------------------------------
-	// ~ Public methods
+	// ~ Protected methods
 	//---------------------------------------------------------------------------------------------
 
+	
 	/**
 	 * Make theme available for translation
 	 * Translations can be filed in the /languages/ directory

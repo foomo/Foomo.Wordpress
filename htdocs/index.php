@@ -6,7 +6,6 @@
  * @package WordPress
  */
 
-
 \Foomo\Timer::addMarker('Index start');
 
 /**
@@ -33,5 +32,5 @@ require_once( ABSPATH . WPINC . '/template-loader.php' );
 
 \Foomo\Timer::addMarker('Loaded template');
 
-if (\WP_DEBUG) echo PHP_EOL . '<!--' . PHP_EOL . \Foomo\Timer::getStats() . '-->';
+if ($_SERVER['FOOMO_RUN_MODE'] == 'development') echo PHP_EOL . '<!--' . PHP_EOL . \Foomo\Timer::getStats() . '-->';
 ?>
