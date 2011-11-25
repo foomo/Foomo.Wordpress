@@ -211,10 +211,11 @@ class Wordpress
 	 */
 	public static function _do_feed_rss2($for_comments) 
 	{
-		if ($for_comments) {
-			load_template(get_template_directory() . '/feed-rss2-comments.php' );
+		$filename = ($for_comments) ? get_template_directory() . '/feed-rss2-comments.php' : get_template_directory() . '/feed-rss2.php';
+		if (file_exists($filename)) {
+			load_template($filename);
 		} else {
-			load_template(get_template_directory() . '/feed-rss2.php' );
+			wp_die( __('No feed available,please visit our <a href="'. get_bloginfo('url') .'">homepage</a>!'));
 		}
 	}			
 	
@@ -224,10 +225,11 @@ class Wordpress
 	 */
 	public static function _do_feed_atom($for_comments) 
 	{
-		if ($for_comments) {
-			load_template(get_template_directory() . '/feed-atom-comments.php' );
+		$filename = ($for_comments) ? get_template_directory() . '/feed-atom-comments.php' : get_template_directory() . '/feed-atom.php';
+		if (file_exists($filename)) {
+			load_template($filename);
 		} else {
-			load_template(get_template_directory() . '/feed-atom.php' );
+			wp_die( __('No feed available,please visit our <a href="'. get_bloginfo('url') .'">homepage</a>!'));
 		}
 	}			
 	
@@ -236,7 +238,12 @@ class Wordpress
 	 */
 	public static function _do_feed_rss() 
 	{
-		load_template(get_template_directory() . '/feed-rss.php' );
+		$filename = get_template_directory() . '/feed-fss.php';
+		if (file_exists($filename)) {
+			load_template($filename);
+		} else {
+			wp_die( __('No feed available,please visit our <a href="'. get_bloginfo('url') .'">homepage</a>!'));
+		}
 	}			
 	
 	/**
@@ -244,6 +251,11 @@ class Wordpress
 	 */
 	public static function _do_feed_rdf() 
 	{
-		load_template(get_template_directory() . '/feed-rdf.php' );
+		$filename = get_template_directory() . '/feed-rdf.php';
+		if (file_exists($filename)) {
+			load_template($filename);
+		} else {
+			wp_die( __('No feed available,please visit our <a href="'. get_bloginfo('url') .'">homepage</a>!'));
+		}
 	}			
 }
