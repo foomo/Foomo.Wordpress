@@ -21,6 +21,10 @@ class Config extends \Foomo\Config\AbstractConfig
 	/**
 	 * @var boolean
 	 */
+	public $cache = false;
+	/**
+	 * @var boolean
+	 */
 	public $allowMultiSite = false;
 	/**
 	 * @var array

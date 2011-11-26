@@ -37,6 +37,9 @@ $table_prefix  = $config->database['prefix'];
 $moduleClassName = \Foomo\Modules\Manager::getModuleClassByName(\Foomo\Modules\Manager::getDocumentRootModule());
 $moduleConfigFilename = call_user_func(array($moduleClassName, 'getHtdocsDir')) . DIRECTORY_SEPARATOR . 'wp-config.php';
 
+# Load custom config file if exists
+if (\file_exists($moduleConfigFilename)) require_once($moduleConfigFilename);
+
 /**
  * Authentication Unique Keys and Salts.
  *
@@ -64,6 +67,11 @@ if (!defined('NONCE_SALT')) define('NONCE_SALT', $config->security['nonceSalt'])
  * language support.
  */
 if (!defined('WPLANG')) define('WPLANG', $config->lang);
+
+/**
+ * Caching
+ */
+if (!defined('WP_CACHE')) define('WP_CACHE', $config->cache);
 
 /**
  * For developers: WordPress debugging mode.
