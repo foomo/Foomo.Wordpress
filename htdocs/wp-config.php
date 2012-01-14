@@ -2,7 +2,7 @@
 # enable logging
 #error_reporting(E_ALL ^ E_DEPRECATED);
 
-$config = \Foomo\Wordpress\Module::getSiteConfig();
+$config = \Foomo\Wordpress\Module::getWordpressConfig();
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
@@ -22,9 +22,6 @@ define('DB_CHARSET', $config->database['charset']);
 
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', $config->database['collate']);
-
-/** Must use plugins */
-define('WPMU_PLUGIN_DIR', \Foomo\Wordpress\Module::getHtdocsDir('content/mu-plugins'));
 
 /**
  * WordPress Database Table prefix.

@@ -17,28 +17,13 @@
  * the foomo Opensource Framework. If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Foomo;
+namespace Foomo\Wordpress;
 
 /**
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Wordpress
+class Object
 {
-	//---------------------------------------------------------------------------------------------
-	// ~ Public methods
-	//---------------------------------------------------------------------------------------------
-	
-	public static function registerObjects()
-	{
-		# resiter object hooks
-		\Foomo\Timer::addMarker('Registering wordpress object hooks :: start');
-		foreach (\Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Object') as $class) {
-			if ($class == 'Foomo\Wordpress\Object') continue;
-			if (\substr($class, -5) == '\Base') continue;
-			\Foomo\Wordpress\Utils::registerHooks($class);
-		}
-		\Foomo\Timer::addMarker('Registering wordpress object hooks :: end');
-	}
 }

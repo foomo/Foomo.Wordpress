@@ -30,13 +30,11 @@ class Module extends \Foomo\Modules\ModuleBase
 	// ~ Constants
 	//---------------------------------------------------------------------------------------------
 
-	/**
-	 * the name of this module
-	 */
-	const NAME = 'Foomo.Wordpress';
+	const NAME		= 'Foomo.Wordpress';
+	const VERSION	= '3.3.1';
 
 	//---------------------------------------------------------------------------------------------
-	// ~ Public static methods
+	// ~ Overriden static methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
@@ -53,7 +51,7 @@ class Module extends \Foomo\Modules\ModuleBase
 	 */
 	public static function getDescription()
 	{
-		return 'Foomo Wordpress integration';
+		return 'foomo WordPress integration module';
 	}
 
 	/**
@@ -64,64 +62,44 @@ class Module extends \Foomo\Modules\ModuleBase
 	public static function getResources()
 	{
 		return array(
-			\Foomo\Modules\Resource\Module::getResource('Foomo', self::VERSION),
-			\Foomo\Modules\Resource\Config::getResource((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, 'Foomo.Wordpress.siteConfig'),
+			\Foomo\Modules\Resource\Module::getResource('Foomo', '0.2.0'),
+			\Foomo\Modules\Resource\Config::getResource((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, 'Foomo.Wordpress.config'),
 		);
 	}
 
-	/**
-	 * @return Foomo\Wordpress\DomainConfig
-	 */
-	public static function getSiteConfig()
-	{
-		return \Foomo\Config::getConf((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, 'Foomo.Wordpress.siteConfig');
-	}
+	//---------------------------------------------------------------------------------------------
+	// ~ Public static methods
+	//---------------------------------------------------------------------------------------------
 
 	/**
 	 * @return string
 	 */
 	public static function getWordpressDir()
 	{
-		return self::getHtdocsDir('wordpress');
+		return self::getVendorDir('wordpress');
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getWordpressPath()
+	public static function getMuPluginsDir()
 	{
-		return self::getHtdocsPath('wordpress');
+		return self::getHtdocsDir('content/mu-plugins');
 	}
 
 	/**
 	 * @return string
 	 */
-	public static function getPluginsDir()
+	public static function getMuPluginsPath()
 	{
-		return self::getHtdocsDir('content/plugins');
+		return self::getHtdocsPath('content/mu-plugins');
 	}
 
 	/**
-	 * @return string
+	 * @return Foomo\Wordpress\DomainConfig
 	 */
-	public static function getPluginsPath()
+	public static function getWordpressConfig()
 	{
-		return self::getHtdocsPath('content/plugins');
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function getThemesDir()
-	{
-		return self::getHtdocsDir('content/themes');
-	}
-
-	/**
-	 * @return string
-	 */
-	public static function getThemesPath()
-	{
-		return self::getHtdocsPath('content/themes');
+		return \Foomo\Config::getConf((null != $module = \Foomo\Modules\Manager::getDocumentRootModule()) ? $module : self::NAME, 'Foomo.Wordpress.config');
 	}
 }

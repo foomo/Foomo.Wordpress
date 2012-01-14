@@ -1,16 +1,11 @@
 <?
 /*
-Plugin Name: foomo
-Description: foomo integration plugin
-Author: franklin <franklin@weareinteractive.com>
-Author URI: http://www.weareinteractive.com/
-Plugin URI: http://www.foomo.org/
-Version: 0.1
-@todo add screenshot
+Plugin Name:	foomo wordpress
+Description:	foomo wordpress integration plugin
+Author:			franklin <franklin@weareinteractive.com>
+Author URI:		http://www.weareinteractive.com/
+Plugin URI:		http://www.foomo.org/
+Version:		3.3
 */
 
-\Foomo\Wordpress::init(__FILE__);
-#\Foomo\Wordpress\Admin::init();
-#\Foomo\Wordpress\Plugins::init();
-#\Foomo\Wordpress\Widgets::init();
-\Foomo\Wordpress\Frontend::init();
+\Foomo\Wordpress\Plugin\Foomo::init(__FILE__);
