@@ -23,6 +23,8 @@ namespace Foomo\Wordpress\Module;
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
+ * 
+ * @nohook
  */
 class Base extends \Foomo\Modules\ModuleBase
 {
@@ -65,7 +67,7 @@ class Base extends \Foomo\Modules\ModuleBase
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
-
+	
 	/**
 	 * @return string
 	 */

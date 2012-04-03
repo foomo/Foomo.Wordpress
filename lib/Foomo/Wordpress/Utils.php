@@ -98,7 +98,6 @@ class Utils
 				$priority = (!empty($parts)) ? intval(array_shift($parts)) : 10;
 				$arguments = (!empty($parts)) ? intval(array_shift($parts)) : $method->getNumberOfParameters();
 				call_user_func($action .'_' . $type , $name, array($class, $method->name), $priority, $arguments);
-				//\trigger_error($action . '_' . $type . ' => ' . $class . '::' . $method->name);
 			}
 		}
 	}

@@ -29,6 +29,10 @@ class Config extends \Foomo\Config\AbstractConfig
 	/**
 	 * @var array
 	 */
+	public $moduleList = array();
+	/**
+	 * @var array
+	 */
 	public $database = array(
 		'name' => 'databasename',
 		'username' => 'username',

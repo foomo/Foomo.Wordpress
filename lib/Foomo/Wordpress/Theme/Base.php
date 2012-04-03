@@ -23,6 +23,8 @@ namespace Foomo\Wordpress\Theme;
  * @link www.foomo.org
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
+ * 
+ * @nohook
  */
 class Base
 {
