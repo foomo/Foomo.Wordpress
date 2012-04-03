@@ -27,7 +27,7 @@ namespace Foomo;
 class Wordpress
 {
 	//---------------------------------------------------------------------------------------------
-	// ~ Public methods
+	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 	
 	public static function registerObjects()
