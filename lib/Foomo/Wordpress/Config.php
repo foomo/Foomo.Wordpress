@@ -13,24 +13,26 @@ class Config extends \Foomo\Config\AbstractConfig
 	//---------------------------------------------------------------------------------------------
 	// ~ Variables
 	//---------------------------------------------------------------------------------------------
-
+	
 	/**
-	 * @var string
-	 */
-	public $lang = 'en_US';
-	/**
-	 * @var boolean
-	 */
-	public $cache = false;
-	/**
-	 * @var boolean
-	 */
-	public $allowMultiSite = false;
-	/**
+	 * Additional definitions
+	 * 
 	 * @var array
 	 */
-	public $moduleList = array();
+	public $settings = array(
+		'WPLANG' => 'en_US',
+		'WP_CACHE' => false,
+		'WP_ALLOW_MULTISITE' => false
+	);
 	/**
+	 * Modules to autoload wordpress hooks
+	 * 
+	 * @var array
+	 */
+	public $modules = array();
+	/**
+	 * Database connection settings
+	 * 
 	 * @var array
 	 */
 	public $database = array(
@@ -43,6 +45,8 @@ class Config extends \Foomo\Config\AbstractConfig
 		'prefix' => 'wp_'
 	);
 	/**
+	 * Securtiy keys
+	 * 
 	 * @var array
 	 */
 	public $security = array(

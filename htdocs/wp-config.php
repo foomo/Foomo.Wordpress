@@ -2,6 +2,7 @@
 # enable logging
 #error_reporting(E_ALL ^ E_DEPRECATED);
 
+/* @var $config Foomo\Wordpress\Config */
 $config = \Foomo\Wordpress\Module::getWordpressConfig();
 
 // ** MySQL settings - You can get this info from your web host ** //
@@ -56,19 +57,9 @@ if (!defined('LOGGED_IN_SALT')) define('LOGGED_IN_SALT', $config->security['logg
 if (!defined('NONCE_SALT')) define('NONCE_SALT', $config->security['nonceSalt']);
 
 /**
- * WordPress Localized Language, defaults to English.
- *
- * Change this to localize WordPress. A corresponding MO file for the chosen
- * language must be installed to wp-content/languages. For example, install
- * de_DE.mo to wp-content/languages and set WPLANG to 'de_DE' to enable German
- * language support.
+ * Define the configured setting variables
  */
-if (!defined('WPLANG')) define('WPLANG', $config->lang);
-
-/**
- * Caching
- */
-if (!defined('WP_CACHE')) define('WP_CACHE', $config->cache);
+foreach ($config->settings as $key => $value) if (!defined($key)) define($key, $value);
 
 /**
  * For developers: WordPress debugging mode.
@@ -80,9 +71,6 @@ if (!defined('WP_CACHE')) define('WP_CACHE', $config->cache);
 if (!defined('WP_DEBUG')) define('WP_DEBUG', true);
 if (!defined('WP_DEBUG_LOG')) define('WP_DEBUG_LOG', false);
 if (!defined('WP_DEBUG_DISPLAY')) define('WP_DEBUG_DISPLAY', false);
-
-# multisite
-if (!defined('WP_ALLOW_MULTISITE')) define('WP_ALLOW_MULTISITE', $config->allowMultiSite);
 
 #  base url
 $base_url = \Foomo\Utils::getServerUrl();

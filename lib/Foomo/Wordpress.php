@@ -61,7 +61,7 @@ class Wordpress
 		$modules = array(\Foomo\Wordpress\Module::NAME, $module);
 		# add configured modules
 		if (\Foomo\Config::confExists(\Foomo\Modules\Manager::getDocumentRootModule(), \Foomo\Wordpress\Config::NAME)) {
-			$modules = array_unique(array_merge($modules, \Foomo\Config::getConf(\Foomo\Modules\Manager::getDocumentRootModule(), \Foomo\Wordpress\Config::NAME)->moduleList));
+			$modules = array_unique(array_merge($modules, \Foomo\Config::getConf(\Foomo\Modules\Manager::getDocumentRootModule(), \Foomo\Wordpress\Config::NAME)->modules));
 		} else {
 			\trigger_error('Config "' . \Foomo\Wordpress\Config::NAME . '" does not exist for current document root module "' . \Foomo\Modules\Manager::getDocumentRootModule() . '"', \E_USER_WARNING);
 		}
