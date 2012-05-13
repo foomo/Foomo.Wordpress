@@ -23,25 +23,58 @@ namespace Foomo\Wordpress;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class View extends \Foomo\View
+class View
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 
 	/**
-	 * 
-	 * @param mixed $className
-	 * @param string $fileName
+	 * @param string $class
+	 * @param string $template
 	 * @param mixed $model
-	 * @return Foomo\Wordpress\View 
+	 * @return string
 	 */
-	public static function locate($className, $fileName, $model)
+	public static function render($class, $template, $model=null)
 	{
-		$className = (\is_object($className)) ? \get_class($className) : $className;
-		$moduleName = \Foomo\Modules\Manager::getModuleByClassName($className);
-		$viewsDir = \call_user_func(array(\Foomo\Modules\Manager::getModuleClassByName($moduleName), 'getViewsDir')) ;
-		$path =  $viewsDir . \DIRECTORY_SEPARATOR . \implode(\DIRECTORY_SEPARATOR, explode('\\', $className)) . \DIRECTORY_SEPARATOR . $fileName;
-		return self::fromFile($path, $model);
+		if (\is_object($class)) $class = \get_class($class);
+		$module = \Foomo\Modules\Manager::getModuleByClassName($class);
+		$docRootModule = \Foomo\Modules\Manager::getDocumentRootModule();
+		$template = '/views/' . str_replace('\\', '/', $class) . '/' . $template . '.tpl';
+		if ($module != $docRootModule && file_exists(\Foomo\Config::getModuleDir($docRootModule) . $template)) {
+			$template = \Foomo\Config::getModuleDir($docRootModule) . $template;
+		} else {
+			$template = \Foomo\Config::getModuleDir($module) . $template;
+		}
+		return \Foomo\View::fromFile($template, $model)->render();
+	}
+
+	/**
+	 * @param string $tag
+	 * @param string $content
+	 * @param array $attributes
+	 * @return string
+	 */
+	public static function html($tag, $content=null, $attributes=array())
+	{
+		$closing = $tag;
+		foreach ( $attributes as $key => $value ) {
+			if (false === $value) continue;
+			if (true === $value) $value = $key;
+			$tag .= ' ' . $key . '="' . esc_attr( $value ) . '"';
+		}
+		return (in_array($closing, array( 'area', 'base', 'basefont', 'br', 'hr', 'input', 'img', 'link', 'meta'))) ? "<{$tag} />" : "<{$tag}>{$content}</{$closing}>";
+	}
+
+	/**
+	 *
+	 * @param string $url
+	 * @param string $title
+	 * @return string
+	 */
+	public static function link($url, $title=null)
+	{
+		if (is_null($title)) $title = $url;
+		return self::html('a', $title, array('href' => $url));
 	}
 }

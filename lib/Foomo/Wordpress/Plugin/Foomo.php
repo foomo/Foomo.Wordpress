@@ -38,4 +38,18 @@ class Foomo extends \Foomo\Wordpress\Plugin\Base
 		parent::init($filename);
 		\Foomo\Wordpress::registerObjects();
 	}	
+	
+
+	//---------------------------------------------------------------------------------------------
+	// ~ Internal static methods
+	//---------------------------------------------------------------------------------------------
+	
+	
+	/**
+	 * @add_action widgets_init
+	 */
+	public static function widgets_init()
+	{
+		\Foomo\Wordpress::registerWidgets();
+	}	
 }

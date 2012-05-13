@@ -24,23 +24,38 @@ namespace Foomo;
  * @license www.gnu.org/licenses/lgpl.txt
  * @author franklin <franklin@weareinteractive.com>
  */
-class Wordpress
+class Wordpress extends \Foomo\Wordpress\Object
 {
 	//---------------------------------------------------------------------------------------------
 	// ~ Public static methods
 	//---------------------------------------------------------------------------------------------
 	
 	/**
-	 * 
+	 * Enables hook on all objects
 	 */
 	public static function registerObjects()
 	{
 		# resiter object hooks
 		\Foomo\Timer::addMarker('Registering wordpress object hooks :: start');
-		$classes = self::getObjectClasses();
+		$objects = self::getClasses('Foomo\\Wordpress\\Object');
 		\Foomo\Timer::addMarker('Retrieved class list');
-		foreach ($classes as $class) \Foomo\Wordpress\Utils::registerHooks($class);
+		foreach ($objects as $object) \Foomo\Wordpress\Utils::registerHooks($object);
 		\Foomo\Timer::addMarker('Registering wordpress object hooks :: end');
+	}
+	
+	/**
+	 * Registeres all widgets with wordpress and enables hooks 
+	 */
+	public static function registerWidgets()
+	{
+		\Foomo\Timer::addMarker('Registering wordpress widgets hooks :: start');
+		$widgets = self::getClasses('Foomo\\Wordpress\\Widget\\Base');
+		\Foomo\Timer::addMarker('Retrieved class list');
+		foreach ($widgets as $widget) {
+			register_widget($widget);
+			\Foomo\Wordpress\Utils::registerHooks($widget);
+		}
+		\Foomo\Timer::addMarker('Registering wordpress widgets hooks :: end');
 	}
 	
 	//---------------------------------------------------------------------------------------------
@@ -50,11 +65,11 @@ class Wordpress
 	/**
 	 * @return string[] 
 	 */
-	private static function getObjectClasses()
+	private static function getClasses($className)
 	{
 		$classes = array();
 		# get all classes from autoloader
-		$objs = \Foomo\AutoLoader::getClassesBySuperClass('Foomo\\Wordpress\\Object');
+		$objectClasses = \Foomo\AutoLoader::getClassesBySuperClass($className);
 		# current active module
 		$module = \Foomo\Modules\Manager::getDocumentRootModule();
 		# list of all modules to autoload objects		
@@ -66,7 +81,7 @@ class Wordpress
 			\trigger_error('Config "' . \Foomo\Wordpress\Config::NAME . '" does not exist for current document root module "' . \Foomo\Modules\Manager::getDocumentRootModule() . '"', \E_USER_WARNING);
 		}
 		# only return classes that are in the loading path
-		foreach ($objs as $class) {
+		foreach ($objectClasses as $class) {
 			if (!\in_array(\Foomo\Modules\Manager::getClassModule($class), $modules)) continue;
 			$classes[] = $class;
 		}
